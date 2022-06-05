@@ -8,7 +8,10 @@ MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     m_tray_icon(new QSystemTrayIcon(this)),
     m_tray_menu(new QMenu(this)),
-    m_mouse_menu(new QMenu(this))
+    m_mouse_menu(new QMenu(this)),
+    m_widget(new QWidget(this)),
+    m_box_layout(new QVBoxLayout(m_widget)),
+    m_menu_info(new QLabel(this))
 {
   Qt::WindowFlags flags = Qt::CustomizeWindowHint |
                           Qt::WindowMaximizeButtonHint |
@@ -18,6 +21,16 @@ MainWindow::MainWindow(QWidget* parent) :
   setupTrayIcon();
   addItemsToMenu(m_tray_menu);
   addItemsToMenu(m_mouse_menu);
+
+  setCentralWidget(m_widget);
+
+  m_box_layout->setContentsMargins(0, 0, 0, 0);
+  m_box_layout->setAlignment(Qt::AlignTop);
+
+  m_menu_info->setTextFormat(Qt::PlainText);
+  m_menu_info->setText("Use mouse right-click\n"
+                       "to access application menu");
+  m_box_layout->addWidget(m_menu_info, 0, Qt::AlignCenter);
 }
 
 void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason reason)
