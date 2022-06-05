@@ -8,11 +8,14 @@
 
 class MainWindow : public QMainWindow
 {
+  Q_OBJECT
+
 public:
   explicit MainWindow(QWidget* parent = nullptr);
 
 public slots:
   void trayIconAction(QSystemTrayIcon::ActivationReason reason);
+  void addTrack();
 
 protected:
   void closeEvent(QCloseEvent* event) override;

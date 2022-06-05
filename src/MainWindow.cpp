@@ -1,5 +1,7 @@
 #include "MainWindow.h"
 
+#include "TrackControls.h"
+
 #include <QCloseEvent>
 #include <QCoreApplication>
 #include <QMenu>
@@ -41,6 +43,20 @@ void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason reason)
   }
 }
 
+void MainWindow::addTrack()
+{
+  if (isMinimized())
+  {
+    windowShowOrHide();
+  }
+
+  auto* track = new TrackControls(this);
+  m_box_layout->addWidget(track);
+
+  raise();
+  activateWindow();
+}
+
 void MainWindow::closeEvent(QCloseEvent* event)
 {
   if (m_tray_icon->isVisible())
@@ -72,6 +88,11 @@ void MainWindow::setupTrayIcon()
 
 void MainWindow::addItemsToMenu(QMenu* menu) const
 {
+  auto* add_track = menu->addAction(tr("Add track"));
+  connect(add_track, &QAction::triggered, this, &MainWindow::addTrack);
+
+  menu->addSeparator();
+
   auto* quit_app = menu->addAction(tr("Quit"));
   connect(quit_app, &QAction::triggered, qApp, &QCoreApplication::quit);
 }

@@ -6,18 +6,22 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 FIND_PACKAGE(Qt6 COMPONENTS Widgets REQUIRED)
 
 SET(CMAKE_AUTORCC ON)
+SET(CMAKE_AUTOMOC ON)
 
 SET(HEADERS
   MainWindow.h
+  TrackControls.h
 )
 
 SET(SOURCES
   Main.cpp
   MainWindow.cpp
+  TrackControls.cpp
 )
 
 SET(RESOURCES
   ${PROJECT_SOURCE_DIR}/icons/icons.qrc
+  ${PROJECT_SOURCE_DIR}/styles/styles.qrc
 )
 
 ADD_EXECUTABLE(${PROJECT_NAME}

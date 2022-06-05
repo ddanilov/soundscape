@@ -1,0 +1,13 @@
+TrackControls
+{
+    padding-left: %1px;
+    padding-right: %1px;
+    padding-top: %2px;
+    padding-bottom: %2px;
+}
+
+TrackControls:hover
+{
+    border: 1px solid #808080;
+    border-radius: %1px;
+}
