@@ -35,6 +35,17 @@ MainWindow::MainWindow(QWidget* parent) :
   m_box_layout->addWidget(m_menu_info, 0, Qt::AlignCenter);
 }
 
+void MainWindow::addItemsToMenu(QMenu* menu) const
+{
+  auto* add_track = menu->addAction(tr("Add track"));
+  connect(add_track, &QAction::triggered, this, &MainWindow::addTrack);
+
+  menu->addSeparator();
+
+  auto* quit_app = menu->addAction(tr("Quit"));
+  connect(quit_app, &QAction::triggered, qApp, &QCoreApplication::quit);
+}
+
 void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason reason)
 {
   if (reason == QSystemTrayIcon::Trigger)
@@ -60,6 +71,20 @@ void MainWindow::addTrack()
 
   raise();
   activateWindow();
+}
+
+void MainWindow::removeTrack(const QString& id)
+{
+  auto* track = m_widget->findChild<TrackControls*>(id);
+  if (track == nullptr) { return; }
+
+  m_box_layout->removeWidget(track);
+  track->deleteLater();
+
+  if (m_box_layout->count() == 1)
+  {
+    m_menu_info->show();
+  }
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -89,17 +114,6 @@ void MainWindow::setupTrayIcon()
   setWindowIcon(icon);
 
   m_tray_icon->show();
-}
-
-void MainWindow::addItemsToMenu(QMenu* menu) const
-{
-  auto* add_track = menu->addAction(tr("Add track"));
-  connect(add_track, &QAction::triggered, this, &MainWindow::addTrack);
-
-  menu->addSeparator();
-
-  auto* quit_app = menu->addAction(tr("Quit"));
-  connect(quit_app, &QAction::triggered, qApp, &QCoreApplication::quit);
 }
 
 void MainWindow::windowShowOrHide()

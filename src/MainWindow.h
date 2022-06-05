@@ -12,10 +12,12 @@ class MainWindow : public QMainWindow
 
 public:
   explicit MainWindow(QWidget* parent = nullptr);
+  void addItemsToMenu(QMenu* menu) const;
 
 public slots:
   void trayIconAction(QSystemTrayIcon::ActivationReason reason);
   void addTrack();
+  void removeTrack(const QString& id);
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -23,7 +25,6 @@ protected:
 
 private:
   void setupTrayIcon();
-  void addItemsToMenu(QMenu* menu) const;
   void windowShowOrHide();
 
   QPointer<QSystemTrayIcon> m_tray_icon;
