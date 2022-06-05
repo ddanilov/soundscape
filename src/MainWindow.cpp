@@ -53,6 +53,11 @@ void MainWindow::addTrack()
   auto* track = new TrackControls(this);
   m_box_layout->addWidget(track);
 
+  if (m_menu_info->isVisible())
+  {
+    m_menu_info->hide();
+  }
+
   raise();
   activateWindow();
 }
