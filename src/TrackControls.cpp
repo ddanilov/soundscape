@@ -31,8 +31,24 @@ TrackControls::TrackControls(MainWindow* parent) :
 
 void TrackControls::addItemsToMenu(QMenu* menu) const
 {
+  auto* move_track_up = menu->addAction(tr("Move Up"));
+  connect(move_track_up, &QAction::triggered, this, &TrackControls::moveUp);
+
+  auto* move_track_down = menu->addAction(tr("Move Down"));
+  connect(move_track_down, &QAction::triggered, this, &TrackControls::moveDown);
+
   auto* remove_track = menu->addAction(tr("Remove"));
   connect(remove_track, &QAction::triggered, this, &TrackControls::remove);
+}
+
+void TrackControls::moveUp()
+{
+  m_main_window->moveTrackUp(objectName());
+}
+
+void TrackControls::moveDown()
+{
+  m_main_window->moveTrackDown(objectName());
 }
 
 void TrackControls::remove()

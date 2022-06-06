@@ -17,6 +17,8 @@ public:
 public slots:
   void trayIconAction(QSystemTrayIcon::ActivationReason reason);
   void addTrack();
+  void moveTrackUp(const QString& id);
+  void moveTrackDown(const QString& id);
   void removeTrack(const QString& id);
 
 protected:

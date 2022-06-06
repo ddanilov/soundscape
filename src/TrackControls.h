@@ -16,6 +16,8 @@ public:
   void addItemsToMenu(QMenu* menu) const;
 
 public slots:
+  void moveUp();
+  void moveDown();
   void remove();
 
 protected:

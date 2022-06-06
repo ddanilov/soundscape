@@ -73,6 +73,32 @@ void MainWindow::addTrack()
   activateWindow();
 }
 
+void MainWindow::moveTrackUp(const QString& id)
+{
+  auto* track = m_widget->findChild<TrackControls*>(id);
+  if (track == nullptr) { return; }
+
+  if (const auto new_index = m_box_layout->indexOf(track) - 1;
+      new_index > 0) // menu info at index 0
+  {
+    m_box_layout->removeWidget(track);
+    m_box_layout->insertWidget(new_index, track);
+  }
+}
+
+void MainWindow::moveTrackDown(const QString& id)
+{
+  auto* track = m_widget->findChild<TrackControls*>(id);
+  if (track == nullptr) { return; }
+
+  if (const auto new_index = m_box_layout->indexOf(track) + 1;
+      new_index < m_box_layout->count())
+  {
+    m_box_layout->removeWidget(track);
+    m_box_layout->insertWidget(new_index, track);
+  }
+}
+
 void MainWindow::removeTrack(const QString& id)
 {
   auto* track = m_widget->findChild<TrackControls*>(id);
