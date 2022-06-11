@@ -1,11 +1,14 @@
 #include "MainWindow.h"
 
 #include "JsonRW.h"
+#include "Track.h"
 #include "TrackControls.h"
 
 #include <QCloseEvent>
 #include <QCoreApplication>
 #include <QFileDialog>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QMenu>
 
@@ -42,6 +45,9 @@ void MainWindow::addItemsToMenu(QMenu* menu) const
 {
   auto* add_track = menu->addAction(tr("Add track"));
   connect(add_track, &QAction::triggered, this, &MainWindow::addTrack);
+
+  auto* save_track_list = menu->addAction(tr("Save track list"));
+  connect(save_track_list, &QAction::triggered, this, &MainWindow::saveTrackList);
 
   menu->addSeparator();
 
@@ -80,6 +86,37 @@ void MainWindow::addTrack()
 
   raise();
   activateWindow();
+}
+
+void MainWindow::saveTrackList()
+{
+  if (isMinimized())
+  {
+    windowShowOrHide();
+  }
+
+  QString file_name = QFileDialog::getSaveFileName();
+  if (!file_name.isEmpty())
+  {
+    QFile file(file_name);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+      qWarning("couldn't open file");
+      return;
+    }
+
+    const QFileInfo file_info(file_name);
+    const QDir& base_dir = file_info.dir();
+    QJsonObject data;
+    QJsonArray tracks_data;
+    auto tracks = m_widget->findChildren<Track*>();
+    for (const auto* track : tracks)
+    {
+      tracks_data.append(track->toJsonObject(base_dir));
+    }
+    data[JsonRW::TracksTag] = tracks_data;
+    file.write(QJsonDocument(data).toJson());
+  }
 }
 
 void MainWindow::moveTrackUp(const QString& id)
