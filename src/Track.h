@@ -15,6 +15,10 @@ public:
 
   QString title() const;
 
+  double volume() const;
+  void setVolume(double volume);
+
 private:
   QString m_file_name;
+  double m_volume;
 };

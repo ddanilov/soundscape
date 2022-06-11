@@ -8,6 +8,7 @@
 
 class MainWindow;
 class Track;
+class Volume;
 
 class TrackControls : public QFrame
 {
@@ -21,6 +22,7 @@ public slots:
   void moveUp();
   void moveDown();
   void remove();
+  void volumeChanged(int value);
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;
@@ -35,4 +37,5 @@ private:
   QPointer<QMenu> m_mouse_menu;
 
   QPointer<Track> m_track;
+  QPointer<Volume> m_volume_control;
 };

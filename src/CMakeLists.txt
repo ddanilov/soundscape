@@ -13,6 +13,7 @@ SET(HEADERS
   MainWindow.h
   Track.h
   TrackControls.h
+  Volume.h
 )
 
 SET(SOURCES
@@ -21,6 +22,7 @@ SET(SOURCES
   MainWindow.cpp
   Track.cpp
   TrackControls.cpp
+  Volume.cpp
 )
 
 SET(RESOURCES

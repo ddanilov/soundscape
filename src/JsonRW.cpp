@@ -6,3 +6,10 @@ std::optional<QString> JsonRW::readString(const char* tag, const QJsonObject& js
   if (check) { return json[tag].toString(); }
   return std::nullopt;
 }
+
+std::optional<double> JsonRW::readDouble(const char* tag, const QJsonObject& json)
+{
+  const bool check = json.contains(tag) && json[tag].isDouble();
+  if (check) { return json[tag].toDouble(); }
+  return std::nullopt;
+}

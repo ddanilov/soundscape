@@ -2,6 +2,7 @@
 
 #include "MainWindow.h"
 #include "Track.h"
+#include "Volume.h"
 
 #include <QFile>
 #include <QMouseEvent>
@@ -12,7 +13,8 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
     m_main_window(parent),
     m_layout(new QHBoxLayout(this)),
     m_mouse_menu(new QMenu(this)),
-    m_track(new Track(this))
+    m_track(new Track(this)),
+    m_volume_control(new Volume(this))
 {
   setObjectName(QUuid::createUuid().toString());
 
@@ -60,6 +62,15 @@ void TrackControls::remove()
   m_main_window->removeTrack(objectName());
 }
 
+void TrackControls::volumeChanged(int value)
+{
+  const auto val = static_cast<double>(value);
+  const auto max = static_cast<double>(m_volume_control->maximum());
+  const auto volume = val / max;
+  m_track->setVolume(volume);
+  m_volume_control->setVolToolTip(volume);
+}
+
 void TrackControls::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::RightButton)
@@ -70,11 +81,23 @@ void TrackControls::mousePressEvent(QMouseEvent* event)
 
 void TrackControls::setupControls()
 {
+  auto spacing = fontInfo().pixelSize() / 2;
+
   m_layout->setContentsMargins(0, 0, 0, 0);
+  m_layout->addWidget(m_volume_control, 0, Qt::AlignLeft);
+  m_layout->addSpacing(spacing);
+
   setLayout(m_layout);
+
+  connect(m_volume_control, &QDial::valueChanged, this, &TrackControls::volumeChanged);
 }
 
 void TrackControls::updateControls()
 {
+  const auto volume = m_track->volume();
+  const auto max = static_cast<double>(m_volume_control->maximum());
+  const auto val = static_cast<int>(volume * max);
+  m_volume_control->setValue(val);
+
   m_layout->addWidget(new QLabel(m_track->title()), 1, Qt::AlignLeft);
 }
