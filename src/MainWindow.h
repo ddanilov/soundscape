@@ -19,6 +19,7 @@ public slots:
 
   void addTrack();
   void saveTrackList();
+  void loadTrackList();
 
   void moveTrackUp(const QString& id);
   void moveTrackDown(const QString& id);

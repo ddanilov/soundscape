@@ -49,6 +49,9 @@ void MainWindow::addItemsToMenu(QMenu* menu) const
   auto* save_track_list = menu->addAction(tr("Save track list"));
   connect(save_track_list, &QAction::triggered, this, &MainWindow::saveTrackList);
 
+  auto* load_track_list = menu->addAction(tr("Load track list"));
+  connect(load_track_list, &QAction::triggered, this, &MainWindow::loadTrackList);
+
   menu->addSeparator();
 
   auto* quit_app = menu->addAction(tr("Quit"));
@@ -117,6 +120,46 @@ void MainWindow::saveTrackList()
     data[JsonRW::TracksTag] = tracks_data;
     file.write(QJsonDocument(data).toJson());
   }
+}
+
+void MainWindow::loadTrackList()
+{
+  if (isMinimized()) { windowShowOrHide(); }
+
+  QString file_name = QFileDialog::getOpenFileName();
+  if (!file_name.isEmpty())
+  {
+    QFile file(file_name);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+      qWarning("couldn't open file.");
+      return;
+    }
+
+    QFileInfo file_info(file_name);
+    const QDir& base_dir = file_info.dir();
+
+    const auto& json_doc = QJsonDocument::fromJson(file.readAll());
+    const auto& json = json_doc.object();
+
+    if (json.contains(JsonRW::TracksTag) && json[JsonRW::TracksTag].isArray())
+    {
+      const auto& tracks = json[JsonRW::TracksTag].toArray();
+      for (const auto& jdata : tracks)
+      {
+        auto* track = new TrackControls(jdata.toObject(), base_dir, this);
+        m_box_layout->addWidget(track);
+      }
+    }
+  }
+
+  if (m_box_layout->count() > 1)
+  {
+    m_menu_info->hide();
+  }
+
+  raise();
+  activateWindow();
 }
 
 void MainWindow::moveTrackUp(const QString& id)
