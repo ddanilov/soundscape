@@ -22,15 +22,15 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
   const QString& style = QString(file.readAll()).arg(spacing).arg(spacing / 2);
   setStyleSheet(style);
 
-  m_layout->setContentsMargins(0, 0, 0, 0);
-  m_layout->addWidget(new QLabel("Track: " + objectName()), 1, Qt::AlignLeft);
-  setLayout(m_layout);
-
   addItemsToMenu(m_mouse_menu);
   m_mouse_menu->addSeparator();
   m_main_window->addItemsToMenu(m_mouse_menu);
 
+  setupControls();
+
   m_track->fromJsonObject(json, base_dir);
+
+  updateControls();
 }
 
 void TrackControls::addItemsToMenu(QMenu* menu) const
@@ -66,4 +66,15 @@ void TrackControls::mousePressEvent(QMouseEvent* event)
   {
     m_mouse_menu->exec(QCursor::pos());
   }
+}
+
+void TrackControls::setupControls()
+{
+  m_layout->setContentsMargins(0, 0, 0, 0);
+  setLayout(m_layout);
+}
+
+void TrackControls::updateControls()
+{
+  m_layout->addWidget(new QLabel(m_track->title()), 1, Qt::AlignLeft);
 }

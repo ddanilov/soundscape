@@ -26,6 +26,9 @@ protected:
   void mousePressEvent(QMouseEvent* event) override;
 
 private:
+  void setupControls();
+  void updateControls();
+
   MainWindow* m_main_window;
 
   QPointer<QHBoxLayout> m_layout;

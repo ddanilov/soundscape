@@ -20,3 +20,9 @@ QJsonObject Track::toJsonObject(const QDir& base_dir) const
   json[JsonRW::FileNameTag] = base_dir.relativeFilePath(m_file_name);
   return json;
 }
+
+QString Track::title() const
+{
+  QFileInfo fileInfo(m_file_name);
+  return fileInfo.baseName();
+}

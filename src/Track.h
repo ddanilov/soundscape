@@ -13,6 +13,8 @@ public:
   void fromJsonObject(const QJsonObject& json, const QDir& base_dir);
   QJsonObject toJsonObject(const QDir& base_dir) const;
 
+  QString title() const;
+
 private:
   QString m_file_name;
 };
