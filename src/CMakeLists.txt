@@ -9,13 +9,17 @@ SET(CMAKE_AUTORCC ON)
 SET(CMAKE_AUTOMOC ON)
 
 SET(HEADERS
+  JsonRW.h
   MainWindow.h
+  Track.h
   TrackControls.h
 )
 
 SET(SOURCES
+  JsonRW.cpp
   Main.cpp
   MainWindow.cpp
+  Track.cpp
   TrackControls.cpp
 )
 

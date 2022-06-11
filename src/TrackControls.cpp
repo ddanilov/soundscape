@@ -1,16 +1,18 @@
 #include "TrackControls.h"
 
 #include "MainWindow.h"
+#include "Track.h"
 
 #include <QFile>
 #include <QMouseEvent>
 #include <QUuid>
 
-TrackControls::TrackControls(MainWindow* parent) :
+TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, MainWindow* parent) :
     QFrame(parent),
     m_main_window(parent),
     m_layout(new QHBoxLayout(this)),
-    m_mouse_menu(new QMenu(this))
+    m_mouse_menu(new QMenu(this)),
+    m_track(new Track(this))
 {
   setObjectName(QUuid::createUuid().toString());
 
@@ -27,6 +29,8 @@ TrackControls::TrackControls(MainWindow* parent) :
   addItemsToMenu(m_mouse_menu);
   m_mouse_menu->addSeparator();
   m_main_window->addItemsToMenu(m_mouse_menu);
+
+  m_track->fromJsonObject(json, base_dir);
 }
 
 void TrackControls::addItemsToMenu(QMenu* menu) const

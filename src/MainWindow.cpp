@@ -1,9 +1,12 @@
 #include "MainWindow.h"
 
+#include "JsonRW.h"
 #include "TrackControls.h"
 
 #include <QCloseEvent>
 #include <QCoreApplication>
+#include <QFileDialog>
+#include <QJsonObject>
 #include <QMenu>
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -61,10 +64,16 @@ void MainWindow::addTrack()
     windowShowOrHide();
   }
 
-  auto* track = new TrackControls(this);
-  m_box_layout->addWidget(track);
+  QString file_name = QFileDialog::getOpenFileName();
+  if (!file_name.isEmpty())
+  {
+    QJsonObject json;
+    json[JsonRW::FileNameTag] = file_name;
+    auto* track = new TrackControls(json, QDir(), this);
+    m_box_layout->addWidget(track);
+  }
 
-  if (m_menu_info->isVisible())
+  if (m_box_layout->count() > 1)
   {
     m_menu_info->hide();
   }
