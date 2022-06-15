@@ -2,10 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
 
 PROJECT(soundscape-qt LANGUAGES CXX)
 
-# let's use CPPLINT property to run clang-format check
-find_program(CLANGFORMAT clang-format)
-if (CLANGFORMAT)
-  set(CMAKE_CXX_CPPLINT "${CLANGFORMAT};--dry-run;--Werror")
-endif ()
+LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+INCLUDE(ClangFormat OPTIONAL)
 
 ADD_SUBDIRECTORY(src)
