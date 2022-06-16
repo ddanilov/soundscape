@@ -231,7 +231,7 @@ void MainWindow::addTrackFromMedia(const QString& file_name)
 void MainWindow::saveTracksToJson(QFile& file)
 {
   const QFileInfo file_info(file.fileName());
-  const QDir& base_dir = file_info.dir();
+  const auto& base_dir = file_info.dir();
   QJsonObject data;
   QJsonArray tracks_data;
   auto tracks = m_widget->findChildren<Track*>();
@@ -246,7 +246,7 @@ void MainWindow::saveTracksToJson(QFile& file)
 void MainWindow::loadTracksFromJson(QFile& file)
 {
   QFileInfo file_info(file.fileName());
-  const QDir& base_dir = file_info.dir();
+  const auto& base_dir = file_info.dir();
 
   const auto& json_doc = QJsonDocument::fromJson(file.readAll());
   const auto& json = json_doc.object();
