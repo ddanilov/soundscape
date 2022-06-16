@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QFile>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPointer>
@@ -32,6 +33,10 @@ protected:
 private:
   void setupTrayIcon();
   void windowShowOrHide();
+
+  void addTrackFromMedia(const QString& file_name);
+  void saveTracksToJson(QFile& file);
+  void loadTracksFromJson(QFile& file);
 
   QPointer<QSystemTrayIcon> m_tray_icon;
   QPointer<QMenu> m_tray_menu;

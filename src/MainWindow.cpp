@@ -76,10 +76,7 @@ void MainWindow::addTrack()
   QString file_name = QFileDialog::getOpenFileName();
   if (!file_name.isEmpty())
   {
-    QJsonObject json;
-    json[JsonRW::FileNameTag] = file_name;
-    auto* track = new TrackControls(json, QDir(), this);
-    m_box_layout->addWidget(track);
+    addTrackFromMedia(file_name);
   }
 
   if (m_box_layout->count() > 1)
@@ -107,18 +104,7 @@ void MainWindow::saveTrackList()
       qWarning("couldn't open file");
       return;
     }
-
-    const QFileInfo file_info(file_name);
-    const QDir& base_dir = file_info.dir();
-    QJsonObject data;
-    QJsonArray tracks_data;
-    auto tracks = m_widget->findChildren<Track*>();
-    for (const auto* track : tracks)
-    {
-      tracks_data.append(track->toJsonObject(base_dir));
-    }
-    data[JsonRW::TracksTag] = tracks_data;
-    file.write(QJsonDocument(data).toJson());
+    saveTracksToJson(file);
   }
 }
 
@@ -135,22 +121,7 @@ void MainWindow::loadTrackList()
       qWarning("couldn't open file.");
       return;
     }
-
-    QFileInfo file_info(file_name);
-    const QDir& base_dir = file_info.dir();
-
-    const auto& json_doc = QJsonDocument::fromJson(file.readAll());
-    const auto& json = json_doc.object();
-
-    if (json.contains(JsonRW::TracksTag) && json[JsonRW::TracksTag].isArray())
-    {
-      const auto& tracks = json[JsonRW::TracksTag].toArray();
-      for (const auto& jdata : tracks)
-      {
-        auto* track = new TrackControls(jdata.toObject(), base_dir, this);
-        m_box_layout->addWidget(track);
-      }
-    }
+    loadTracksFromJson(file);
   }
 
   if (m_box_layout->count() > 1)
@@ -246,5 +217,47 @@ void MainWindow::windowShowOrHide()
     m_old_geometry = saveGeometry();
     showMinimized();
     setVisible(false);
+  }
+}
+
+void MainWindow::addTrackFromMedia(const QString& file_name)
+{
+  QJsonObject json;
+  json[JsonRW::FileNameTag] = file_name;
+  auto* track = new TrackControls(json, QDir(), this);
+  m_box_layout->addWidget(track);
+}
+
+void MainWindow::saveTracksToJson(QFile& file)
+{
+  const QFileInfo file_info(file.fileName());
+  const QDir& base_dir = file_info.dir();
+  QJsonObject data;
+  QJsonArray tracks_data;
+  auto tracks = m_widget->findChildren<Track*>();
+  for (const auto* track : tracks)
+  {
+    tracks_data.append(track->toJsonObject(base_dir));
+  }
+  data[JsonRW::TracksTag] = tracks_data;
+  file.write(QJsonDocument(data).toJson());
+}
+
+void MainWindow::loadTracksFromJson(QFile& file)
+{
+  QFileInfo file_info(file.fileName());
+  const QDir& base_dir = file_info.dir();
+
+  const auto& json_doc = QJsonDocument::fromJson(file.readAll());
+  const auto& json = json_doc.object();
+
+  if (json.contains(JsonRW::TracksTag) && json[JsonRW::TracksTag].isArray())
+  {
+    const auto& tracks = json[JsonRW::TracksTag].toArray();
+    for (const auto& jdata : tracks)
+    {
+      auto* track = new TrackControls(jdata.toObject(), base_dir, this);
+      m_box_layout->addWidget(track);
+    }
   }
 }
