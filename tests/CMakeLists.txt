@@ -1,13 +1,13 @@
-FIND_PACKAGE(Qt6 COMPONENTS Test REQUIRED)
+find_package(Qt6 COMPONENTS Test REQUIRED)
 
-MACRO(UNIT_TEST source_file_name)
-  GET_FILENAME_COMPONENT(TESTNAME ${source_file_name} NAME_WE)
-  ADD_EXECUTABLE(${TESTNAME} ${source_file_name})
-  TARGET_LINK_LIBRARIES(${TESTNAME} PRIVATE ${APP_LIB} Qt::Test)
-  ADD_TEST(NAME ${TESTNAME} COMMAND ${TESTNAME})
-ENDMACRO(UNIT_TEST)
+macro(unit_test SOURCE_FILE_NAME)
+  get_filename_component(TESTNAME ${SOURCE_FILE_NAME} NAME_WE)
+  add_executable(${TESTNAME} ${SOURCE_FILE_NAME})
+  target_link_libraries(${TESTNAME} PRIVATE ${APP_LIB} Qt::Test)
+  add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
+endmacro(unit_test)
 
-SET(CMAKE_AUTOMOC ON)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)
+set(CMAKE_AUTOMOC ON)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
-UNIT_TEST(TestJsonRW.cpp)
+unit_test(TestJsonRW.cpp)

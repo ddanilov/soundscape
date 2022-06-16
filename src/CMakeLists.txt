@@ -1,9 +1,9 @@
-FIND_PACKAGE(Qt6 COMPONENTS Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
 
-SET(CMAKE_AUTORCC ON)
-SET(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
 
-SET(HEADERS
+set(HEADERS
   JsonRW.h
   MainWindow.h
   Track.h
@@ -11,7 +11,7 @@ SET(HEADERS
   Volume.h
 )
 
-SET(SOURCES
+set(SOURCES
   JsonRW.cpp
   Main.cpp
   MainWindow.cpp
@@ -20,23 +20,16 @@ SET(SOURCES
   Volume.cpp
 )
 
-SET(RESOURCES
+set(RESOURCES
   ${PROJECT_SOURCE_DIR}/icons/icons.qrc
   ${PROJECT_SOURCE_DIR}/styles/styles.qrc
 )
 
-ADD_LIBRARY(${APP_LIB} STATIC
+add_library(${APP_LIB} STATIC
   ${HEADERS}
   ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(${APP_LIB}
-  Qt::Widgets
-)
+target_link_libraries(${APP_LIB} Qt::Widgets)
 
-ADD_EXECUTABLE(${APP_EXE}
-  ${RESOURCES}
-)
-
-TARGET_LINK_LIBRARIES(${APP_EXE} PRIVATE
-  ${APP_LIB}
-)
+add_executable(${APP_EXE} ${RESOURCES})
+target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
