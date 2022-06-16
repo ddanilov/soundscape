@@ -46,4 +46,6 @@ private:
   QPointer<QWidget> m_widget;
   QPointer<QVBoxLayout> m_box_layout;
   QPointer<QLabel> m_menu_info;
+
+  friend class TestMainWindow;
 };
