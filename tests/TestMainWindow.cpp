@@ -12,6 +12,7 @@ class TestMainWindow : public QObject
 private slots:
   void testTrackFromMedia();
   void testSaveTracksToJson();
+  void testLoadTracksFromJson();
 };
 
 void TestMainWindow::testTrackFromMedia()
@@ -76,6 +77,57 @@ void TestMainWindow::testSaveTracksToJson()
 )");
   QCOMPARE(json, jsonExpected);
   file.close();
+}
+
+void TestMainWindow::testLoadTracksFromJson()
+{
+  QTemporaryFile file;
+  file.open();
+  QString json(R"({
+    "tracks": [
+        {
+            "fileName": "sound_01.mp3",
+            "volume": 0.5
+        },
+        {
+            "fileName": "../data1/sound_02.mp3",
+            "volume": 0.5
+        },
+        {
+            "fileName": "../data2/sound_03.mp3",
+            "volume": 0.5
+        }
+    ]
+}
+)");
+  file.write(json.toUtf8());
+  file.close();
+
+  MainWindow window;
+
+  file.open();
+  window.loadTracksFromJson(file);
+  file.close();
+
+  QVERIFY(window.m_box_layout->count() == 4);
+  // menu info is the first item in the box layout
+  auto* menu_info = dynamic_cast<QLabel*>(window.m_box_layout->itemAt(0)->widget());
+  QVERIFY(menu_info != nullptr);
+  // followed by the three tracks
+  auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(1)->widget());
+  QVERIFY(track_control != nullptr);
+  auto* track = track_control->findChild<Track*>();
+  QCOMPARE(track->title(), "sound_01");
+  //
+  track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(2)->widget());
+  QVERIFY(track_control != nullptr);
+  track = track_control->findChild<Track*>();
+  QCOMPARE(track->title(), "sound_02");
+  //
+  track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(3)->widget());
+  QVERIFY(track_control != nullptr);
+  track = track_control->findChild<Track*>();
+  QCOMPARE(track->title(), "sound_03");
 }
 
 QTEST_MAIN(TestMainWindow)
