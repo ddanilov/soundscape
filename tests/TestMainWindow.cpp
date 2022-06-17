@@ -52,6 +52,18 @@ void TestMainWindow::testSaveTracksToJson()
   window.addTrackFromMedia(QString(base_dir + "/../data1/sound_02.mp3"));
   window.addTrackFromMedia(QString(base_dir + "/../data2/sound_03.mp3"));
 
+  auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(1)->widget());
+  auto* track = track_control->findChild<Track*>();
+  track->setVolume(0.11);
+
+  track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(2)->widget());
+  track = track_control->findChild<Track*>();
+  track->setVolume(0.21);
+
+  track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(3)->widget());
+  track = track_control->findChild<Track*>();
+  track->setVolume(0.32);
+
   file.open();
   window.saveTracksToJson(file);
   file.close();
@@ -62,15 +74,15 @@ void TestMainWindow::testSaveTracksToJson()
     "tracks": [
         {
             "fileName": "sound_01.mp3",
-            "volume": 0.5
+            "volume": 0.11
         },
         {
             "fileName": "../data1/sound_02.mp3",
-            "volume": 0.5
+            "volume": 0.21
         },
         {
             "fileName": "../data2/sound_03.mp3",
-            "volume": 0.5
+            "volume": 0.32
         }
     ]
 }
@@ -87,15 +99,15 @@ void TestMainWindow::testLoadTracksFromJson()
     "tracks": [
         {
             "fileName": "sound_01.mp3",
-            "volume": 0.5
+            "volume": 0.51
         },
         {
             "fileName": "../data1/sound_02.mp3",
-            "volume": 0.5
+            "volume": 0.52
         },
         {
             "fileName": "../data2/sound_03.mp3",
-            "volume": 0.5
+            "volume": 0.53
         }
     ]
 }
@@ -118,16 +130,19 @@ void TestMainWindow::testLoadTracksFromJson()
   QVERIFY(track_control != nullptr);
   auto* track = track_control->findChild<Track*>();
   QCOMPARE(track->title(), "sound_01");
+  QCOMPARE(track->volume(), 0.51);
   //
   track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(2)->widget());
   QVERIFY(track_control != nullptr);
   track = track_control->findChild<Track*>();
   QCOMPARE(track->title(), "sound_02");
+  QCOMPARE(track->volume(), 0.52);
   //
   track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(3)->widget());
   QVERIFY(track_control != nullptr);
   track = track_control->findChild<Track*>();
   QCOMPARE(track->title(), "sound_03");
+  QCOMPARE(track->volume(), 0.53);
 }
 
 QTEST_MAIN(TestMainWindow)
