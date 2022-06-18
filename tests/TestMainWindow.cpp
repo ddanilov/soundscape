@@ -13,6 +13,9 @@ private slots:
   void testTrackFromMedia();
   void testSaveTracksToJson();
   void testLoadTracksFromJson();
+
+  void testMoveTrackUp();
+  void testMoveTrackDown();
 };
 
 void TestMainWindow::testTrackFromMedia()
@@ -143,6 +146,84 @@ void TestMainWindow::testLoadTracksFromJson()
   track = track_control->findChild<Track*>();
   QCOMPARE(track->title(), "sound_03");
   QCOMPARE(track->volume(), 0.53);
+}
+
+void TestMainWindow::testMoveTrackUp()
+{
+  MainWindow window;
+
+  window.addTrackFromMedia(QString("track_01.mp3"));
+  window.addTrackFromMedia(QString("track_02.mp3"));
+  window.addTrackFromMedia(QString("track_03.mp3"));
+
+  auto move_track = [&](int index) {
+    auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(index)->widget());
+    track_control->moveUp();
+  };
+
+  auto check_track = [&](int index, const QString& title) {
+    auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(index)->widget());
+    auto* track = track_control->findChild<Track*>();
+    QCOMPARE(track->title(), title);
+  };
+
+  check_track(1, "track_01");
+  check_track(2, "track_02");
+  check_track(3, "track_03");
+
+  move_track(1);
+  check_track(1, "track_01");
+  check_track(2, "track_02");
+  check_track(3, "track_03");
+
+  move_track(2);
+  check_track(1, "track_02");
+  check_track(2, "track_01");
+  check_track(3, "track_03");
+
+  move_track(3);
+  check_track(1, "track_02");
+  check_track(2, "track_03");
+  check_track(3, "track_01");
+}
+
+void TestMainWindow::testMoveTrackDown()
+{
+  MainWindow window;
+
+  window.addTrackFromMedia(QString("track_01.mp3"));
+  window.addTrackFromMedia(QString("track_02.mp3"));
+  window.addTrackFromMedia(QString("track_03.mp3"));
+
+  auto move_track = [&](int index) {
+    auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(index)->widget());
+    track_control->moveDown();
+  };
+
+  auto check_track = [&](int index, const QString& title) {
+    auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(index)->widget());
+    auto* track = track_control->findChild<Track*>();
+    QCOMPARE(track->title(), title);
+  };
+
+  check_track(1, "track_01");
+  check_track(2, "track_02");
+  check_track(3, "track_03");
+
+  move_track(1);
+  check_track(1, "track_02");
+  check_track(2, "track_01");
+  check_track(3, "track_03");
+
+  move_track(2);
+  check_track(1, "track_02");
+  check_track(2, "track_03");
+  check_track(3, "track_01");
+
+  move_track(3);
+  check_track(1, "track_02");
+  check_track(2, "track_03");
+  check_track(3, "track_01");
 }
 
 QTEST_MAIN(TestMainWindow)
