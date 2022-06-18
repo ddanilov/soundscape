@@ -3,7 +3,7 @@ find_program(GCOVR gcovr)
 if(GCOVR AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   message(STATUS "setup GCOV coverage report")
 
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -fprofile-arcs --coverage -ftest-coverage")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 
   set(CTEST_COVERAGE ${PROJECT_NAME}_ctest_coverage)
