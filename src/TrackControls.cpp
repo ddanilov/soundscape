@@ -47,6 +47,11 @@ void TrackControls::addItemsToMenu(QMenu* menu) const
   connect(remove_track, &QAction::triggered, this, &TrackControls::remove);
 }
 
+Track* TrackControls::track() const
+{
+  return m_track;
+}
+
 void TrackControls::moveUp()
 {
   m_main_window->moveTrackUp(objectName());

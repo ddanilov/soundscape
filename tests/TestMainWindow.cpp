@@ -72,9 +72,13 @@ void TestMainWindow::testSaveTracksToJson()
   window.saveTracksToJson(file);
   file.close();
 
+  QString json;
+  QString jsonExpected;
+
   file.open();
-  QString json(file.readAll());
-  QString jsonExpected(R"({
+  json = file.readAll();
+  file.close();
+  jsonExpected = R"({
     "tracks": [
         {
             "fileName": "sound_01.mp3",
@@ -90,9 +94,38 @@ void TestMainWindow::testSaveTracksToJson()
         }
     ]
 }
-)");
+)";
   QCOMPARE(json, jsonExpected);
+
+  // move the last track up
+  track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(3)->widget());
+  track_control->moveUp();
+
+  file.open();
+  window.saveTracksToJson(file);
   file.close();
+
+  file.open();
+  json = file.readAll();
+  file.close();
+  jsonExpected = R"({
+    "tracks": [
+        {
+            "fileName": "sound_01.mp3",
+            "volume": 0.11
+        },
+        {
+            "fileName": "../data2/sound_03.mp3",
+            "volume": 0.32
+        },
+        {
+            "fileName": "../data1/sound_02.mp3",
+            "volume": 0.21
+        }
+    ]
+}
+)";
+  QCOMPARE(json, jsonExpected);
 }
 
 void TestMainWindow::testLoadTracksFromJson()

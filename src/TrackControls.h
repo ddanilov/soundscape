@@ -17,6 +17,7 @@ class TrackControls : public QFrame
 public:
   explicit TrackControls(const QJsonObject& json, const QDir& base_dir, MainWindow* parent = nullptr);
   void addItemsToMenu(QMenu* menu) const;
+  Track* track() const;
 
 public slots:
   void moveUp();

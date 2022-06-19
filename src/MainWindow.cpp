@@ -234,10 +234,10 @@ void MainWindow::saveTracksToJson(QFile& file)
   const auto& base_dir = file_info.dir();
   QJsonObject data;
   QJsonArray tracks_data;
-  auto tracks = m_widget->findChildren<Track*>();
-  for (const auto* track : tracks)
+  for (int i = 0; i != m_box_layout->count(); ++i)
   {
-    tracks_data.append(track->toJsonObject(base_dir));
+    const auto* track_control = dynamic_cast<TrackControls*>(m_box_layout->itemAt(i)->widget());
+    if (track_control) { tracks_data.append(track_control->track()->toJsonObject(base_dir)); }
   }
   data[JsonRW::TracksTag] = tracks_data;
   file.write(QJsonDocument(data).toJson());
