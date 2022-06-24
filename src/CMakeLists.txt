@@ -8,6 +8,7 @@ set(HEADERS
   MainWindow.h
   Track.h
   TrackControls.h
+  Status.h
   Volume.h
 )
 
@@ -17,6 +18,7 @@ set(SOURCES
   MainWindow.cpp
   Track.cpp
   TrackControls.cpp
+  Status.cpp
   Volume.cpp
 )
 

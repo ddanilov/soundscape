@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/styles">
+        <file>status.css</file>
         <file>track-controls.css</file>
     </qresource>
 </RCC>

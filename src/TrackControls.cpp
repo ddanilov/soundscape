@@ -1,6 +1,7 @@
 #include "TrackControls.h"
 
 #include "MainWindow.h"
+#include "Status.h"
 #include "Track.h"
 #include "Volume.h"
 
@@ -14,7 +15,8 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
     m_layout(new QHBoxLayout(this)),
     m_mouse_menu(new QMenu(this)),
     m_track(new Track(this)),
-    m_volume_control(new Volume(this))
+    m_volume_control(new Volume(this)),
+    m_status_control(new Status(this))
 {
   setObjectName(QUuid::createUuid().toString());
 
@@ -91,6 +93,7 @@ void TrackControls::setupControls()
   m_layout->setContentsMargins(0, 0, 0, 0);
   m_layout->addWidget(m_volume_control, 0, Qt::AlignLeft);
   m_layout->addSpacing(spacing);
+  m_layout->addWidget(m_status_control, 1, Qt::AlignLeft);
 
   setLayout(m_layout);
 
@@ -103,6 +106,5 @@ void TrackControls::updateControls()
   const auto max = static_cast<double>(m_volume_control->maximum());
   const auto val = static_cast<int>(volume * max);
   m_volume_control->setValue(val);
-
-  m_layout->addWidget(new QLabel(m_track->title()), 1, Qt::AlignLeft);
+  m_status_control->setText(m_track->title());
 }

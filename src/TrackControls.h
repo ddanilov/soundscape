@@ -7,6 +7,7 @@
 #include <QPointer>
 
 class MainWindow;
+class Status;
 class Track;
 class Volume;
 
@@ -39,4 +40,5 @@ private:
 
   QPointer<Track> m_track;
   QPointer<Volume> m_volume_control;
+  QPointer<Status> m_status_control;
 };
