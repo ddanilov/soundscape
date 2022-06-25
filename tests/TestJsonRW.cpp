@@ -10,6 +10,7 @@ private slots:
   void testJsonTags();
   void testReadString();
   void testReadDouble();
+  void testReadBool();
 };
 
 void TestJsonRW::testJsonTags()
@@ -43,6 +44,19 @@ void TestJsonRW::testReadDouble()
   volume = JsonRW::readDouble(JsonRW::VolumeTag, json);
   QVERIFY(volume.has_value());
   QCOMPARE(volume.value(), val);
+}
+
+void TestJsonRW::testReadBool()
+{
+  QJsonObject json;
+  auto playing = JsonRW::readBool(JsonRW::PlayingTag, json);
+  QVERIFY(!playing.has_value());
+
+  const bool val = false;
+  json[JsonRW::PlayingTag] = val;
+  playing = JsonRW::readBool(JsonRW::PlayingTag, json);
+  QVERIFY(playing.has_value());
+  QCOMPARE(playing.value(), val);
 }
 
 QTEST_MAIN(TestJsonRW)

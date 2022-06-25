@@ -18,7 +18,12 @@ public:
   double volume() const;
   void setVolume(double volume);
 
+  bool isPlaying() const;
+  void play();
+  void pause();
+
 private:
   QString m_file_name;
   double m_volume;
+  bool m_playing;
 };

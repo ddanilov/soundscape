@@ -25,6 +25,7 @@ public slots:
   void moveDown();
   void remove();
   void volumeChanged(int value);
+  void statusChanged(int state);
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;

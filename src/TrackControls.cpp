@@ -78,6 +78,19 @@ void TrackControls::volumeChanged(int value)
   m_volume_control->setVolToolTip(volume);
 }
 
+void TrackControls::statusChanged(int state)
+{
+  switch (state)
+  {
+    case Qt::Unchecked:
+      m_track->pause();
+      break;
+    case Qt::Checked:
+      m_track->play();
+      break;
+  }
+}
+
 void TrackControls::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::RightButton)
@@ -98,6 +111,7 @@ void TrackControls::setupControls()
   setLayout(m_layout);
 
   connect(m_volume_control, &QDial::valueChanged, this, &TrackControls::volumeChanged);
+  connect(m_status_control, &QCheckBox::stateChanged, this, &TrackControls::statusChanged);
 }
 
 void TrackControls::updateControls()
@@ -106,5 +120,7 @@ void TrackControls::updateControls()
   const auto max = static_cast<double>(m_volume_control->maximum());
   const auto val = static_cast<int>(volume * max);
   m_volume_control->setValue(val);
+
+  m_status_control->setChecked(m_track->isPlaying());
   m_status_control->setText(m_track->title());
 }

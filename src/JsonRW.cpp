@@ -13,3 +13,10 @@ std::optional<double> JsonRW::readDouble(const char* tag, const QJsonObject& jso
   if (check) { return json[tag].toDouble(); }
   return std::nullopt;
 }
+
+std::optional<bool> JsonRW::readBool(const char* tag, const QJsonObject& json)
+{
+  const bool check = json.contains(tag) && json[tag].isBool();
+  if (check) { return json[tag].toBool(); }
+  return std::nullopt;
+}

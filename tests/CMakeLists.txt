@@ -12,3 +12,4 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 
 unit_test(TestJsonRW.cpp)
 unit_test(TestMainWindow.cpp)
+unit_test(TestTrackControls.cpp)
