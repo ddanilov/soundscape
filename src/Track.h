@@ -2,6 +2,9 @@
 
 #include <QDir>
 #include <QObject>
+#include <QPointer>
+
+class Player;
 
 class Track : public QObject
 {
@@ -23,7 +26,11 @@ public:
   void pause();
 
 private:
+  QPointer<Player> m_player;
+
   QString m_file_name;
   double m_volume;
   bool m_playing;
+
+  friend class TestTrack;
 };
