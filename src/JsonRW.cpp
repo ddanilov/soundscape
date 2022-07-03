@@ -20,3 +20,10 @@ std::optional<bool> JsonRW::readBool(const char* tag, const QJsonObject& json)
   if (check) { return json[tag].toBool(); }
   return std::nullopt;
 }
+
+std::optional<qint64> JsonRW::readInteger(const char* tag, const QJsonObject& json)
+{
+  const bool check = json.contains(tag) && json[tag].isDouble();
+  if (check) { return json[tag].toInteger(); }
+  return std::nullopt;
+}

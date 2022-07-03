@@ -11,13 +11,13 @@ class Player : public QMediaPlayer
 public:
   explicit Player(Track* parent);
 
-  void setVolume(double volume);
+signals:
+  void playerLoaded();
 
 private slots:
   void mediaPlayerStatusChanged(QMediaPlayer::MediaStatus status);
+  void mediaPlayerPositionChanged(qint64 position);
 
 private:
   const Track* m_track;
-
-  friend class TestPlayer;
 };

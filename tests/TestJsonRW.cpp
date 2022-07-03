@@ -11,6 +11,7 @@ private slots:
   void testReadString();
   void testReadDouble();
   void testReadBool();
+  void testReadInteger();
 };
 
 void TestJsonRW::testJsonTags()
@@ -18,6 +19,9 @@ void TestJsonRW::testJsonTags()
   QCOMPARE(JsonRW::TracksTag, "tracks");
   QCOMPARE(JsonRW::FileNameTag, "fileName");
   QCOMPARE(JsonRW::VolumeTag, "volume");
+  QCOMPARE(JsonRW::PlayingTag, "playing");
+  QCOMPARE(JsonRW::FadeInDurationTag, "fadeInDuration");
+  QCOMPARE(JsonRW::FadeOutDurationTag, "fadeOutDuration");
 }
 
 void TestJsonRW::testReadString()
@@ -57,6 +61,19 @@ void TestJsonRW::testReadBool()
   playing = JsonRW::readBool(JsonRW::PlayingTag, json);
   QVERIFY(playing.has_value());
   QCOMPARE(playing.value(), val);
+}
+
+void TestJsonRW::testReadInteger()
+{
+  QJsonObject json;
+  auto position = JsonRW::readInteger(JsonRW::FadeInDurationTag, json);
+  QVERIFY(!position.has_value());
+
+  const qint64 val = 123456789;
+  json[JsonRW::FadeInDurationTag] = val;
+  position = JsonRW::readDouble(JsonRW::FadeInDurationTag, json);
+  QVERIFY(position.has_value());
+  QCOMPARE(position.value(), val);
 }
 
 QTEST_MAIN(TestJsonRW)

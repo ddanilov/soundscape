@@ -93,16 +93,22 @@ void TestMainWindow::testSaveTracksToJson()
   jsonExpected = R"({
     "tracks": [
         {
+            "fadeInDuration": -1,
+            "fadeOutDuration": -1,
             "fileName": "sound_01.mp3",
             "playing": true,
             "volume": 0.11
         },
         {
+            "fadeInDuration": -1,
+            "fadeOutDuration": -1,
             "fileName": "../data1/sound_02.mp3",
             "playing": true,
             "volume": 0.21
         },
         {
+            "fadeInDuration": -1,
+            "fadeOutDuration": -1,
             "fileName": "../data2/sound_03.mp3",
             "playing": true,
             "volume": 0.32
@@ -126,16 +132,22 @@ void TestMainWindow::testSaveTracksToJson()
   jsonExpected = R"({
     "tracks": [
         {
+            "fadeInDuration": -1,
+            "fadeOutDuration": -1,
             "fileName": "sound_01.mp3",
             "playing": true,
             "volume": 0.11
         },
         {
+            "fadeInDuration": -1,
+            "fadeOutDuration": -1,
             "fileName": "../data2/sound_03.mp3",
             "playing": true,
             "volume": 0.32
         },
         {
+            "fadeInDuration": -1,
+            "fadeOutDuration": -1,
             "fileName": "../data1/sound_02.mp3",
             "playing": true,
             "volume": 0.21

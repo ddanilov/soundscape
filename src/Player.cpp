@@ -12,20 +12,31 @@ Player::Player(Track* parent) :
   audioOutput()->setVolume(0);
 
   connect(this, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaPlayerStatusChanged);
-}
-
-void Player::setVolume(double volume)
-{
-  const double vol = QAudio::convertVolume(volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
-  audioOutput()->setVolume(vol);
+  connect(this, &QMediaPlayer::positionChanged, this, &Player::mediaPlayerPositionChanged);
 }
 
 void Player::mediaPlayerStatusChanged(MediaStatus status)
 {
+  if (status == QMediaPlayer::MediaStatus::LoadedMedia)
+  {
+    if (duration() <= 0)
+    {
+      stop();
+      emit errorOccurred(QMediaPlayer::FormatError, QString("duration is 0"));
+    }
+    emit playerLoaded();
+  }
+
   if (status == QMediaPlayer::MediaStatus::EndOfMedia)
   {
     pause();
     setPosition(0);
     play();
   }
+}
+
+void Player::mediaPlayerPositionChanged(qint64 position)
+{
+  const auto volume = m_track->fadeVolume(position);
+  audioOutput()->setVolume(volume);
 }
