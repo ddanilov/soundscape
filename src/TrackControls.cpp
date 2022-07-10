@@ -99,6 +99,23 @@ void TrackControls::trackLoaded()
   {
     updateControls();
     enableControls();
+    emit updated();
+  }
+}
+
+void TrackControls::playerError()
+{
+  if (m_track->errors().size() == 1)
+  {
+    disableControls();
+    updateControls();
+
+    m_status_control->setTristate(true);
+    m_status_control->setCheckState(Qt::PartiallyChecked);
+    m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
+    m_status_control->installEventFilter(this);
+
+    emit updated();
   }
 }
 
@@ -124,20 +141,6 @@ bool TrackControls::eventFilter(QObject* watched, QEvent* event)
   }
 
   return QFrame::eventFilter(watched, event);
-}
-
-void TrackControls::playerError()
-{
-  if (m_track->errors().size() == 1)
-  {
-    disableControls();
-    updateControls();
-
-    m_status_control->setTristate(true);
-    m_status_control->setCheckState(Qt::PartiallyChecked);
-    m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
-    m_status_control->installEventFilter(this);
-  }
 }
 
 void TrackControls::setupControls()

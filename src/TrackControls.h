@@ -27,13 +27,14 @@ public slots:
   void volumeChanged(int value);
   void statusChanged(int state);
   void trackLoaded();
+  void playerError();
+
+signals:
+  void updated();
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;
   bool eventFilter(QObject* watched, QEvent* event) override;
-
-public slots:
-  void playerError();
 
 private:
   void setupControls();

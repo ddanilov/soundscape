@@ -37,21 +37,19 @@ void TestMainWindow::testTrackFromMedia()
   // added track is the second item
   auto* track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(1)->widget());
   QVERIFY(track_control != nullptr);
-  // auto* volume_control = track_control->findChild<Volume*>();
-  // QCOMPARE(volume_control->value(), 50);
-  // auto* status_control = track_control->findChild<Status*>();
-  // QVERIFY(status_control->isChecked());
-  // QCOMPARE(status_control->text(), "sound_01");
+  auto* track = track_control->findChild<Track*>();
+  QCOMPARE(track->title(), "sound_01");
+  QCOMPARE(track->volume(), 0.50);
+  QVERIFY(track->isPlaying());
 
   window.addTrackFromMedia(QString("sound_02.mp3"));
   QVERIFY(window.m_box_layout->count() == 3);
   track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(2)->widget());
+  track = track_control->findChild<Track*>();
   QVERIFY(track_control != nullptr);
-  // volume_control = track_control->findChild<Volume*>();
-  // QCOMPARE(volume_control->value(), 50);
-  // status_control = track_control->findChild<Status*>();
-  // QVERIFY(status_control->isChecked());
-  // QCOMPARE(status_control->text(), "sound_02");
+  QCOMPARE(track->title(), "sound_02");
+  QCOMPARE(track->volume(), 0.50);
+  QVERIFY(track->isPlaying());
 }
 
 void TestMainWindow::testSaveTracksToJson()
@@ -201,10 +199,6 @@ void TestMainWindow::testLoadTracksFromJson()
   QCOMPARE(track->title(), "sound_01");
   QCOMPARE(track->volume(), 0.51);
   QVERIFY(track->isPlaying());
-  // auto* volume_control = track_control->findChild<Volume*>();
-  // QCOMPARE(volume_control->value(), 51);
-  // auto* status_control = track_control->findChild<Status*>();
-  // QVERIFY(status_control->isChecked());
   //
   track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(2)->widget());
   QVERIFY(track_control != nullptr);
@@ -212,10 +206,6 @@ void TestMainWindow::testLoadTracksFromJson()
   QCOMPARE(track->title(), "sound_02");
   QCOMPARE(track->volume(), 0.52);
   QVERIFY(!track->isPlaying());
-  // volume_control = track_control->findChild<Volume*>();
-  // QCOMPARE(volume_control->value(), 52);
-  // status_control = track_control->findChild<Status*>();
-  // QVERIFY(!status_control->isChecked());
   //
   track_control = dynamic_cast<TrackControls*>(window.m_box_layout->itemAt(3)->widget());
   QVERIFY(track_control != nullptr);
@@ -223,10 +213,6 @@ void TestMainWindow::testLoadTracksFromJson()
   QCOMPARE(track->title(), "sound_03");
   QCOMPARE(track->volume(), 0.53);
   QVERIFY(track->isPlaying());
-  // volume_control = track_control->findChild<Volume*>();
-  // QCOMPARE(volume_control->value(), 53);
-  // status_control = track_control->findChild<Status*>();
-  // QVERIFY(status_control->isChecked());
 }
 
 void TestMainWindow::testMoveTrackUp()
