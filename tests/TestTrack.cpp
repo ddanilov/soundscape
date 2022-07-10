@@ -212,15 +212,13 @@ void TestTrack::testMediaHasNoAudio()
   QVERIFY(media_file.copy(file_name));
 
   Track track;
-  QSignalSpy loaded(&track, &Track::loaded);
   QSignalSpy error(&track, &Track::errorOccurred);
 
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name;
   track.fromJsonObject(json, base_dir);
 
-  QVERIFY(loaded.wait());
-  QVERIFY(error.count() > 0);
+  QVERIFY(error.wait());
   QVERIFY(!track.errors().empty());
   QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
 }
