@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDir>
+#include <QMediaPlayer>
 #include <QObject>
 #include <QPointer>
 
@@ -17,6 +18,7 @@ public:
   QJsonObject toJsonObject(const QDir& base_dir) const;
 
   QString title() const;
+  QString fileName() const;
 
   double volume() const;
   void setVolume(double volume);
@@ -26,8 +28,15 @@ public:
   void play();
   void pause();
 
+  const QList<QString>& errors() const;
+
+signals:
+  void loaded();
+  void errorOccurred();
+
 private slots:
   void playerLoaded();
+  void playerErrorOccurred(QMediaPlayer::Error error, const QString& error_string);
 
 private:
   float fade(qint64 position) const;
@@ -40,6 +49,8 @@ private:
   qint64 m_track_duration;
   qint64 m_fade_in_duration;
   qint64 m_fade_out_duration;
+
+  QList<QString> m_errors;
 
   friend class TestTrack;
 };

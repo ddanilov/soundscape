@@ -14,6 +14,7 @@ Track::Track(QObject* parent) :
     m_fade_out_duration(-1)
 {
   connect(m_player, &Player::playerLoaded, this, &Track::playerLoaded);
+  connect(m_player, &QMediaPlayer::errorOccurred, this, &Track::playerErrorOccurred);
 }
 
 void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
@@ -46,8 +47,14 @@ QJsonObject Track::toJsonObject(const QDir& base_dir) const
 
 QString Track::title() const
 {
-  QFileInfo fileInfo(m_file_name);
-  return fileInfo.baseName();
+  QFileInfo file_info(m_file_name);
+  return file_info.baseName();
+}
+
+QString Track::fileName() const
+{
+  QFileInfo file_info(m_file_name);
+  return file_info.fileName();
 }
 
 double Track::volume() const
@@ -82,6 +89,11 @@ void Track::pause()
   m_player->pause();
 }
 
+const QList<QString>& Track::errors() const
+{
+  return m_errors;
+}
+
 void Track::playerLoaded()
 {
   m_track_duration = m_player->duration();
@@ -89,6 +101,15 @@ void Track::playerLoaded()
   constexpr qint64 duration_5sec = 5 * 1000;
   if (m_fade_in_duration < 0) { m_fade_in_duration = std::min(duration_5sec, m_track_duration / 4); }
   if (m_fade_out_duration < 0) { m_fade_out_duration = m_fade_in_duration; }
+
+  emit loaded();
+}
+
+void Track::playerErrorOccurred(QMediaPlayer::Error /*error*/, const QString& error_string)
+{
+  pause();
+  m_errors.push_back(error_string);
+  emit errorOccurred();
 }
 
 float Track::fade(qint64 position) const

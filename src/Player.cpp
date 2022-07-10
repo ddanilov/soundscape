@@ -19,11 +19,16 @@ void Player::mediaPlayerStatusChanged(MediaStatus status)
 {
   if (status == QMediaPlayer::MediaStatus::LoadedMedia)
   {
+    if (!hasAudio())
+    {
+      emit errorOccurred(QMediaPlayer::FormatError, QString("track has no audio"));
+    }
+
     if (duration() <= 0)
     {
-      stop();
       emit errorOccurred(QMediaPlayer::FormatError, QString("duration is 0"));
     }
+
     emit playerLoaded();
   }
 

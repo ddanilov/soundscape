@@ -1,2 +1,3 @@
 QCheckBox::indicator:checked   { image: url(%1); }
 QCheckBox::indicator:unchecked { image: url(%2); }
+QCheckBox::indicator:indeterminate { image: url(%3); }

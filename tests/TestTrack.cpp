@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Track.h"
 
+#include <QSignalSpy>
 #include <QTest>
 
 class TestTrack : public QObject
@@ -14,6 +15,9 @@ private slots:
   void testToJson();
   void testFade();
   void testPlayer();
+  void testMediaFile();
+  void testMediaFileBroken();
+  void testMediaHasNoAudio();
 };
 
 void TestTrack::testFromEmptyJson()
@@ -147,6 +151,77 @@ void TestTrack::testPlayer()
 
   track.pause();
   QCOMPARE(track.isPlaying(), false);
+  QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
+}
+
+void TestTrack::testMediaFile()
+{
+  const QTemporaryDir tmp_dir;
+  const auto& base_dir = QDir(tmp_dir.path());
+
+  QFile sound_file(":/media/sound_0100.wav");
+  QString file_name("./");
+  file_name.append(QFileInfo(sound_file).fileName());
+  file_name = QDir::cleanPath(base_dir.absoluteFilePath(file_name));
+  QVERIFY(sound_file.copy(file_name));
+
+  Track track;
+  QSignalSpy loaded(&track, &Track::loaded);
+
+  QJsonObject json;
+  json[JsonRW::FileNameTag] = file_name;
+  track.fromJsonObject(json, base_dir);
+
+  QVERIFY(loaded.wait());
+  QVERIFY(track.errors().empty());
+}
+
+void TestTrack::testMediaFileBroken()
+{
+  const QTemporaryDir tmp_dir;
+  const auto& base_dir = QDir(tmp_dir.path());
+
+  QFile sound_file(":/media/sound_XXXX.wav");
+  QString file_name("./");
+  file_name.append(QFileInfo(sound_file).fileName());
+  file_name = QDir::cleanPath(base_dir.absoluteFilePath(file_name));
+  QVERIFY(sound_file.copy(file_name));
+
+  Track track;
+  QSignalSpy error(&track, &Track::errorOccurred);
+
+  QJsonObject json;
+  json[JsonRW::FileNameTag] = file_name;
+  track.fromJsonObject(json, base_dir);
+
+  QVERIFY(error.wait());
+  QVERIFY(!track.errors().empty());
+  QVERIFY(!track.errors().front().isEmpty());
+  QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
+}
+
+void TestTrack::testMediaHasNoAudio()
+{
+  const QTemporaryDir tmp_dir;
+  const auto& base_dir = QDir(tmp_dir.path());
+
+  QFile media_file(":/media/picture_01.jpg");
+  QString file_name("./");
+  file_name.append(QFileInfo(media_file).fileName());
+  file_name = QDir::cleanPath(base_dir.absoluteFilePath(file_name));
+  QVERIFY(media_file.copy(file_name));
+
+  Track track;
+  QSignalSpy loaded(&track, &Track::loaded);
+  QSignalSpy error(&track, &Track::errorOccurred);
+
+  QJsonObject json;
+  json[JsonRW::FileNameTag] = file_name;
+  track.fromJsonObject(json, base_dir);
+
+  QVERIFY(loaded.wait());
+  QVERIFY(error.count() > 0);
+  QVERIFY(!track.errors().empty());
   QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
 }
 

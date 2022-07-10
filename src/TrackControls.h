@@ -26,12 +26,19 @@ public slots:
   void remove();
   void volumeChanged(int value);
   void statusChanged(int state);
+  void trackLoaded();
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;
+  bool eventFilter(QObject* watched, QEvent* event) override;
+
+public slots:
+  void playerError();
 
 private:
   void setupControls();
+  void disableControls();
+  void enableControls();
   void updateControls();
 
   MainWindow* m_main_window;

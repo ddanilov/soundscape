@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/media">
+        <file>picture_01.jpg</file>
+        <file>sound_0100.wav</file>
+        <file>sound_XXXX.wav</file>
+    </qresource>
+</RCC>

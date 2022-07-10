@@ -30,11 +30,13 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
   m_mouse_menu->addSeparator();
   m_main_window->addItemsToMenu(m_mouse_menu);
 
+  connect(m_track, &Track::loaded, this, &TrackControls::trackLoaded);
+  connect(m_track, &Track::errorOccurred, this, &TrackControls::playerError);
+
   setupControls();
+  disableControls();
 
   m_track->fromJsonObject(json, base_dir);
-
-  updateControls();
 }
 
 void TrackControls::addItemsToMenu(QMenu* menu) const
@@ -91,11 +93,50 @@ void TrackControls::statusChanged(int state)
   }
 }
 
+void TrackControls::trackLoaded()
+{
+  if (m_track->errors().empty())
+  {
+    updateControls();
+    enableControls();
+  }
+}
+
 void TrackControls::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::RightButton)
   {
     m_mouse_menu->exec(QCursor::pos());
+  }
+}
+
+bool TrackControls::eventFilter(QObject* watched, QEvent* event)
+{
+  if (watched == m_status_control)
+  {
+    if (event->type() == QEvent::MouseButtonPress)
+    {
+      auto* mouseEvent = dynamic_cast<QMouseEvent*>(event);
+      mousePressEvent(mouseEvent);
+      return true;
+    }
+    return false;
+  }
+
+  return QFrame::eventFilter(watched, event);
+}
+
+void TrackControls::playerError()
+{
+  if (m_track->errors().size() == 1)
+  {
+    disableControls();
+    updateControls();
+
+    m_status_control->setTristate(true);
+    m_status_control->setCheckState(Qt::PartiallyChecked);
+    m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
+    m_status_control->installEventFilter(this);
   }
 }
 
@@ -114,6 +155,18 @@ void TrackControls::setupControls()
   connect(m_status_control, &QCheckBox::stateChanged, this, &TrackControls::statusChanged);
 }
 
+void TrackControls::disableControls()
+{
+  m_volume_control->setDisabled(true);
+  m_status_control->setDisabled(true);
+}
+
+void TrackControls::enableControls()
+{
+  m_volume_control->setEnabled(true);
+  m_status_control->setEnabled(true);
+}
+
 void TrackControls::updateControls()
 {
   const auto volume = m_track->volume();
@@ -123,4 +176,5 @@ void TrackControls::updateControls()
 
   m_status_control->setChecked(m_track->isPlaying());
   m_status_control->setText(m_track->title());
+  m_status_control->setToolTip(m_track->fileName());
 }
