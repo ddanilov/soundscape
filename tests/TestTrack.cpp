@@ -9,15 +9,26 @@ class TestTrack : public QObject
 {
   Q_OBJECT
 
+public:
+  TestTrack(QObject* parent = nullptr) :
+      QObject(parent),
+      tmp_dir(),
+      base_dir(tmp_dir.path())
+  {}
+
 private slots:
   void testFromEmptyJson();
   void testFromJson();
   void testToJson();
   void testFade();
   void testPlayer();
-  void testMediaFile();
+  void testMediaFileOk();
   void testMediaFileBroken();
   void testMediaHasNoAudio();
+
+private:
+  const QTemporaryDir tmp_dir;
+  const QDir base_dir;
 };
 
 void TestTrack::testFromEmptyJson()
@@ -154,11 +165,8 @@ void TestTrack::testPlayer()
   QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
 }
 
-void TestTrack::testMediaFile()
+void TestTrack::testMediaFileOk()
 {
-  const QTemporaryDir tmp_dir;
-  const auto& base_dir = QDir(tmp_dir.path());
-
   QFile sound_file(":/media/sound_0100.wav");
   QString file_name("./");
   file_name.append(QFileInfo(sound_file).fileName());
@@ -178,9 +186,6 @@ void TestTrack::testMediaFile()
 
 void TestTrack::testMediaFileBroken()
 {
-  const QTemporaryDir tmp_dir;
-  const auto& base_dir = QDir(tmp_dir.path());
-
   QFile sound_file(":/media/sound_XXXX.wav");
   QString file_name("./");
   file_name.append(QFileInfo(sound_file).fileName());
@@ -202,9 +207,6 @@ void TestTrack::testMediaFileBroken()
 
 void TestTrack::testMediaHasNoAudio()
 {
-  const QTemporaryDir tmp_dir;
-  const auto& base_dir = QDir(tmp_dir.path());
-
   QFile media_file(":/media/picture_01.jpg");
   QString file_name("./");
   file_name.append(QFileInfo(media_file).fileName());

@@ -11,16 +11,24 @@ class TestTrackControls : public QObject
 {
   Q_OBJECT
 
+public:
+  TestTrackControls(QObject* parent = nullptr) :
+      QObject(parent),
+      tmp_dir(),
+      base_dir(tmp_dir.path())
+  {}
+
 private slots:
   void testMediaFileOk();
   void testMediaFileBroken();
+
+private:
+  const QTemporaryDir tmp_dir;
+  const QDir base_dir;
 };
 
 void TestTrackControls::testMediaFileOk()
 {
-  const QTemporaryDir tmp_dir;
-  const auto& base_dir = QDir(tmp_dir.path());
-
   QFile sound_file(":/media/sound_0100.wav");
   QString file_name("./");
   file_name.append(QFileInfo(sound_file).fileName());
@@ -56,9 +64,6 @@ void TestTrackControls::testMediaFileOk()
 
 void TestTrackControls::testMediaFileBroken()
 {
-  const QTemporaryDir tmp_dir;
-  const auto& base_dir = QDir(tmp_dir.path());
-
   QFile sound_file(":/media/sound_XXXX.wav");
   QString file_name("./");
   file_name.append(QFileInfo(sound_file).fileName());
