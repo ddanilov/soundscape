@@ -28,6 +28,15 @@ public:
   void play();
   void pause();
 
+  qint64 duration() const;
+
+  qint64 fadeInDuration() const;
+  void setFadeInDuration(qint64 value);
+  qint64 fadeOutDuration() const;
+  void setFadeOutDuration(qint64 value);
+
+  Player* player() const;
+
   const QList<QString>& errors() const;
 
 signals:

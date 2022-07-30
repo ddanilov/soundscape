@@ -25,6 +25,7 @@ private slots:
   void testMediaFileOk();
   void testMediaFileBroken();
   void testMediaHasNoAudio();
+  void testFadeDuration();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -154,15 +155,15 @@ void TestTrack::testPlayer()
   json[JsonRW::FileNameTag] = file_name;
   const auto& base_dir = QDir::temp();
   track.fromJsonObject(json, base_dir);
-  QCOMPARE(track.m_player->source(), QUrl::fromLocalFile(base_dir.absoluteFilePath(file_name)));
+  QCOMPARE(track.player()->source(), QUrl::fromLocalFile(base_dir.absoluteFilePath(file_name)));
 
   track.play();
   QCOMPARE(track.isPlaying(), true);
-  QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PlayingState);
+  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PlayingState);
 
   track.pause();
   QCOMPARE(track.isPlaying(), false);
-  QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
+  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PausedState);
 }
 
 void TestTrack::testMediaFileOk()
@@ -182,6 +183,8 @@ void TestTrack::testMediaFileOk()
 
   QVERIFY(loaded.wait());
   QVERIFY(track.errors().empty());
+
+  QCOMPARE(track.duration(), 1000);
 }
 
 void TestTrack::testMediaFileBroken()
@@ -202,7 +205,7 @@ void TestTrack::testMediaFileBroken()
   QVERIFY(error.wait());
   QVERIFY(!track.errors().empty());
   QVERIFY(!track.errors().front().isEmpty());
-  QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
+  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PausedState);
 }
 
 void TestTrack::testMediaHasNoAudio()
@@ -222,7 +225,20 @@ void TestTrack::testMediaHasNoAudio()
 
   QVERIFY(error.wait());
   QVERIFY(!track.errors().empty());
-  QCOMPARE(track.m_player->playbackState(), QMediaPlayer::PausedState);
+  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PausedState);
+}
+
+void TestTrack::testFadeDuration()
+{
+  Track track;
+  track.fromJsonObject(QJsonObject(), QDir());
+  QCOMPARE(track.fadeInDuration(), -1);
+  QCOMPARE(track.fadeOutDuration(), -1);
+
+  track.setFadeInDuration(1234);
+  track.setFadeOutDuration(6789);
+  QCOMPARE(track.fadeInDuration(), 1234);
+  QCOMPARE(track.fadeOutDuration(), 6789);
 }
 
 QTEST_MAIN(TestTrack)

@@ -21,6 +21,7 @@ public:
 private slots:
   void testMediaFileOk();
   void testMediaFileBroken();
+  void testMenu();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -43,10 +44,10 @@ void TestTrackControls::testMediaFileOk()
 
   auto* track = track_controls->track();
 
-  auto* volume_control = track_controls->findChild<Volume*>();
+  auto volume_control = track_controls->m_volume_control;
   QCOMPARE(volume_control->value(), 50);
 
-  auto* status_control = track_controls->findChild<Status*>();
+  auto status_control = track_controls->m_status_control;
   QVERIFY(!status_control->isTristate());
 
   QVERIFY(track->isPlaying());
@@ -78,10 +79,10 @@ void TestTrackControls::testMediaFileBroken()
 
   auto* track = track_controls->track();
 
-  auto* volume_control = track_controls->findChild<Volume*>();
+  auto volume_control = track_controls->m_volume_control;
   QCOMPARE(volume_control->value(), 50);
 
-  auto* status_control = track_controls->findChild<Status*>();
+  auto status_control = track_controls->m_status_control;
   QVERIFY(status_control->isTristate());
 
   QVERIFY(!track->isPlaying());
@@ -91,6 +92,17 @@ void TestTrackControls::testMediaFileBroken()
   QTest::mouseClick(status_control, Qt::LeftButton);
   QVERIFY(!track->isPlaying());
   QCOMPARE(status_control->checkState(), Qt::PartiallyChecked);
+}
+
+void TestTrackControls::testMenu()
+{
+  auto* track_controls = new TrackControls(QJsonObject(), QDir());
+  auto menu = track_controls->m_mouse_menu;
+  auto actions = menu->actions();
+  QCOMPARE(actions.at(0)->text(), "Edit Settings");
+  QCOMPARE(actions.at(1)->text(), "Move Up");
+  QCOMPARE(actions.at(2)->text(), "Move Down");
+  QCOMPARE(actions.at(3)->text(), "Remove");
 }
 
 QTEST_MAIN(TestTrackControls)

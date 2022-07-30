@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 #include "Status.h"
 #include "Track.h"
+#include "TrackSettings.h"
 #include "Volume.h"
 
 #include <QFile>
@@ -16,7 +17,8 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
     m_mouse_menu(new QMenu(this)),
     m_track(new Track(this)),
     m_volume_control(new Volume(this)),
-    m_status_control(new Status(this))
+    m_status_control(new Status(this)),
+    m_settings(new TrackSettings(this))
 {
   setObjectName(QUuid::createUuid().toString());
 
@@ -41,6 +43,9 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
 
 void TrackControls::addItemsToMenu(QMenu* menu) const
 {
+  auto* show_settings = menu->addAction(tr("Edit Settings"));
+  connect(show_settings, &QAction::triggered, this, [this]() { m_settings->show(); });
+
   auto* move_track_up = menu->addAction(tr("Move Up"));
   connect(move_track_up, &QAction::triggered, this, &TrackControls::moveUp);
 

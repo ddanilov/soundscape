@@ -9,6 +9,7 @@
 class MainWindow;
 class Status;
 class Track;
+class TrackSettings;
 class Volume;
 
 class TrackControls : public QFrame
@@ -50,4 +51,8 @@ private:
   QPointer<Track> m_track;
   QPointer<Volume> m_volume_control;
   QPointer<Status> m_status_control;
+
+  QPointer<TrackSettings> m_settings;
+
+  friend class TestTrackControls;
 };

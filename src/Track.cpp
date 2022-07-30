@@ -89,6 +89,36 @@ void Track::pause()
   m_player->pause();
 }
 
+qint64 Track::duration() const
+{
+  return m_track_duration;
+}
+
+qint64 Track::fadeInDuration() const
+{
+  return m_fade_in_duration;
+}
+
+void Track::setFadeInDuration(qint64 value)
+{
+  m_fade_in_duration = value;
+}
+
+qint64 Track::fadeOutDuration() const
+{
+  return m_fade_out_duration;
+}
+
+void Track::setFadeOutDuration(qint64 value)
+{
+  m_fade_out_duration = value;
+}
+
+Player* Track::player() const
+{
+  return m_player;
+}
+
 const QList<QString>& Track::errors() const
 {
   return m_errors;

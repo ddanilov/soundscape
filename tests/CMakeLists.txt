@@ -16,5 +16,7 @@ endmacro(unit_test)
 
 unit_test(TestJsonRW.cpp)
 unit_test(TestMainWindow.cpp)
+unit_test(TestPositionLabel.cpp)
 unit_test(TestTrack.cpp)
 unit_test(TestTrackControls.cpp)
+unit_test(TestTrackSettings.cpp)
