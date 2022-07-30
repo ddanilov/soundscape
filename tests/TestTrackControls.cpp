@@ -1,4 +1,5 @@
 #include "JsonRW.h"
+#include "MainWindow.h"
 #include "Status.h"
 #include "Track.h"
 #include "TrackControls.h"
@@ -38,7 +39,8 @@ void TestTrackControls::testMediaFileOk()
 
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name;
-  auto* track_controls = new TrackControls(json, QDir());
+  auto* main_window = new MainWindow();
+  auto* track_controls = new TrackControls(json, QDir(), main_window);
   QSignalSpy updated(track_controls, &TrackControls::updated);
   QVERIFY(updated.wait());
 
@@ -73,7 +75,8 @@ void TestTrackControls::testMediaFileBroken()
 
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name;
-  auto* track_controls = new TrackControls(json, QDir());
+  auto* main_window = new MainWindow();
+  auto* track_controls = new TrackControls(json, QDir(), main_window);
   QSignalSpy updated(track_controls, &TrackControls::updated);
   QVERIFY(updated.wait());
 
@@ -96,7 +99,8 @@ void TestTrackControls::testMediaFileBroken()
 
 void TestTrackControls::testMenu()
 {
-  auto* track_controls = new TrackControls(QJsonObject(), QDir());
+  auto* main_window = new MainWindow();
+  auto* track_controls = new TrackControls(QJsonObject(), QDir(), main_window);
   auto menu = track_controls->m_mouse_menu;
   auto actions = menu->actions();
   QCOMPARE(actions.at(0)->text(), "Edit Settings");

@@ -1,4 +1,5 @@
 #include "JsonRW.h"
+#include "MainWindow.h"
 #include "PositionLabel.h"
 #include "PositionSlider.h"
 #include "Track.h"
@@ -34,6 +35,7 @@ private:
   const QTemporaryDir tmp_dir;
   const QDir base_dir;
   QString file_name;
+  QPointer<MainWindow> main_window;
   QPointer<TrackControls> track_controls;
   QPointer<TrackSettings> track_settings;
   Track* track;
@@ -51,7 +53,8 @@ void TestTrackSettings::init()
 {
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name;
-  track_controls = new TrackControls(json, QDir());
+  main_window = new MainWindow();
+  track_controls = new TrackControls(json, QDir(), main_window);
   track_settings = new TrackSettings(track_controls);
   QSignalSpy loaded(track_settings, &TrackSettings::loaded);
   QVERIFY(loaded.wait());
