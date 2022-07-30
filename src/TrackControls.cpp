@@ -41,21 +41,6 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
   m_track->fromJsonObject(json, base_dir);
 }
 
-void TrackControls::addItemsToMenu(QMenu* menu) const
-{
-  auto* show_settings = menu->addAction(tr("Edit Settings"));
-  connect(show_settings, &QAction::triggered, this, [this]() { m_settings->show(); });
-
-  auto* move_track_up = menu->addAction(tr("Move Up"));
-  connect(move_track_up, &QAction::triggered, this, &TrackControls::moveUp);
-
-  auto* move_track_down = menu->addAction(tr("Move Down"));
-  connect(move_track_down, &QAction::triggered, this, &TrackControls::moveDown);
-
-  auto* remove_track = menu->addAction(tr("Remove"));
-  connect(remove_track, &QAction::triggered, this, &TrackControls::remove);
-}
-
 Track* TrackControls::track() const
 {
   return m_track;
@@ -146,6 +131,21 @@ bool TrackControls::eventFilter(QObject* watched, QEvent* event)
   }
 
   return QFrame::eventFilter(watched, event);
+}
+
+void TrackControls::addItemsToMenu(QMenu* menu) const
+{
+  auto* show_settings = menu->addAction(tr("Edit Settings"));
+  connect(show_settings, &QAction::triggered, this, [this]() { m_settings->show(); });
+
+  auto* move_track_up = menu->addAction(tr("Move Up"));
+  connect(move_track_up, &QAction::triggered, this, &TrackControls::moveUp);
+
+  auto* move_track_down = menu->addAction(tr("Move Down"));
+  connect(move_track_down, &QAction::triggered, this, &TrackControls::moveDown);
+
+  auto* remove_track = menu->addAction(tr("Remove"));
+  connect(remove_track, &QAction::triggered, this, &TrackControls::remove);
 }
 
 void TrackControls::setupControls()

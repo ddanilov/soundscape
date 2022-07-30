@@ -18,7 +18,6 @@ class TrackControls : public QFrame
 
 public:
   explicit TrackControls(const QJsonObject& json, const QDir& base_dir, MainWindow* parent);
-  void addItemsToMenu(QMenu* menu) const;
   Track* track() const;
 
 public slots:
@@ -38,6 +37,7 @@ protected:
   bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
+  void addItemsToMenu(QMenu* menu) const;
   void setupControls();
   void disableControls();
   void enableControls();
