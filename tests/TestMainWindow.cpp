@@ -1,8 +1,6 @@
 #include "MainWindow.h"
-#include "Status.h"
 #include "Track.h"
 #include "TrackControls.h"
-#include "Volume.h"
 
 #include <QTemporaryFile>
 #include <QTest>
@@ -19,6 +17,8 @@ private slots:
   void testMoveTrackUp();
   void testMoveTrackDown();
   void testRemoveTrack();
+
+  void testMenu();
 };
 
 void TestMainWindow::testTrackFromMedia()
@@ -328,6 +328,25 @@ void TestMainWindow::testRemoveTrack()
 
   remove_track(1);
   QVERIFY(window.m_box_layout->count() == 1);
+}
+
+void TestMainWindow::testMenu()
+{
+  MainWindow window;
+
+  auto actions = window.m_tray_menu->actions();
+  QCOMPARE(actions.at(0)->text(), "Pause playing tracks");
+  QCOMPARE(actions.at(1)->text(), "Resume paused tracks");
+  QCOMPARE(actions.at(2)->text(), "Add track");
+  QCOMPARE(actions.at(3)->text(), "Save track list");
+  QCOMPARE(actions.at(4)->text(), "Load track list");
+
+  actions = window.m_mouse_menu->actions();
+  QCOMPARE(actions.at(0)->text(), "Pause playing tracks");
+  QCOMPARE(actions.at(1)->text(), "Resume paused tracks");
+  QCOMPARE(actions.at(2)->text(), "Add track");
+  QCOMPARE(actions.at(3)->text(), "Save track list");
+  QCOMPARE(actions.at(4)->text(), "Load track list");
 }
 
 QTEST_MAIN(TestMainWindow)

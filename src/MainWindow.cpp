@@ -43,6 +43,12 @@ MainWindow::MainWindow(QWidget* parent) :
 
 void MainWindow::addItemsToMenu(QMenu* menu) const
 {
+  auto* pause_tracks = menu->addAction(tr("Pause playing tracks"));
+  connect(pause_tracks, &QAction::triggered, this, &MainWindow::pausePlayingTracks);
+
+  auto* resume_tracks = menu->addAction(tr("Resume paused tracks"));
+  connect(resume_tracks, &QAction::triggered, this, &MainWindow::resumePausedTracks);
+
   auto* add_track = menu->addAction(tr("Add track"));
   connect(add_track, &QAction::triggered, this, &MainWindow::addTrack);
 
@@ -170,6 +176,22 @@ void MainWindow::removeTrack(const QString& id)
   if (m_box_layout->count() == 1)
   {
     m_menu_info->show();
+  }
+}
+
+void MainWindow::pausePlayingTracks()
+{
+  for (auto* track_control : m_widget->findChildren<TrackControls*>())
+  {
+    track_control->pausePlaying();
+  }
+}
+
+void MainWindow::resumePausedTracks()
+{
+  for (auto* track_control : m_widget->findChildren<TrackControls*>())
+  {
+    track_control->resumePaused();
   }
 }
 

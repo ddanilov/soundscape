@@ -19,6 +19,8 @@ class TrackControls : public QFrame
 public:
   explicit TrackControls(const QJsonObject& json, const QDir& base_dir, MainWindow* parent);
   Track* track() const;
+  void pausePlaying();
+  void resumePaused();
 
 public slots:
   void moveUp();
@@ -54,5 +56,6 @@ private:
 
   QPointer<TrackSettings> m_settings;
 
+  friend class TestMainWindow;
   friend class TestTrackControls;
 };

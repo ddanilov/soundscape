@@ -4,8 +4,8 @@
         <file>fade-out-label.svg</file>
         <file>icon.svg</file>
         <file>position-label.svg</file>
-        <file>switch-err.svg</file>
         <file>switch-off.svg</file>
         <file>switch-on.svg</file>
+        <file>switch-paused.svg</file>
     </qresource>
 </RCC>

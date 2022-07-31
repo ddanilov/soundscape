@@ -7,6 +7,19 @@ Status::Status(QWidget* parent) :
 {
   QFile file(":/styles/status.css");
   file.open(QIODevice::ReadOnly);
-  const QString style = QString(file.readAll()).arg(":/icons/switch-on.svg", ":/icons/switch-off.svg", ":/icons/switch-err.svg");
-  setStyleSheet(style);
+  QString style_template(file.readAll());
+  m_playing_style = style_template.arg(":/icons/switch-on.svg", ":/icons/switch-off.svg");
+  m_paused_style = style_template.arg(":/icons/switch-paused.svg", ":/icons/switch-off.svg");
+
+  setPlayingStyle();
+}
+
+void Status::setPlayingStyle()
+{
+  setStyleSheet(m_playing_style);
+}
+
+void Status::setPausedStyle()
+{
+  setStyleSheet(m_paused_style);
 }

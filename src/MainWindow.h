@@ -7,6 +7,8 @@
 #include <QSystemTrayIcon>
 #include <QVBoxLayout>
 
+class TrackControls;
+
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -25,6 +27,9 @@ public slots:
   void moveTrackUp(const QString& id);
   void moveTrackDown(const QString& id);
   void removeTrack(const QString& id);
+
+  void pausePlayingTracks();
+  void resumePausedTracks();
 
 protected:
   void closeEvent(QCloseEvent* event) override;

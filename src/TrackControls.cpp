@@ -46,6 +46,24 @@ Track* TrackControls::track() const
   return m_track;
 }
 
+void TrackControls::pausePlaying()
+{
+  if (m_status_control->isChecked() && m_track->isPlaying())
+  {
+    m_track->pause();
+    m_status_control->setPausedStyle();
+  }
+}
+
+void TrackControls::resumePaused()
+{
+  if (m_status_control->isChecked() && !m_track->isPlaying())
+  {
+    m_track->play();
+    m_status_control->setPlayingStyle();
+  }
+}
+
 void TrackControls::moveUp()
 {
   m_main_window->moveTrackUp(objectName());
@@ -79,6 +97,7 @@ void TrackControls::statusChanged(int state)
       break;
     case Qt::Checked:
       m_track->play();
+      m_status_control->setPlayingStyle();
       break;
   }
 }
@@ -100,8 +119,6 @@ void TrackControls::playerError()
     disableControls();
     updateControls();
 
-    m_status_control->setTristate(true);
-    m_status_control->setCheckState(Qt::PartiallyChecked);
     m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
     m_status_control->installEventFilter(this);
 
