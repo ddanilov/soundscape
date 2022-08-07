@@ -15,11 +15,12 @@ class TestTrackSettings : public QObject
   Q_OBJECT
 
 public:
-  TestTrackSettings(QObject* parent = nullptr) :
+  explicit TestTrackSettings(QObject* parent = nullptr) :
       QObject(parent),
       tmp_dir(),
       base_dir(tmp_dir.path()),
-      file_name("./")
+      file_name("./"),
+      track(nullptr)
   {}
 
 private slots:
