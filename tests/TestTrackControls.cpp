@@ -14,19 +14,19 @@ class TestTrackControls : public QObject
   Q_OBJECT
 
 public:
-  TestTrackControls(QObject* parent = nullptr) :
+  explicit TestTrackControls(QObject* parent = nullptr) :
       QObject(parent),
       tmp_dir(),
       base_dir(tmp_dir.path()),
-      file_name_media_ok("./"),
-      file_name_media_broken("./")
+      file_name_audio_ok("./"),
+      file_name_audio_broken("./")
   {}
 
 private slots:
   void initTestCase();
 
-  void testMediaFileOk();
-  void testMediaFileBroken();
+  void testAudioFileOk();
+  void testAudioFileBroken();
   void testMenu();
   void testPauseAndResume();
 
@@ -34,27 +34,27 @@ private:
   const QTemporaryDir tmp_dir;
   const QDir base_dir;
 
-  QString file_name_media_ok;
-  QString file_name_media_broken;
+  QString file_name_audio_ok;
+  QString file_name_audio_broken;
 };
 
 void TestTrackControls::initTestCase()
 {
   QFile media_file_ok(":/media/sound_0100.wav");
-  file_name_media_ok.append(QFileInfo(media_file_ok).fileName());
-  file_name_media_ok = QDir::cleanPath(base_dir.absoluteFilePath(file_name_media_ok));
-  QVERIFY(media_file_ok.copy(file_name_media_ok));
+  file_name_audio_ok.append(QFileInfo(media_file_ok).fileName());
+  file_name_audio_ok = QDir::cleanPath(base_dir.absoluteFilePath(file_name_audio_ok));
+  QVERIFY(media_file_ok.copy(file_name_audio_ok));
 
   QFile media_file_broken(":/media/sound_XXXX.wav");
-  file_name_media_broken.append(QFileInfo(media_file_broken).fileName());
-  file_name_media_broken = QDir::cleanPath(base_dir.absoluteFilePath(file_name_media_broken));
-  QVERIFY(media_file_broken.copy(file_name_media_broken));
+  file_name_audio_broken.append(QFileInfo(media_file_broken).fileName());
+  file_name_audio_broken = QDir::cleanPath(base_dir.absoluteFilePath(file_name_audio_broken));
+  QVERIFY(media_file_broken.copy(file_name_audio_broken));
 }
 
-void TestTrackControls::testMediaFileOk()
+void TestTrackControls::testAudioFileOk()
 {
   QJsonObject json;
-  json[JsonRW::FileNameTag] = file_name_media_ok;
+  json[JsonRW::FileNameTag] = file_name_audio_ok;
   auto* main_window = new MainWindow();
   auto* track_controls = new TrackControls(json, QDir(), main_window);
   QSignalSpy updated(track_controls, &TrackControls::updated);
@@ -68,22 +68,25 @@ void TestTrackControls::testMediaFileOk()
   auto status_control = track_controls->m_status_control;
   QCOMPARE(status_control->isEnabled(), true);
   QVERIFY(track->isPlaying());
+  QCOMPARE(track->player()->playbackState(), QMediaPlayer::PlayingState);
   QVERIFY(status_control->isChecked());
   QCOMPARE(status_control->text(), track->title());
 
   QTest::mouseClick(status_control, Qt::LeftButton);
   QVERIFY(!track->isPlaying());
+  QCOMPARE(track->player()->playbackState(), QMediaPlayer::PausedState);
   QVERIFY(!status_control->isChecked());
 
   QTest::mouseClick(status_control, Qt::LeftButton);
   QVERIFY(track->isPlaying());
+  QCOMPARE(track->player()->playbackState(), QMediaPlayer::PlayingState);
   QVERIFY(status_control->isChecked());
 }
 
-void TestTrackControls::testMediaFileBroken()
+void TestTrackControls::testAudioFileBroken()
 {
   QJsonObject json;
-  json[JsonRW::FileNameTag] = file_name_media_broken;
+  json[JsonRW::FileNameTag] = file_name_audio_broken;
   auto* main_window = new MainWindow();
   auto* track_controls = new TrackControls(json, QDir(), main_window);
   QSignalSpy updated(track_controls, &TrackControls::updated);
@@ -116,7 +119,7 @@ void TestTrackControls::testMenu()
 void TestTrackControls::testPauseAndResume()
 {
   QJsonObject json;
-  json[JsonRW::FileNameTag] = file_name_media_ok;
+  json[JsonRW::FileNameTag] = file_name_audio_ok;
   auto* main_window = new MainWindow();
   auto* track_controls = new TrackControls(json, QDir(), main_window);
   QSignalSpy updated(track_controls, &TrackControls::updated);

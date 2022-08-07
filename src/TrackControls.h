@@ -56,6 +56,5 @@ private:
 
   QPointer<TrackSettings> m_settings;
 
-  friend class TestMainWindow;
   friend class TestTrackControls;
 };
