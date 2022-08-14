@@ -8,10 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(WITH_CLANG_FORMAT "Enable clang-format check." OFF)
+option(WITH_COVERAGE "Enable code coverage reports for tests (gcovr + gcc)." OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(ClangFormat)
-include(CodeCoverage OPTIONAL)
+include(CodeCoverage)
 
 set(APP_LIB ${PROJECT_NAME}_lib)
 set(APP_EXE ${PROJECT_NAME})
