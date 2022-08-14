@@ -14,7 +14,8 @@ enum class Slider
 {
   FadeIn,
   FadeOut,
-  Player,
+  PlayerA,
+  PlayerB,
 };
 
 class TrackSettings : public QDialog
@@ -56,8 +57,11 @@ private:
   QPointer<PositionSlider> m_fade_out_slider;
   QPointer<PositionLabel> m_fade_out_label;
 
-  QPointer<PositionSlider> m_position_slider;
-  QPointer<PositionLabel> m_position_label;
+  QPointer<PositionSlider> m_position_slider_A;
+  QPointer<PositionLabel> m_position_label_A;
+
+  QPointer<PositionSlider> m_position_slider_B;
+  QPointer<PositionLabel> m_position_label_B;
 
   friend class TestTrackSettings;
 };

@@ -5,7 +5,8 @@
 
 Track::Track(QObject* parent) :
     QObject(parent),
-    m_player(new Player(this)),
+    m_player_A(new Player(this)),
+    m_player_B(new Player(this)),
     m_file_name(),
     m_volume(0.5),
     m_playing(true),
@@ -13,8 +14,12 @@ Track::Track(QObject* parent) :
     m_fade_in_duration(-1),
     m_fade_out_duration(-1)
 {
-  connect(m_player, &Player::playerLoaded, this, &Track::playerLoaded);
-  connect(m_player, &QMediaPlayer::errorOccurred, this, &Track::playerErrorOccurred);
+  m_player_A->setNextPlayer(m_player_B);
+  m_player_B->setNextPlayer(m_player_A);
+
+  connect(m_player_A, &Player::playerLoaded, this, &Track::playerLoaded);
+  connect(m_player_A, &QMediaPlayer::errorOccurred, this, &Track::playerErrorOccurred);
+  connect(m_player_B, &QMediaPlayer::errorOccurred, this, &Track::playerErrorOccurred);
 }
 
 void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
@@ -30,7 +35,7 @@ void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
   m_fade_out_duration = JsonRW::readInteger(JsonRW::FadeOutDurationTag, json).value_or(m_fade_out_duration);
 
   const auto& source = QUrl::fromLocalFile(m_file_name);
-  m_player->setSource(source);
+  m_player_A->setSource(source);
 }
 
 QJsonObject Track::toJsonObject(const QDir& base_dir) const
@@ -80,13 +85,16 @@ bool Track::isPlaying() const
 void Track::play()
 {
   m_playing = true;
-  m_player->play();
+  const auto a = m_player_A->playActive();
+  const auto b = m_player_B->playActive();
+  if (!(a || b)) { m_player_A->playActive(true); }
 }
 
 void Track::pause()
 {
   m_playing = false;
-  m_player->pause();
+  m_player_A->pauseActive();
+  m_player_B->pauseActive();
 }
 
 qint64 Track::duration() const
@@ -114,9 +122,14 @@ void Track::setFadeOutDuration(qint64 value)
   m_fade_out_duration = value;
 }
 
-Player* Track::player() const
+Player* Track::playerA() const
 {
-  return m_player;
+  return m_player_A;
+}
+
+Player* Track::playerB() const
+{
+  return m_player_B;
 }
 
 const QList<QString>& Track::errors() const
@@ -126,7 +139,7 @@ const QList<QString>& Track::errors() const
 
 void Track::playerLoaded()
 {
-  m_track_duration = m_player->duration();
+  m_track_duration = m_player_A->duration();
 
   constexpr qint64 duration_5sec = 5 * 1000;
   if (m_fade_in_duration < 0) { m_fade_in_duration = std::min(duration_5sec, m_track_duration / 4); }

@@ -26,6 +26,8 @@ private slots:
   void testAudioFileDurationZero();
   void testAudioFileBroken();
   void testMediaFileWithoutAudio();
+  void testNextPlayer();
+  void testPlayPauseActive();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -64,9 +66,12 @@ void TestPlayer::testAudioFileOk()
 {
   Track track;
   Player player(&track);
+  QVERIFY(!player.isReady());
+
   QSignalSpy player_loaded(&player, &Player::playerLoaded);
   player.setSource(QUrl::fromLocalFile(file_name_audio_ok));
   QVERIFY(player_loaded.wait());
+  QVERIFY(player.isReady());
 }
 
 void TestPlayer::testAudioFileDurationZero()
@@ -100,6 +105,67 @@ void TestPlayer::testMediaFileWithoutAudio()
   const auto& arguments = player_error.takeFirst();
   QCOMPARE(arguments.at(0).toInt(), QMediaPlayer::FormatError);
   QCOMPARE(arguments.at(1).toString(), "track has no audio");
+}
+
+void TestPlayer::testNextPlayer()
+{
+  QPointer track = new Track;
+  QPointer player_A = new Player(track);
+  QPointer player_B = new Player(track);
+
+  player_A->setNextPlayer(player_B);
+  player_B->setNextPlayer(player_A);
+  QCOMPARE(player_A->m_next_media_player, player_B);
+  QCOMPARE(player_B->m_next_media_player, player_A);
+
+  QSignalSpy player_A_loaded(player_A, &Player::playerLoaded);
+  QSignalSpy player_B_loaded(player_B, &Player::playerLoaded);
+  player_A->setSource(QUrl::fromLocalFile(file_name_audio_ok));
+  QVERIFY(player_A_loaded.wait());
+  QVERIFY(player_B_loaded.wait());
+  QCOMPARE(player_B->source(), player_A->source());
+
+  QVERIFY(player_A->playbackState() != QMediaPlayer::PlayingState);
+  QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+
+  player_A->play();
+  QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
+  QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+
+  player_A->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(player_A->playbackState() != QMediaPlayer::PlayingState);
+  QVERIFY(player_B->playbackState() == QMediaPlayer::PlayingState);
+
+  player_B->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
+  QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+}
+
+void TestPlayer::testPlayPauseActive()
+{
+  QPointer track = new Track;
+  QPointer player = new Player(track);
+  QSignalSpy player_loaded(player, &Player::playerLoaded);
+  player->setSource(QUrl::fromLocalFile(file_name_audio_ok));
+  QVERIFY(player_loaded.wait());
+  player->m_active = false;
+  player->stop();
+
+  QVERIFY(!player->playActive());
+  QVERIFY(!player->m_active);
+  QVERIFY(player->playbackState() != QMediaPlayer::PlayingState);
+
+  QVERIFY(player->playActive(true));
+  QVERIFY(player->m_active);
+  QVERIFY(player->playbackState() == QMediaPlayer::PlayingState);
+
+  player->pauseActive();
+  QVERIFY(player->m_active);
+  QVERIFY(player->playbackState() != QMediaPlayer::PlayingState);
+
+  QVERIFY(player->playActive());
+  QVERIFY(player->m_active);
+  QVERIFY(player->playbackState() == QMediaPlayer::PlayingState);
 }
 
 QTEST_MAIN(TestPlayer)

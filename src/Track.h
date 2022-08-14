@@ -35,7 +35,8 @@ public:
   qint64 fadeOutDuration() const;
   void setFadeOutDuration(qint64 value);
 
-  Player* player() const;
+  Player* playerA() const;
+  Player* playerB() const;
 
   const QList<QString>& errors() const;
 
@@ -50,7 +51,8 @@ private slots:
 private:
   float fade(qint64 position) const;
 
-  QPointer<Player> m_player;
+  QPointer<Player> m_player_A;
+  QPointer<Player> m_player_B;
 
   QString m_file_name;
   double m_volume;

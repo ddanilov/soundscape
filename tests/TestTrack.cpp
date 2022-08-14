@@ -205,11 +205,25 @@ void TestTrack::testAudioFileOk()
   QCOMPARE(track.isPlaying(), true);
   track.pause();
   QCOMPARE(track.isPlaying(), false);
-  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PausedState);
+  QVERIFY(track.playerA()->playbackState() == QMediaPlayer::PausedState);
+  QVERIFY(track.playerB()->playbackState() == QMediaPlayer::PausedState);
 
   track.play();
   QCOMPARE(track.isPlaying(), true);
-  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PlayingState);
+  QVERIFY(track.playerA()->playbackState() == QMediaPlayer::PlayingState);
+  QVERIFY(track.playerB()->playbackState() == QMediaPlayer::PausedState);
+
+  track.playerA()->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(track.playerA()->playbackState() == QMediaPlayer::PausedState);
+  QVERIFY(track.playerB()->playbackState() == QMediaPlayer::PlayingState);
+
+  track.pause();
+  QVERIFY(track.playerA()->playbackState() == QMediaPlayer::PausedState);
+  QVERIFY(track.playerB()->playbackState() == QMediaPlayer::PausedState);
+
+  track.play();
+  QVERIFY(track.playerA()->playbackState() == QMediaPlayer::PausedState);
+  QVERIFY(track.playerB()->playbackState() == QMediaPlayer::PlayingState);
 }
 
 void TestTrack::testAudioFileDurationZero()
@@ -239,7 +253,7 @@ void TestTrack::testAudioFileBroken()
   QVERIFY(error.wait());
   QVERIFY(!track.errors().empty());
   QVERIFY(!track.errors().front().isEmpty());
-  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PausedState);
+  QCOMPARE(track.playerA()->playbackState(), QMediaPlayer::PausedState);
 }
 
 void TestTrack::testMediaWithoutAudio()
@@ -253,7 +267,7 @@ void TestTrack::testMediaWithoutAudio()
 
   QVERIFY(error.wait());
   QVERIFY(!track.errors().empty());
-  QCOMPARE(track.player()->playbackState(), QMediaPlayer::PausedState);
+  QCOMPARE(track.playerA()->playbackState(), QMediaPlayer::PausedState);
 }
 
 QTEST_MAIN(TestTrack)

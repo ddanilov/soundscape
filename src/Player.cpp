@@ -6,7 +6,10 @@
 
 Player::Player(Track* parent) :
     QMediaPlayer(parent),
-    m_track(parent)
+    m_track(parent),
+    m_ready(false),
+    m_active(false),
+    m_next_media_player(nullptr)
 {
   setAudioOutput(new QAudioOutput(this));
   audioOutput()->setVolume(0);
@@ -15,9 +18,35 @@ Player::Player(Track* parent) :
   connect(this, &QMediaPlayer::positionChanged, this, &Player::mediaPlayerPositionChanged);
 }
 
+bool Player::isReady() const
+{
+  return m_ready;
+}
+
+void Player::setNextPlayer(Player* mediaPlayer)
+{
+  m_next_media_player = mediaPlayer;
+}
+
+bool Player::playActive(const bool force)
+{
+  if (force) { m_active = true; }
+  if (m_active)
+  {
+    play();
+    return true;
+  }
+  return false;
+}
+
+void Player::pauseActive()
+{
+  pause();
+}
+
 void Player::mediaPlayerStatusChanged(MediaStatus status)
 {
-  if (status == QMediaPlayer::MediaStatus::LoadedMedia)
+  if (!m_ready && status == QMediaPlayer::MediaStatus::LoadedMedia)
   {
     if (!hasAudio())
     {
@@ -30,16 +59,18 @@ void Player::mediaPlayerStatusChanged(MediaStatus status)
       emit errorOccurred(QMediaPlayer::FormatError, QString("duration is 0"));
       return;
     }
-
+    m_ready = true;
     emit playerLoaded();
+    setupNextPlayer();
     return;
   }
 
-  if (status == QMediaPlayer::MediaStatus::EndOfMedia)
+  if (m_ready && status == QMediaPlayer::MediaStatus::EndOfMedia)
   {
+    m_active = false;
     pause();
     setPosition(0);
-    play();
+    startNextPlayer();
   }
 }
 
@@ -47,4 +78,17 @@ void Player::mediaPlayerPositionChanged(qint64 position)
 {
   const auto volume = m_track->fadeVolume(position);
   audioOutput()->setVolume(volume);
+}
+
+void Player::setupNextPlayer()
+{
+  if (m_next_media_player && !m_next_media_player->isReady())
+  {
+    m_next_media_player->setSource(source());
+  }
+}
+
+void Player::startNextPlayer()
+{
+  m_next_media_player->playActive(true);
 }

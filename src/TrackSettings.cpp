@@ -18,13 +18,17 @@ TrackSettings::TrackSettings(TrackControls* parent) :
     m_fade_in_label(new PositionLabel),
     m_fade_out_slider(new PositionSlider),
     m_fade_out_label(new PositionLabel),
-    m_position_slider(new PositionSlider),
-    m_position_label(new PositionLabel)
+    m_position_slider_A(new PositionSlider),
+    m_position_label_A(new PositionLabel),
+    m_position_slider_B(new PositionSlider),
+    m_position_label_B(new PositionLabel)
 {
   connect(m_track_controls, &TrackControls::updated, this, &TrackSettings::trackLoaded);
 
-  connect(m_track->player(), &Player::positionChanged,
-          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged<Slider::Player>(pos); } });
+  connect(m_track->playerA(), &Player::positionChanged,
+          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged<Slider::PlayerA>(pos); } });
+  connect(m_track->playerB(), &Player::positionChanged,
+          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged<Slider::PlayerB>(pos); } });
 
   setModal(false);
 
@@ -36,7 +40,8 @@ TrackSettings::TrackSettings(TrackControls* parent) :
 
   auto spacing = fontInfo().pixelSize();
   m_box_layout->addSpacing(spacing);
-  addSlider<Slider::Player>();
+  addSlider<Slider::PlayerA>();
+  addSlider<Slider::PlayerB>();
 }
 
 void TrackSettings::trackLoaded()
@@ -82,11 +87,18 @@ void TrackSettings::addSlider()
     icon = ":/icons/fade-out-label.svg";
     slider->setInvertedAppearance(true);
   }
-  else if constexpr (type == Slider::Player)
+  else if constexpr (type == Slider::PlayerA)
   {
-    slider = m_position_slider;
-    label = m_position_label;
-    tip = tr("player");
+    slider = m_position_slider_A;
+    label = m_position_label_A;
+    tip = tr("player A");
+    icon = ":/icons/position-label.svg";
+  }
+  else if constexpr (type == Slider::PlayerB)
+  {
+    slider = m_position_slider_B;
+    label = m_position_label_B;
+    tip = tr("player B");
     icon = ":/icons/position-label.svg";
   }
 
@@ -120,10 +132,15 @@ void TrackSettings::playerPositionChanged(qint64 pos)
   PositionSlider* slider;
   PositionLabel* label;
 
-  if constexpr (type == Slider::Player)
+  if constexpr (type == Slider::PlayerA)
   {
-    slider = m_position_slider;
-    label = m_position_label;
+    slider = m_position_slider_A;
+    label = m_position_label_A;
+  }
+  else if constexpr (type == Slider::PlayerB)
+  {
+    slider = m_position_slider_B;
+    label = m_position_label_B;
   }
   else
   {
@@ -145,10 +162,12 @@ void TrackSettings::setTrackProperties()
   m_track_duration->setMax(d);
   m_fade_in_label->setMax(d);
   m_fade_out_label->setMax(d);
-  m_position_label->setMax(d);
+  m_position_label_A->setMax(d);
+  m_position_label_B->setMax(d);
 
   m_track_duration->setValue(d);
-  m_position_label->setValue(0);
+  m_position_label_A->setValue(0);
+  m_position_label_B->setValue(0);
 
   emit loaded();
 }

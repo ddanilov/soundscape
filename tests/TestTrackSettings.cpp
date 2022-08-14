@@ -75,36 +75,67 @@ void TestTrackSettings::testInitialTrackProperties()
   QCOMPARE(track_settings->m_fade_out_slider->value(), 125);
   QCOMPARE(track_settings->m_fade_out_label->text(), "0.3 s");
 
-  QCOMPARE(track_settings->m_position_slider->value(), 0);
-  QCOMPARE(track_settings->m_position_label->text(), "0.0 s");
+  QCOMPARE(track_settings->m_position_slider_A->value(), 0);
+  QCOMPARE(track_settings->m_position_label_A->text(), "0.0 s");
+
+  QCOMPARE(track_settings->m_position_slider_B->value(), 0);
+  QCOMPARE(track_settings->m_position_label_B->text(), "0.0 s");
 }
 
 void TestTrackSettings::testPlayerPositionChanged()
 {
-  auto slider_value = track_settings->m_position_slider->value();
+  // slider A
+  auto slider_value = track_settings->m_position_slider_A->value();
   QCOMPARE(slider_value, 0);
-  auto slider_label = track_settings->m_position_label->text();
+  auto slider_label = track_settings->m_position_label_A->text();
   QCOMPARE(slider_label, "0.0 s");
 
   auto position = track->duration();
-  track_settings->playerPositionChanged<Slider::Player>(position);
-  slider_value = track_settings->m_position_slider->value();
+  track_settings->playerPositionChanged<Slider::PlayerA>(position);
+  slider_value = track_settings->m_position_slider_A->value();
   QCOMPARE(slider_value, track_settings->m_fade_in_slider->maximum());
-  slider_label = track_settings->m_position_label->text();
+  slider_label = track_settings->m_position_label_A->text();
   QCOMPARE(slider_label, "1.0 s");
 
   position = track->duration() / 3;
-  track_settings->playerPositionChanged<Slider::Player>(position);
-  slider_value = track_settings->m_position_slider->value();
+  track_settings->playerPositionChanged<Slider::PlayerA>(position);
+  slider_value = track_settings->m_position_slider_A->value();
   QCOMPARE(slider_value, track_settings->m_fade_in_slider->maximum() / 3);
-  slider_label = track_settings->m_position_label->text();
+  slider_label = track_settings->m_position_label_A->text();
   QCOMPARE(slider_label, "0.3 s");
 
   position = 0;
-  track_settings->playerPositionChanged<Slider::Player>(position);
-  slider_value = track_settings->m_position_slider->value();
+  track_settings->playerPositionChanged<Slider::PlayerA>(position);
+  slider_value = track_settings->m_position_slider_A->value();
   QCOMPARE(slider_value, 0);
-  slider_label = track_settings->m_position_label->text();
+  slider_label = track_settings->m_position_label_A->text();
+  QCOMPARE(slider_label, "0.0 s");
+
+  // slider B
+  slider_value = track_settings->m_position_slider_B->value();
+  QCOMPARE(slider_value, 0);
+  slider_label = track_settings->m_position_label_B->text();
+  QCOMPARE(slider_label, "0.0 s");
+
+  position = track->duration();
+  track_settings->playerPositionChanged<Slider::PlayerB>(position);
+  slider_value = track_settings->m_position_slider_B->value();
+  QCOMPARE(slider_value, track_settings->m_fade_in_slider->maximum());
+  slider_label = track_settings->m_position_label_B->text();
+  QCOMPARE(slider_label, "1.0 s");
+
+  position = track->duration() / 3;
+  track_settings->playerPositionChanged<Slider::PlayerB>(position);
+  slider_value = track_settings->m_position_slider_B->value();
+  QCOMPARE(slider_value, track_settings->m_fade_in_slider->maximum() / 3);
+  slider_label = track_settings->m_position_label_B->text();
+  QCOMPARE(slider_label, "0.3 s");
+
+  position = 0;
+  track_settings->playerPositionChanged<Slider::PlayerB>(position);
+  slider_value = track_settings->m_position_slider_B->value();
+  QCOMPARE(slider_value, 0);
+  slider_label = track_settings->m_position_label_B->text();
   QCOMPARE(slider_label, "0.0 s");
 }
 
