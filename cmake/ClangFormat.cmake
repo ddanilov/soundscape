@@ -1,6 +1,6 @@
 # let's use CPPLINT property to run clang-format check
-find_program(CLANGFORMAT clang-format)
-if(CLANGFORMAT)
+find_program(CLANG_FORMAT clang-format)
+if(WITH_CLANG_FORMAT AND CLANG_FORMAT)
   message(STATUS "Setup clang-format check")
-  set(CMAKE_CXX_CPPLINT "${CLANGFORMAT};--dry-run;--Werror")
+  set(CMAKE_CXX_CPPLINT "${CLANG_FORMAT};--dry-run;--Werror")
 endif()
