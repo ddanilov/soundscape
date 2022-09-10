@@ -126,7 +126,7 @@ void TrackControls::playerError()
     disableControls();
     updateControls();
 
-    m_transition_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
+    m_transition_control->setToolTip(m_transition_control->toolTip().append(": ").append(m_track->errors().front()));
     m_transition_control->installEventFilter(this);
 
     m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
