@@ -2,7 +2,7 @@
 
 #include <QIcon>
 
-IconLabel::IconLabel(QString icon_file, QWidget* parent) :
+IconLabel::IconLabel(const QString& icon_file, QWidget* parent) :
     QLabel(parent)
 {
   const auto icon = QIcon(icon_file);

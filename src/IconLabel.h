@@ -5,5 +5,5 @@
 class IconLabel : public QLabel
 {
 public:
-  explicit IconLabel(QString icon_file, QWidget* parent = nullptr);
+  explicit IconLabel(const QString& icon_file, QWidget* parent = nullptr);
 };
