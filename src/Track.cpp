@@ -82,10 +82,10 @@ float Track::fadeVolume(qint64 position) const
   switch (m_transition)
   {
     case Transition::FadeOutIn:
-      volume = QAudio::convertVolume(coeff * volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
+      volume = QAudio::convertVolume(coeff * volume, QAudio::VolumeScale::LogarithmicVolumeScale, QAudio::VolumeScale::LinearVolumeScale);
       break;
     case Transition::CrossFade:
-      volume = coeff * QAudio::convertVolume(volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
+      volume = coeff * QAudio::convertVolume(volume, QAudio::VolumeScale::LogarithmicVolumeScale, QAudio::VolumeScale::LinearVolumeScale);
       break;
   }
   return volume;

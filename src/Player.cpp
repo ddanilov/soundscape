@@ -51,13 +51,13 @@ void Player::mediaPlayerStatusChanged(MediaStatus status)
   {
     if (!hasAudio())
     {
-      emit errorOccurred(QMediaPlayer::FormatError, QString("track has no audio"));
+      emit errorOccurred(QMediaPlayer::Error::FormatError, QString("track has no audio"));
       return;
     }
 
     if (duration() <= 0)
     {
-      emit errorOccurred(QMediaPlayer::FormatError, QString("duration is 0"));
+      emit errorOccurred(QMediaPlayer::Error::FormatError, QString("duration is 0"));
       return;
     }
     m_ready = true;
@@ -94,7 +94,7 @@ void Player::setupNextPlayer()
 void Player::startNextPlayer(qint64 position)
 {
   if (m_next_media_player_started) { return; }
-  if (m_next_media_player->playbackState() == QMediaPlayer::PlayingState) { return; }
+  if (m_next_media_player->playbackState() == QMediaPlayer::PlaybackState::PlayingState) { return; }
   if (m_track->startNextPlayer(position))
   {
     m_next_media_player_started = true;

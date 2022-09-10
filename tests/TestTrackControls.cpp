@@ -72,12 +72,12 @@ void TestTrackControls::testAudioFileOk()
   QCOMPARE(transition_control->checkState(), Qt::CheckState::Unchecked);
   QCOMPARE(track->transition(), Transition::FadeOutIn);
 
-  // QTest::mouseClick(transition_control, Qt::LeftButton);
+  // QTest::mouseClick(transition_control, Qt::MouseButton::LeftButton);
   transition_control->setCheckState(Qt::CheckState::Checked);
   QCOMPARE(transition_control->checkState(), Qt::CheckState::Checked);
   QCOMPARE(track->transition(), Transition::CrossFade);
 
-  // QTest::mouseClick(transition_control, Qt::LeftButton);
+  // QTest::mouseClick(transition_control, Qt::MouseButton::LeftButton);
   transition_control->setCheckState(Qt::CheckState::Unchecked);
   QCOMPARE(transition_control->checkState(), Qt::CheckState::Unchecked);
   QCOMPARE(track->transition(), Transition::FadeOutIn);
@@ -85,18 +85,18 @@ void TestTrackControls::testAudioFileOk()
   auto status_control = track_controls->m_status_control;
   QCOMPARE(status_control->isEnabled(), true);
   QVERIFY(track->isPlaying());
-  QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PlayingState);
+  QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PlaybackState::PlayingState);
   QVERIFY(status_control->isChecked());
   QCOMPARE(status_control->text(), track->title());
 
-  QTest::mouseClick(status_control, Qt::LeftButton);
+  QTest::mouseClick(status_control, Qt::MouseButton::LeftButton);
   QVERIFY(!track->isPlaying());
-  QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PausedState);
+  QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PlaybackState::PausedState);
   QVERIFY(!status_control->isChecked());
 
-  QTest::mouseClick(status_control, Qt::LeftButton);
+  QTest::mouseClick(status_control, Qt::MouseButton::LeftButton);
   QVERIFY(track->isPlaying());
-  QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PlayingState);
+  QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PlaybackState::PlayingState);
   QVERIFY(status_control->isChecked());
 }
 
@@ -117,7 +117,7 @@ void TestTrackControls::testAudioFileBroken()
   auto status_control = track_controls->m_status_control;
   QCOMPARE(status_control->isEnabled(), false);
   QVERIFY(!track->isPlaying());
-  QCOMPARE(status_control->checkState(), Qt::Unchecked);
+  QCOMPARE(status_control->checkState(), Qt::CheckState::Unchecked);
   QCOMPARE(status_control->text(), track->title());
 }
 
@@ -148,34 +148,34 @@ void TestTrackControls::testPauseAndResume()
   auto test_playing_state = [&](auto* player_A, auto* player_B) {
     QCOMPARE(status_control->isChecked(), true);
     QCOMPARE(track->isPlaying(), true);
-    QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
-    QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+    QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+    QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
     track_controls->pausePlaying();
     QCOMPARE(status_control->isChecked(), true);
     QCOMPARE(track->isPlaying(), false);
-    QVERIFY(player_A->playbackState() != QMediaPlayer::PlayingState);
-    QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+    QVERIFY(player_A->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
+    QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
     track_controls->resumePaused();
     QCOMPARE(status_control->isChecked(), true);
     QCOMPARE(track->isPlaying(), true);
-    QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
-    QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+    QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+    QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
     track_controls->pausePlaying();
-    QTest::mouseClick(status_control, Qt::LeftButton);
+    QTest::mouseClick(status_control, Qt::MouseButton::LeftButton);
     track_controls->resumePaused();
     QCOMPARE(status_control->isChecked(), false);
     QCOMPARE(track->isPlaying(), false);
-    QVERIFY(player_A->playbackState() != QMediaPlayer::PlayingState);
-    QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+    QVERIFY(player_A->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
+    QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
-    QTest::mouseClick(status_control, Qt::LeftButton);
+    QTest::mouseClick(status_control, Qt::MouseButton::LeftButton);
     QCOMPARE(status_control->isChecked(), true);
     QCOMPARE(track->isPlaying(), true);
-    QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
-    QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
+    QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+    QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
   };
 
   // player A is active, player B is not

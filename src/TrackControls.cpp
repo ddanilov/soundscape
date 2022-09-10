@@ -26,7 +26,7 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
 
   auto spacing = fontInfo().pixelSize() / 2;
   QFile file(":/styles/track-controls.css");
-  file.open(QIODevice::ReadOnly);
+  file.open(QIODevice::OpenModeFlag::ReadOnly);
   const QString& style = QString(file.readAll()).arg(spacing).arg(spacing / 2);
   setStyleSheet(style);
 
@@ -99,10 +99,10 @@ void TrackControls::statusChanged(int state)
 {
   switch (state)
   {
-    case Qt::Unchecked:
+    case Qt::CheckState::Unchecked:
       m_track->pause();
       break;
-    case Qt::Checked:
+    case Qt::CheckState::Checked:
       m_track->play();
       m_status_control->setPlayingStyle();
       break;
@@ -138,7 +138,7 @@ void TrackControls::playerError()
 
 void TrackControls::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() == Qt::RightButton)
+  if (event->button() == Qt::MouseButton::RightButton)
   {
     m_mouse_menu->exec(QCursor::pos());
   }
@@ -149,7 +149,7 @@ bool TrackControls::eventFilter(QObject* watched, QEvent* event)
   if (watched == m_transition_control ||
       watched == m_status_control)
   {
-    if (event->type() == QEvent::MouseButtonPress)
+    if (event->type() == QEvent::Type::MouseButtonPress)
     {
       auto* mouseEvent = dynamic_cast<QMouseEvent*>(event);
       mousePressEvent(mouseEvent);
@@ -181,11 +181,11 @@ void TrackControls::setupControls()
   auto spacing = fontInfo().pixelSize() / 2;
 
   m_layout->setContentsMargins(0, 0, 0, 0);
-  m_layout->addWidget(m_volume_control, 0, Qt::AlignLeft);
+  m_layout->addWidget(m_volume_control, 0, Qt::AlignmentFlag::AlignLeft);
   m_layout->addSpacing(spacing);
-  m_layout->addWidget(m_transition_control, 0, Qt::AlignLeft);
+  m_layout->addWidget(m_transition_control, 0, Qt::AlignmentFlag::AlignLeft);
   m_layout->addSpacing(spacing);
-  m_layout->addWidget(m_status_control, 1, Qt::AlignLeft);
+  m_layout->addWidget(m_status_control, 1, Qt::AlignmentFlag::AlignLeft);
 
   setLayout(m_layout);
 

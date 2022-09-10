@@ -32,7 +32,7 @@ TrackSettings::TrackSettings(TrackControls* parent) :
 
   setModal(false);
 
-  m_box_layout->setAlignment(Qt::AlignTop);
+  m_box_layout->setAlignment(Qt::AlignmentFlag::AlignTop);
 
   addTrackTitle();
   addSlider<Slider::FadeIn>();
@@ -53,7 +53,7 @@ void TrackSettings::trackLoaded()
 
 void TrackSettings::addTrackTitle()
 {
-  m_track_label->setTextFormat(Qt::PlainText);
+  m_track_label->setTextFormat(Qt::TextFormat::PlainText);
   m_track_duration->setToolTip(tr("track duration"));
 
   auto* widget = new QWidget;
