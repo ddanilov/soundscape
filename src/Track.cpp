@@ -78,7 +78,7 @@ void Track::setVolume(double volume)
 float Track::fadeVolume(qint64 position) const
 {
   const auto coeff = fade(position);
-  auto volume = m_volume;
+  auto volume = static_cast<float>(m_volume);
   switch (m_transition)
   {
     case Transition::FadeOutIn:
