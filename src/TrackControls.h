@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Transition.h"
+
 #include <QDir>
 #include <QFrame>
 #include <QHBoxLayout>
@@ -10,6 +12,7 @@ class MainWindow;
 class Status;
 class Track;
 class TrackSettings;
+class TransitionIcon;
 class Volume;
 
 class TrackControls : public QFrame
@@ -27,6 +30,7 @@ public slots:
   void moveDown();
   void remove();
   void volumeChanged(int value);
+  void transitionChanged(int state);
   void statusChanged(int state);
   void trackLoaded();
   void playerError();
@@ -45,6 +49,9 @@ private:
   void enableControls();
   void updateControls();
 
+  static Transition convertTransition(Qt::CheckState state);
+  static Qt::CheckState convertTransition(Transition transition);
+
   MainWindow* m_main_window;
 
   QPointer<QHBoxLayout> m_layout;
@@ -52,6 +59,7 @@ private:
 
   QPointer<Track> m_track;
   QPointer<Volume> m_volume_control;
+  QPointer<TransitionIcon> m_transition_control;
   QPointer<Status> m_status_control;
 
   QPointer<TrackSettings> m_settings;

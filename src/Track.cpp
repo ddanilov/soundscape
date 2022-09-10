@@ -12,7 +12,8 @@ Track::Track(QObject* parent) :
     m_playing(true),
     m_track_duration(-1),
     m_fade_in_duration(-1),
-    m_fade_out_duration(-1)
+    m_fade_out_duration(-1),
+    m_transition(Transition::FadeOutIn)
 {
   m_player_A->setNextPlayer(m_player_B);
   m_player_B->setNextPlayer(m_player_A);
@@ -33,6 +34,7 @@ void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
   m_playing = JsonRW::readBool(JsonRW::PlayingTag, json).value_or(m_playing);
   m_fade_in_duration = JsonRW::readInteger(JsonRW::FadeInDurationTag, json).value_or(m_fade_in_duration);
   m_fade_out_duration = JsonRW::readInteger(JsonRW::FadeOutDurationTag, json).value_or(m_fade_out_duration);
+  m_transition = static_cast<Transition>(JsonRW::readInteger(JsonRW::TransitionTag, json).value_or(static_cast<qint64>(m_transition)));
 
   const auto& source = QUrl::fromLocalFile(m_file_name);
   m_player_A->setSource(source);
@@ -46,6 +48,7 @@ QJsonObject Track::toJsonObject(const QDir& base_dir) const
   json[JsonRW::PlayingTag] = m_playing;
   json[JsonRW::FadeInDurationTag] = m_fade_in_duration;
   json[JsonRW::FadeOutDurationTag] = m_fade_out_duration;
+  json[JsonRW::TransitionTag] = static_cast<int>(m_transition);
 
   return json;
 }
@@ -74,7 +77,18 @@ void Track::setVolume(double volume)
 
 float Track::fadeVolume(qint64 position) const
 {
-  return QAudio::convertVolume(fade(position) * m_volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
+  const auto coeff = fade(position);
+  auto volume = m_volume;
+  switch (m_transition)
+  {
+    case Transition::FadeOutIn:
+      volume = QAudio::convertVolume(coeff * volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
+      break;
+    case Transition::CrossFade:
+      volume = coeff * QAudio::convertVolume(volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
+      break;
+  }
+  return volume;
 }
 
 bool Track::isPlaying() const
@@ -122,6 +136,27 @@ void Track::setFadeOutDuration(qint64 value)
   m_fade_out_duration = value;
 }
 
+Transition Track::transition() const
+{
+  return m_transition;
+}
+
+void Track::setTransition(Transition transition)
+{
+  m_transition = transition;
+}
+
+bool Track::startNextPlayer(qint64 position) const
+{
+  if (!m_playing) { return false; }
+  auto threshold = m_track_duration;
+  if (m_transition == Transition::CrossFade)
+  {
+    threshold -= m_fade_out_duration;
+  }
+  return position >= threshold;
+}
+
 Player* Track::playerA() const
 {
   return m_player_A;
@@ -144,6 +179,8 @@ void Track::playerLoaded()
   constexpr qint64 duration_5sec = 5 * 1000;
   if (m_fade_in_duration < 0) { m_fade_in_duration = std::min(duration_5sec, m_track_duration / 4); }
   if (m_fade_out_duration < 0) { m_fade_out_duration = m_fade_in_duration; }
+
+  if (m_playing) { play(); }
 
   emit loaded();
 }

@@ -4,6 +4,7 @@
 #include "Status.h"
 #include "Track.h"
 #include "TrackSettings.h"
+#include "TransitionIcon.h"
 #include "Volume.h"
 
 #include <QFile>
@@ -17,6 +18,7 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
     m_mouse_menu(new QMenu(this)),
     m_track(new Track(this)),
     m_volume_control(new Volume(this)),
+    m_transition_control(new TransitionIcon(this)),
     m_status_control(new Status(this)),
     m_settings(new TrackSettings(this))
 {
@@ -88,6 +90,11 @@ void TrackControls::volumeChanged(int value)
   m_volume_control->setVolToolTip(volume);
 }
 
+void TrackControls::transitionChanged(int state)
+{
+  m_track->setTransition(convertTransition(static_cast<Qt::CheckState>(state)));
+}
+
 void TrackControls::statusChanged(int state)
 {
   switch (state)
@@ -119,6 +126,9 @@ void TrackControls::playerError()
     disableControls();
     updateControls();
 
+    m_transition_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
+    m_transition_control->installEventFilter(this);
+
     m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
     m_status_control->installEventFilter(this);
 
@@ -136,7 +146,8 @@ void TrackControls::mousePressEvent(QMouseEvent* event)
 
 bool TrackControls::eventFilter(QObject* watched, QEvent* event)
 {
-  if (watched == m_status_control)
+  if (watched == m_transition_control ||
+      watched == m_status_control)
   {
     if (event->type() == QEvent::MouseButtonPress)
     {
@@ -172,23 +183,28 @@ void TrackControls::setupControls()
   m_layout->setContentsMargins(0, 0, 0, 0);
   m_layout->addWidget(m_volume_control, 0, Qt::AlignLeft);
   m_layout->addSpacing(spacing);
+  m_layout->addWidget(m_transition_control, 0, Qt::AlignLeft);
+  m_layout->addSpacing(spacing);
   m_layout->addWidget(m_status_control, 1, Qt::AlignLeft);
 
   setLayout(m_layout);
 
   connect(m_volume_control, &QDial::valueChanged, this, &TrackControls::volumeChanged);
+  connect(m_transition_control, &QCheckBox::stateChanged, this, &TrackControls::transitionChanged);
   connect(m_status_control, &QCheckBox::stateChanged, this, &TrackControls::statusChanged);
 }
 
 void TrackControls::disableControls()
 {
   m_volume_control->setDisabled(true);
+  m_transition_control->setDisabled(true);
   m_status_control->setDisabled(true);
 }
 
 void TrackControls::enableControls()
 {
   m_volume_control->setEnabled(true);
+  m_transition_control->setEnabled(true);
   m_status_control->setEnabled(true);
 }
 
@@ -199,7 +215,34 @@ void TrackControls::updateControls()
   const auto val = static_cast<int>(volume * max);
   m_volume_control->setValue(val);
 
+  m_transition_control->setCheckState(convertTransition(m_track->transition()));
+  m_transition_control->setToolTip(m_track->fileName());
+
   m_status_control->setChecked(m_track->isPlaying());
   m_status_control->setText(m_track->title());
   m_status_control->setToolTip(m_track->fileName());
+}
+
+Transition TrackControls::convertTransition(const Qt::CheckState state)
+{
+  switch (state)
+  {
+    case Qt::CheckState::Unchecked:
+      return Transition::FadeOutIn;
+    case Qt::CheckState::Checked:
+      return Transition::CrossFade;
+  }
+  return Transition::FadeOutIn;
+}
+
+Qt::CheckState TrackControls::convertTransition(const Transition transition)
+{
+  switch (transition)
+  {
+    case Transition::FadeOutIn:
+      return Qt::CheckState::Unchecked;
+    case Transition::CrossFade:
+      return Qt::CheckState::Checked;
+  }
+  return Qt::CheckState::Unchecked;
 }

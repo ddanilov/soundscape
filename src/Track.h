@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Transition.h"
+
 #include <QDir>
 #include <QMediaPlayer>
 #include <QObject>
@@ -35,6 +37,10 @@ public:
   qint64 fadeOutDuration() const;
   void setFadeOutDuration(qint64 value);
 
+  Transition transition() const;
+  void setTransition(Transition transition);
+  bool startNextPlayer(qint64 position) const;
+
   Player* playerA() const;
   Player* playerB() const;
 
@@ -60,6 +66,7 @@ private:
   qint64 m_track_duration;
   qint64 m_fade_in_duration;
   qint64 m_fade_out_duration;
+  Transition m_transition;
 
   QList<QString> m_errors;
 

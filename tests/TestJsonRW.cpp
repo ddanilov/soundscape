@@ -22,6 +22,7 @@ void TestJsonRW::testJsonTags()
   QCOMPARE(JsonRW::PlayingTag, "playing");
   QCOMPARE(JsonRW::FadeInDurationTag, "fadeInDuration");
   QCOMPARE(JsonRW::FadeOutDurationTag, "fadeOutDuration");
+  QCOMPARE(JsonRW::TransitionTag, "transition");
 }
 
 void TestJsonRW::testReadString()

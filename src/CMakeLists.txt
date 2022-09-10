@@ -14,6 +14,8 @@ set(HEADERS
   Track.h
   TrackControls.h
   TrackSettings.h
+  Transition.h
+  TransitionIcon.h
   Volume.h
 )
 
@@ -29,6 +31,7 @@ set(SOURCES
   Track.cpp
   TrackControls.cpp
   TrackSettings.cpp
+  TransitionIcon.cpp
   Volume.cpp
 )
 

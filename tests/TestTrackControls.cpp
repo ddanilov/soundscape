@@ -4,6 +4,7 @@
 #include "Status.h"
 #include "Track.h"
 #include "TrackControls.h"
+#include "TransitionIcon.h"
 #include "Volume.h"
 
 #include <QSignalSpy>
@@ -29,6 +30,7 @@ private slots:
   void testAudioFileBroken();
   void testMenu();
   void testPauseAndResume();
+  void testConvertTransition();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -64,6 +66,21 @@ void TestTrackControls::testAudioFileOk()
 
   auto volume_control = track_controls->m_volume_control;
   QCOMPARE(volume_control->value(), 50);
+
+  auto transition_control = track_controls->m_transition_control;
+  QCOMPARE(transition_control->isEnabled(), true);
+  QCOMPARE(transition_control->checkState(), Qt::CheckState::Unchecked);
+  QCOMPARE(track->transition(), Transition::FadeOutIn);
+
+  // QTest::mouseClick(transition_control, Qt::LeftButton);
+  transition_control->setCheckState(Qt::CheckState::Checked);
+  QCOMPARE(transition_control->checkState(), Qt::CheckState::Checked);
+  QCOMPARE(track->transition(), Transition::CrossFade);
+
+  // QTest::mouseClick(transition_control, Qt::LeftButton);
+  transition_control->setCheckState(Qt::CheckState::Unchecked);
+  QCOMPARE(transition_control->checkState(), Qt::CheckState::Unchecked);
+  QCOMPARE(track->transition(), Transition::FadeOutIn);
 
   auto status_control = track_controls->m_status_control;
   QCOMPARE(status_control->isEnabled(), true);
@@ -164,9 +181,19 @@ void TestTrackControls::testPauseAndResume()
   // player A is active, player B is not
   test_playing_state(track->playerA(), track->playerB());
 
+  track->playerA()->mediaPlayerPositionChanged(track->duration());
   track->playerA()->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
   // player B is active, player A is not
   test_playing_state(track->playerB(), track->playerA());
+}
+
+void TestTrackControls::testConvertTransition()
+{
+  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Unchecked), Transition::FadeOutIn);
+  QCOMPARE(TrackControls::convertTransition(Transition::FadeOutIn), Qt::CheckState::Unchecked);
+
+  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Checked), Transition::CrossFade);
+  QCOMPARE(TrackControls::convertTransition(Transition::CrossFade), Qt::CheckState::Checked);
 }
 
 QTEST_MAIN(TestTrackControls)

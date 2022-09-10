@@ -9,6 +9,7 @@ Player::Player(Track* parent) :
     m_track(parent),
     m_ready(false),
     m_active(false),
+    m_next_media_player_started(false),
     m_next_media_player(nullptr)
 {
   setAudioOutput(new QAudioOutput(this));
@@ -70,14 +71,16 @@ void Player::mediaPlayerStatusChanged(MediaStatus status)
     m_active = false;
     pause();
     setPosition(0);
-    startNextPlayer();
+    m_next_media_player_started = false;
   }
 }
 
 void Player::mediaPlayerPositionChanged(qint64 position)
 {
+  if (!m_active) { return; }
   const auto volume = m_track->fadeVolume(position);
   audioOutput()->setVolume(volume);
+  startNextPlayer(position);
 }
 
 void Player::setupNextPlayer()
@@ -88,7 +91,13 @@ void Player::setupNextPlayer()
   }
 }
 
-void Player::startNextPlayer()
+void Player::startNextPlayer(qint64 position)
 {
-  m_next_media_player->playActive(true);
+  if (m_next_media_player_started) { return; }
+  if (m_next_media_player->playbackState() == QMediaPlayer::PlayingState) { return; }
+  if (m_track->startNextPlayer(position))
+  {
+    m_next_media_player_started = true;
+    m_next_media_player->playActive(true);
+  }
 }

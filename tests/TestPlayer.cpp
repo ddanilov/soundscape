@@ -65,21 +65,21 @@ void TestPlayer::initTestCase()
 void TestPlayer::testAudioFileOk()
 {
   Track track;
-  Player player(&track);
-  QVERIFY(!player.isReady());
+  auto* player = track.playerA();
+  QVERIFY(!player->isReady());
 
-  QSignalSpy player_loaded(&player, &Player::playerLoaded);
-  player.setSource(QUrl::fromLocalFile(file_name_audio_ok));
+  QSignalSpy player_loaded(player, &Player::playerLoaded);
+  player->setSource(QUrl::fromLocalFile(file_name_audio_ok));
   QVERIFY(player_loaded.wait());
-  QVERIFY(player.isReady());
+  QVERIFY(player->isReady());
 }
 
 void TestPlayer::testAudioFileDurationZero()
 {
   Track track;
-  Player player(&track);
-  QSignalSpy player_error(&player, &QMediaPlayer::errorOccurred);
-  player.setSource(QUrl::fromLocalFile(file_name_audio_duration_zero));
+  auto* player = track.playerA();
+  QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
+  player->setSource(QUrl::fromLocalFile(file_name_audio_duration_zero));
   QVERIFY(player_error.wait());
   const auto& arguments = player_error.takeFirst();
   QCOMPARE(arguments.at(0).toInt(), QMediaPlayer::FormatError);
@@ -89,18 +89,18 @@ void TestPlayer::testAudioFileDurationZero()
 void TestPlayer::testAudioFileBroken()
 {
   Track track;
-  Player player(&track);
-  QSignalSpy player_error(&player, &QMediaPlayer::errorOccurred);
-  player.setSource(QUrl::fromLocalFile(file_name_audio_broken));
+  auto* player = track.playerA();
+  QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
+  player->setSource(QUrl::fromLocalFile(file_name_audio_broken));
   QVERIFY(player_error.wait());
 }
 
 void TestPlayer::testMediaFileWithoutAudio()
 {
   Track track;
-  Player player(&track);
-  QSignalSpy player_error(&player, &QMediaPlayer::errorOccurred);
-  player.setSource(QUrl::fromLocalFile(file_name_media_without_audio));
+  auto* player = track.playerA();
+  QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
+  player->setSource(QUrl::fromLocalFile(file_name_media_without_audio));
   QVERIFY(player_error.wait());
   const auto& arguments = player_error.takeFirst();
   QCOMPARE(arguments.at(0).toInt(), QMediaPlayer::FormatError);
@@ -110,11 +110,9 @@ void TestPlayer::testMediaFileWithoutAudio()
 void TestPlayer::testNextPlayer()
 {
   QPointer track = new Track;
-  QPointer player_A = new Player(track);
-  QPointer player_B = new Player(track);
+  auto* player_A = track->playerA();
+  auto* player_B = track->playerB();
 
-  player_A->setNextPlayer(player_B);
-  player_B->setNextPlayer(player_A);
   QCOMPARE(player_A->m_next_media_player, player_B);
   QCOMPARE(player_B->m_next_media_player, player_A);
 
@@ -125,17 +123,16 @@ void TestPlayer::testNextPlayer()
   QVERIFY(player_B_loaded.wait());
   QCOMPARE(player_B->source(), player_A->source());
 
-  QVERIFY(player_A->playbackState() != QMediaPlayer::PlayingState);
-  QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
-
   player_A->play();
   QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
   QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
 
+  player_A->mediaPlayerPositionChanged(player_A->duration());
   player_A->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
   QVERIFY(player_A->playbackState() != QMediaPlayer::PlayingState);
   QVERIFY(player_B->playbackState() == QMediaPlayer::PlayingState);
 
+  player_B->mediaPlayerPositionChanged(player_B->duration());
   player_B->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
   QVERIFY(player_A->playbackState() == QMediaPlayer::PlayingState);
   QVERIFY(player_B->playbackState() != QMediaPlayer::PlayingState);
@@ -144,7 +141,7 @@ void TestPlayer::testNextPlayer()
 void TestPlayer::testPlayPauseActive()
 {
   QPointer track = new Track;
-  QPointer player = new Player(track);
+  auto* player = track->playerA();
   QSignalSpy player_loaded(player, &Player::playerLoaded);
   player->setSource(QUrl::fromLocalFile(file_name_audio_ok));
   QVERIFY(player_loaded.wait());

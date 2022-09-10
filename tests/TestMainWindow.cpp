@@ -95,6 +95,7 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeOutDuration": -1,
             "fileName": "sound_01.mp3",
             "playing": true,
+            "transition": 0,
             "volume": 0.11
         },
         {
@@ -102,6 +103,7 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeOutDuration": -1,
             "fileName": "../data1/sound_02.mp3",
             "playing": true,
+            "transition": 0,
             "volume": 0.21
         },
         {
@@ -109,6 +111,7 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeOutDuration": -1,
             "fileName": "../data2/sound_03.mp3",
             "playing": true,
+            "transition": 0,
             "volume": 0.32
         }
     ]
@@ -134,6 +137,7 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeOutDuration": -1,
             "fileName": "sound_01.mp3",
             "playing": true,
+            "transition": 0,
             "volume": 0.11
         },
         {
@@ -141,6 +145,7 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeOutDuration": -1,
             "fileName": "../data2/sound_03.mp3",
             "playing": true,
+            "transition": 0,
             "volume": 0.32
         },
         {
@@ -148,6 +153,7 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeOutDuration": -1,
             "fileName": "../data1/sound_02.mp3",
             "playing": true,
+            "transition": 0,
             "volume": 0.21
         }
     ]

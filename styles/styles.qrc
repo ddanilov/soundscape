@@ -2,5 +2,6 @@
     <qresource prefix="/styles">
         <file>status.css</file>
         <file>track-controls.css</file>
+        <file>transition-icon.css</file>
     </qresource>
 </RCC>
