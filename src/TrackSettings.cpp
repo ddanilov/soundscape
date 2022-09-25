@@ -29,23 +29,23 @@ TrackSettings::TrackSettings(TrackControls* parent) :
   connect(m_track_controls, &TrackControls::updated, this, &TrackSettings::trackLoaded);
 
   connect(m_track->playerA(), &Player::positionChanged,
-          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged<Slider::PlayerA>(pos); } });
+          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged(pos, Slider::PlayerA); } });
   connect(m_track->playerB(), &Player::positionChanged,
-          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged<Slider::PlayerB>(pos); } });
+          this, [this](qint64 pos) { if(isVisible()) { playerPositionChanged(pos, Slider::PlayerB); } });
 
   setModal(false);
 
   m_box_layout->setAlignment(Qt::AlignmentFlag::AlignTop);
 
   addTrackTitle();
-  addSlider<Slider::FadeIn>();
-  addSlider<Slider::FadeOut>();
+  addSlider(Slider::FadeIn);
+  addSlider(Slider::FadeOut);
   addGap();
 
   auto spacing = fontInfo().pixelSize();
   m_box_layout->addSpacing(spacing);
-  addSlider<Slider::PlayerA>();
-  addSlider<Slider::PlayerB>();
+  addSlider(Slider::PlayerA);
+  addSlider(Slider::PlayerB);
 }
 
 void TrackSettings::trackLoaded()
@@ -93,22 +93,21 @@ void TrackSettings::addTrackTitle()
   layout->addWidget(m_track_duration);
 }
 
-template <Slider type>
-void TrackSettings::addSlider()
+void TrackSettings::addSlider(Slider type)
 {
   PositionSlider* slider;
   PositionLabel* label;
   QString tip;
   QString icon;
 
-  if constexpr (type == Slider::FadeIn)
+  if (type == Slider::FadeIn)
   {
     slider = m_fade_in_slider;
     label = m_fade_in_label;
     tip = tr("fade-in");
     icon = ":/icons/fade-in-label.svg";
   }
-  else if constexpr (type == Slider::FadeOut)
+  else if (type == Slider::FadeOut)
   {
     slider = m_fade_out_slider;
     label = m_fade_out_label;
@@ -116,14 +115,14 @@ void TrackSettings::addSlider()
     icon = ":/icons/fade-out-label.svg";
     slider->setInvertedAppearance(true);
   }
-  else if constexpr (type == Slider::PlayerA)
+  else if (type == Slider::PlayerA)
   {
     slider = m_position_slider_A;
     label = m_position_label_A;
     tip = tr("player A");
     icon = ":/icons/position-label.svg";
   }
-  else if constexpr (type == Slider::PlayerB)
+  else if (type == Slider::PlayerB)
   {
     slider = m_position_slider_B;
     label = m_position_label_B;
@@ -131,9 +130,9 @@ void TrackSettings::addSlider()
     icon = ":/icons/position-label.svg";
   }
 
-  if constexpr (type == Slider::FadeIn || type == Slider::FadeOut)
+  if (type == Slider::FadeIn || type == Slider::FadeOut)
   {
-    connect(slider, &QSlider::valueChanged, this, [this](int value) { fadeSliderChanged<type>(value); });
+    connect(slider, &QSlider::valueChanged, this, [this, type](int value) { fadeSliderChanged(value, type); });
   }
   else
   {
@@ -181,18 +180,17 @@ void TrackSettings::addGap()
   layout->addStretch(1);
 }
 
-template <Slider type>
-void TrackSettings::playerPositionChanged(qint64 pos)
+void TrackSettings::playerPositionChanged(qint64 pos, Slider type)
 {
   PositionSlider* slider;
   PositionLabel* label;
 
-  if constexpr (type == Slider::PlayerA)
+  if (type == Slider::PlayerA)
   {
     slider = m_position_slider_A;
     label = m_position_label_A;
   }
-  else if constexpr (type == Slider::PlayerB)
+  else if (type == Slider::PlayerB)
   {
     slider = m_position_slider_B;
     label = m_position_label_B;
@@ -257,24 +255,27 @@ int TrackSettings::trackToSliderPosition(qint64 pos, PositionSlider* slider)
   return x;
 }
 
-template <Slider type>
-void TrackSettings::fadeSliderChanged(int value)
+void TrackSettings::fadeSliderChanged(int value, Slider type)
 {
   PositionSlider* slider;
   PositionLabel* label;
   qint64 opposite_fade_duration;
 
-  if constexpr (type == Slider::FadeIn)
+  if (type == Slider::FadeIn)
   {
     slider = m_fade_in_slider;
     label = m_fade_in_label;
     opposite_fade_duration = m_track->fadeOutDuration();
   }
-  else
+  else if (type == Slider::FadeOut)
   {
     slider = m_fade_out_slider;
     label = m_fade_out_label;
     opposite_fade_duration = m_track->fadeInDuration();
+  }
+  else
+  {
+    return;
   }
 
   const auto v = static_cast<double>(value);
@@ -291,11 +292,11 @@ void TrackSettings::fadeSliderChanged(int value)
   }
   label->setValue(f / 1000);
 
-  if constexpr (type == Slider::FadeIn)
+  if (type == Slider::FadeIn)
   {
     m_track->setFadeInDuration(p);
   }
-  else
+  else if (type == Slider::FadeOut)
   {
     m_track->setFadeOutDuration(p);
   }

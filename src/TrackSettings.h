@@ -38,17 +38,17 @@ private slots:
 
 private:
   void addTrackTitle();
-  template <Slider type> void addSlider();
+  void addSlider(Slider type);
   void addGap();
 
-  template <Slider type> void playerPositionChanged(qint64 pos);
+  void playerPositionChanged(qint64 pos, Slider type);
 
   void setTrackProperties();
   void setFade(Slider type);
 
   int trackToSliderPosition(qint64 pos, PositionSlider* slider);
 
-  template <Slider type> void fadeSliderChanged(int value);
+  void fadeSliderChanged(int value, Slider type);
 
   const TrackControls* m_track_controls;
   Track* m_track;
