@@ -94,7 +94,10 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeInDuration": -1,
             "fadeOutDuration": -1,
             "fileName": "sound_01.mp3",
+            "gap": 10,
+            "gapMax": 300,
             "playing": true,
+            "randomGap": false,
             "transition": 0,
             "volume": 0.11
         },
@@ -102,7 +105,10 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeInDuration": -1,
             "fadeOutDuration": -1,
             "fileName": "../data1/sound_02.mp3",
+            "gap": 10,
+            "gapMax": 300,
             "playing": true,
+            "randomGap": false,
             "transition": 0,
             "volume": 0.21
         },
@@ -110,7 +116,10 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeInDuration": -1,
             "fadeOutDuration": -1,
             "fileName": "../data2/sound_03.mp3",
+            "gap": 10,
+            "gapMax": 300,
             "playing": true,
+            "randomGap": false,
             "transition": 0,
             "volume": 0.32
         }
@@ -136,7 +145,10 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeInDuration": -1,
             "fadeOutDuration": -1,
             "fileName": "sound_01.mp3",
+            "gap": 10,
+            "gapMax": 300,
             "playing": true,
+            "randomGap": false,
             "transition": 0,
             "volume": 0.11
         },
@@ -144,7 +156,10 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeInDuration": -1,
             "fadeOutDuration": -1,
             "fileName": "../data2/sound_03.mp3",
+            "gap": 10,
+            "gapMax": 300,
             "playing": true,
+            "randomGap": false,
             "transition": 0,
             "volume": 0.32
         },
@@ -152,7 +167,10 @@ void TestMainWindow::testSaveTracksToJson()
             "fadeInDuration": -1,
             "fadeOutDuration": -1,
             "fileName": "../data1/sound_02.mp3",
+            "gap": 10,
+            "gapMax": 300,
             "playing": true,
+            "randomGap": false,
             "transition": 0,
             "volume": 0.21
         }

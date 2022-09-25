@@ -192,6 +192,8 @@ void TrackControls::setupControls()
   connect(m_volume_control, &QDial::valueChanged, this, &TrackControls::volumeChanged);
   connect(m_transition_control, &QCheckBox::stateChanged, this, &TrackControls::transitionChanged);
   connect(m_status_control, &QCheckBox::stateChanged, this, &TrackControls::statusChanged);
+
+  m_transition_control->setTristate(true);
 }
 
 void TrackControls::disableControls()
@@ -229,8 +231,10 @@ Transition TrackControls::convertTransition(const Qt::CheckState state)
   {
     case Qt::CheckState::Unchecked:
       return Transition::FadeOutIn;
-    case Qt::CheckState::Checked:
+    case Qt::CheckState::PartiallyChecked:
       return Transition::CrossFade;
+    case Qt::CheckState::Checked:
+      return Transition::FadeOutGapIn;
   }
   return Transition::FadeOutIn;
 }
@@ -242,6 +246,8 @@ Qt::CheckState TrackControls::convertTransition(const Transition transition)
     case Transition::FadeOutIn:
       return Qt::CheckState::Unchecked;
     case Transition::CrossFade:
+      return Qt::CheckState::PartiallyChecked;
+    case Transition::FadeOutGapIn:
       return Qt::CheckState::Checked;
   }
   return Qt::CheckState::Unchecked;

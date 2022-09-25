@@ -127,15 +127,35 @@ void TestPlayer::testNextPlayer()
   QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
   QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
+  QCOMPARE(track->transition(), Transition::FadeOutIn);
+
+  QSignalSpy player_A_state(player_A, &Player::playbackStateChanged);
+  QSignalSpy player_B_state(player_B, &Player::playbackStateChanged);
   player_A->mediaPlayerPositionChanged(player_A->duration());
   player_A->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(player_A_state.wait());
+  QVERIFY(player_B_state.wait());
   QVERIFY(player_A->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
   QVERIFY(player_B->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
 
   player_B->mediaPlayerPositionChanged(player_B->duration());
   player_B->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(player_A_state.wait());
+  QVERIFY(player_B_state.wait());
   QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
   QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
+
+  track->setTransition(Transition::FadeOutGapIn);
+  track->setGap(1.0);
+  track->setRandomGap(false);
+
+  const auto t1 = QDateTime::currentDateTime();
+  player_A->mediaPlayerPositionChanged(player_A->duration());
+  player_A->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(player_B_state.wait());
+  QVERIFY(player_B->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+  const auto t2 = QDateTime::currentDateTime();
+  QVERIFY(t1.msecsTo(t2) >= track->gap() * 1000);
 }
 
 void TestPlayer::testPlayPauseActive()
@@ -156,9 +176,13 @@ void TestPlayer::testPlayPauseActive()
   QVERIFY(player->m_active);
   QVERIFY(player->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
 
+  player->m_next_player_timer->setInterval(10'000);
+  player->m_next_player_timer->start();
+  QVERIFY(player->m_next_player_timer->isActive());
   player->pauseActive();
   QVERIFY(player->m_active);
   QVERIFY(player->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
+  QVERIFY(!player->m_next_player_timer->isActive());
 
   QVERIFY(player->playActive());
   QVERIFY(player->m_active);

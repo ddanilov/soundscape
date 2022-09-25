@@ -73,14 +73,14 @@ void TestTrackControls::testAudioFileOk()
   QCOMPARE(track->transition(), Transition::FadeOutIn);
 
   // QTest::mouseClick(transition_control, Qt::MouseButton::LeftButton);
-  transition_control->setCheckState(Qt::CheckState::Checked);
-  QCOMPARE(transition_control->checkState(), Qt::CheckState::Checked);
+  transition_control->setCheckState(Qt::CheckState::PartiallyChecked);
+  QCOMPARE(transition_control->checkState(), Qt::CheckState::PartiallyChecked);
   QCOMPARE(track->transition(), Transition::CrossFade);
 
   // QTest::mouseClick(transition_control, Qt::MouseButton::LeftButton);
-  transition_control->setCheckState(Qt::CheckState::Unchecked);
-  QCOMPARE(transition_control->checkState(), Qt::CheckState::Unchecked);
-  QCOMPARE(track->transition(), Transition::FadeOutIn);
+  transition_control->setCheckState(Qt::CheckState::Checked);
+  QCOMPARE(transition_control->checkState(), Qt::CheckState::Checked);
+  QCOMPARE(track->transition(), Transition::FadeOutGapIn);
 
   auto status_control = track_controls->m_status_control;
   QCOMPARE(status_control->isEnabled(), true);
@@ -192,8 +192,11 @@ void TestTrackControls::testConvertTransition()
   QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Unchecked), Transition::FadeOutIn);
   QCOMPARE(TrackControls::convertTransition(Transition::FadeOutIn), Qt::CheckState::Unchecked);
 
-  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Checked), Transition::CrossFade);
-  QCOMPARE(TrackControls::convertTransition(Transition::CrossFade), Qt::CheckState::Checked);
+  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::PartiallyChecked), Transition::CrossFade);
+  QCOMPARE(TrackControls::convertTransition(Transition::CrossFade), Qt::CheckState::PartiallyChecked);
+
+  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Checked), Transition::FadeOutGapIn);
+  QCOMPARE(TrackControls::convertTransition(Transition::FadeOutGapIn), Qt::CheckState::Checked);
 }
 
 QTEST_MAIN(TestTrackControls)

@@ -21,7 +21,10 @@ TrackSettings::TrackSettings(TrackControls* parent) :
     m_position_slider_A(new PositionSlider),
     m_position_label_A(new PositionLabel),
     m_position_slider_B(new PositionSlider),
-    m_position_label_B(new PositionLabel)
+    m_position_label_B(new PositionLabel),
+    m_gap_spin_box(new QDoubleSpinBox),
+    m_random_gap_check_box(new QCheckBox),
+    m_gap_max_spin_box(new QDoubleSpinBox)
 {
   connect(m_track_controls, &TrackControls::updated, this, &TrackSettings::trackLoaded);
 
@@ -37,6 +40,7 @@ TrackSettings::TrackSettings(TrackControls* parent) :
   addTrackTitle();
   addSlider<Slider::FadeIn>();
   addSlider<Slider::FadeOut>();
+  addGap();
 
   auto spacing = fontInfo().pixelSize();
   m_box_layout->addSpacing(spacing);
@@ -49,6 +53,31 @@ void TrackSettings::trackLoaded()
   setTrackProperties();
   setFade(Slider::FadeIn);
   setFade(Slider::FadeOut);
+}
+
+void TrackSettings::gapSpinBoxChanged(double value)
+{
+  if (value > m_gap_max_spin_box->value())
+  {
+    value = m_gap_max_spin_box->value();
+    m_gap_spin_box->setValue(value);
+  }
+  m_track->setGap(value);
+}
+
+void TrackSettings::randomGapCheckBoxChanged(int state)
+{
+  m_track->setRandomGap(state == Qt::Checked);
+}
+
+void TrackSettings::gapMaxSpinBoxChanged(double value)
+{
+  if (value < m_gap_spin_box->value())
+  {
+    value = m_gap_spin_box->value();
+    m_gap_max_spin_box->setValue(value);
+  }
+  m_track->setMaxGap(value);
 }
 
 void TrackSettings::addTrackTitle()
@@ -126,6 +155,32 @@ void TrackSettings::addSlider()
   layout->addWidget(label);
 }
 
+void TrackSettings::addGap()
+{
+  auto* widget = new QWidget;
+  m_box_layout->addWidget(widget);
+
+  m_gap_spin_box->setDecimals(1);
+  m_gap_spin_box->setMaximum(9999);
+
+  m_gap_max_spin_box->setDecimals(1);
+  m_gap_max_spin_box->setMaximum(9999);
+
+  auto* layout = new QHBoxLayout(widget);
+  layout->addWidget(new IconLabel(":/icons/gap-label.svg"));
+  layout->addWidget(new QLabel(tr("gap")));
+  layout->addWidget(m_gap_spin_box);
+  layout->addWidget(new QLabel(tr("s")));
+
+  layout->addWidget(new QLabel(tr("   ")));
+  layout->addWidget(m_random_gap_check_box);
+  layout->addWidget(new QLabel(tr("random up to")));
+  layout->addWidget(m_gap_max_spin_box);
+  layout->addWidget(new QLabel(tr("s")));
+
+  layout->addStretch(1);
+}
+
 template <Slider type>
 void TrackSettings::playerPositionChanged(qint64 pos)
 {
@@ -168,6 +223,14 @@ void TrackSettings::setTrackProperties()
   m_track_duration->setValue(d);
   m_position_label_A->setValue(0);
   m_position_label_B->setValue(0);
+
+  m_gap_spin_box->setValue(m_track->gap());
+  m_gap_max_spin_box->setValue(m_track->maxGap());
+  m_random_gap_check_box->setChecked(m_track->randomGap());
+
+  connect(m_gap_spin_box, &QDoubleSpinBox::valueChanged, this, &TrackSettings::gapSpinBoxChanged);
+  connect(m_random_gap_check_box, &QCheckBox::stateChanged, this, &TrackSettings::randomGapCheckBoxChanged);
+  connect(m_gap_max_spin_box, &QDoubleSpinBox::valueChanged, this, &TrackSettings::gapMaxSpinBoxChanged);
 
   emit loaded();
 }

@@ -41,6 +41,14 @@ public:
   void setTransition(Transition transition);
   bool startNextPlayer(qint64 position) const;
 
+  double gap() const;
+  void setGap(double value);
+  double maxGap() const;
+  void setMaxGap(double value);
+  bool randomGap() const;
+  void setRandomGap(bool value);
+  int startDelay() const;
+
   Player* playerA() const;
   Player* playerB() const;
 
@@ -67,6 +75,9 @@ private:
   qint64 m_fade_in_duration;
   qint64 m_fade_out_duration;
   Transition m_transition;
+  double m_gap;
+  double m_gap_max;
+  bool m_random_gap;
 
   QList<QString> m_errors;
 

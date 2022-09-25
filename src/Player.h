@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QMediaPlayer>
+#include <QPointer>
+#include <QTimer>
 
 class Track;
 
@@ -32,6 +34,7 @@ private:
   bool m_active;
   bool m_next_media_player_started;
   Player* m_next_media_player;
+  QPointer<QTimer> m_next_player_timer;
 
   friend class TestPlayer;
   friend class TestTrack;

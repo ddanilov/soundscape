@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/icons">
         <file>cross-fade.svg</file>
+        <file>fade-gap.svg</file>
         <file>fade-in-label.svg</file>
         <file>fade-out-in.svg</file>
         <file>fade-out-label.svg</file>
+        <file>gap-label.svg</file>
         <file>icon.svg</file>
         <file>position-label.svg</file>
         <file>switch-off.svg</file>

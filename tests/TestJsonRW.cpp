@@ -23,6 +23,9 @@ void TestJsonRW::testJsonTags()
   QCOMPARE(JsonRW::FadeInDurationTag, "fadeInDuration");
   QCOMPARE(JsonRW::FadeOutDurationTag, "fadeOutDuration");
   QCOMPARE(JsonRW::TransitionTag, "transition");
+  QCOMPARE(JsonRW::GapTag, "gap");
+  QCOMPARE(JsonRW::GapMaxTag, "gapMax");
+  QCOMPARE(JsonRW::RandomGapTag, "randomGap");
 }
 
 void TestJsonRW::testReadString()

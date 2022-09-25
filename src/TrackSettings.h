@@ -1,6 +1,8 @@
 #pragma once
 
+#include <QCheckBox>
 #include <QDialog>
+#include <QDoubleSpinBox>
 #include <QLabel>
 #include <QPointer>
 #include <QVBoxLayout>
@@ -30,10 +32,15 @@ signals:
 
 private slots:
   void trackLoaded();
+  void gapSpinBoxChanged(double value);
+  void randomGapCheckBoxChanged(int state);
+  void gapMaxSpinBoxChanged(double value);
 
 private:
   void addTrackTitle();
   template <Slider type> void addSlider();
+  void addGap();
+
   template <Slider type> void playerPositionChanged(qint64 pos);
 
   void setTrackProperties();
@@ -62,6 +69,10 @@ private:
 
   QPointer<PositionSlider> m_position_slider_B;
   QPointer<PositionLabel> m_position_label_B;
+
+  QPointer<QDoubleSpinBox> m_gap_spin_box;
+  QPointer<QCheckBox> m_random_gap_check_box;
+  QPointer<QDoubleSpinBox> m_gap_max_spin_box;
 
   friend class TestTrackSettings;
 };

@@ -33,6 +33,7 @@ private slots:
   void testAudioFileBroken();
   void testMediaWithoutAudio();
   void testStartNextPlayer();
+  void testStartDelay();
 
 private:
   static void compare_float_values(const float x, const float y, const float epsilon = 0.001)
@@ -86,6 +87,9 @@ void TestTrack::testFromEmptyJson()
   QCOMPARE(track.m_fade_in_duration, -1);
   QCOMPARE(track.m_fade_out_duration, -1);
   QCOMPARE(track.m_transition, Transition::FadeOutIn);
+  QCOMPARE(track.m_gap, 10);
+  QCOMPARE(track.m_gap_max, 300);
+  QCOMPARE(track.m_random_gap, false);
 
   QCOMPARE(track.title(), "");
   QCOMPARE(track.fileName(), "");
@@ -95,6 +99,9 @@ void TestTrack::testFromEmptyJson()
   QCOMPARE(track.fadeInDuration(), -1);
   QCOMPARE(track.fadeOutDuration(), -1);
   QCOMPARE(track.transition(), Transition::FadeOutIn);
+  QCOMPARE(track.gap(), 10);
+  QCOMPARE(track.maxGap(), 300);
+  QCOMPARE(track.randomGap(), false);
 }
 
 void TestTrack::testFromJson()
@@ -106,6 +113,9 @@ void TestTrack::testFromJson()
   json[JsonRW::FadeInDurationTag] = 11'000;
   json[JsonRW::FadeOutDurationTag] = 13'000;
   json[JsonRW::TransitionTag] = static_cast<int>(Transition::CrossFade);
+  json[JsonRW::GapTag] = 123;
+  json[JsonRW::GapMaxTag] = 579;
+  json[JsonRW::RandomGapTag] = true;
 
   Track track;
   track.fromJsonObject(json, base_dir);
@@ -118,6 +128,9 @@ void TestTrack::testFromJson()
   QCOMPARE(track.fadeInDuration(), 11'000);
   QCOMPARE(track.fadeOutDuration(), 13'000);
   QCOMPARE(track.transition(), Transition::CrossFade);
+  QCOMPARE(track.gap(), 123);
+  QCOMPARE(track.maxGap(), 579);
+  QCOMPARE(track.randomGap(), true);
 }
 
 void TestTrack::testToJson()
@@ -129,6 +142,9 @@ void TestTrack::testToJson()
   track.setFadeInDuration(123);
   track.setFadeOutDuration(456);
   track.setTransition(Transition::CrossFade);
+  track.setGap(987);
+  track.setMaxGap(13579);
+  track.setRandomGap(true);
 
   const QJsonObject& json = track.toJsonObject(base_dir);
 
@@ -149,6 +165,15 @@ void TestTrack::testToJson()
 
   QVERIFY(json[JsonRW::TransitionTag].isDouble());
   QCOMPARE(json[JsonRW::TransitionTag].toInteger(), static_cast<int>(Transition::CrossFade));
+
+  QVERIFY(json[JsonRW::GapTag].isDouble());
+  QCOMPARE(json[JsonRW::GapTag].toDouble(), 987);
+
+  QVERIFY(json[JsonRW::GapMaxTag].isDouble());
+  QCOMPARE(json[JsonRW::GapMaxTag].toDouble(), 13579);
+
+  QVERIFY(json[JsonRW::RandomGapTag].isBool());
+  QCOMPARE(json[JsonRW::RandomGapTag].toBool(), true);
 }
 
 void TestTrack::testFade()
@@ -210,6 +235,10 @@ void TestTrack::testFadeVolume()
     QCOMPARE(track.fadeVolume(-1), 0.0);
     QCOMPARE(track.fadeVolume(0), 0.0);
 
+    track.m_transition = Transition::FadeOutGapIn;
+    QCOMPARE(track.fadeVolume(-1), 0.0);
+    QCOMPARE(track.fadeVolume(0), 0.0);
+
     track.m_transition = Transition::CrossFade;
     QCOMPARE(track.fadeVolume(-1), 0.0);
     QCOMPARE(track.fadeVolume(0), 0.0);
@@ -217,6 +246,9 @@ void TestTrack::testFadeVolume()
 
   {
     track.m_transition = Transition::FadeOutIn;
+    compare_float_values(track.fadeVolume(track.fadeInDuration() / 2), 0.151);
+
+    track.m_transition = Transition::FadeOutGapIn;
     compare_float_values(track.fadeVolume(track.fadeInDuration() / 2), 0.151);
 
     track.m_transition = Transition::CrossFade;
@@ -227,12 +259,18 @@ void TestTrack::testFadeVolume()
     track.m_transition = Transition::FadeOutIn;
     compare_float_values(track.fadeVolume(track.fadeInDuration()), 1.0);
 
+    track.m_transition = Transition::FadeOutGapIn;
+    compare_float_values(track.fadeVolume(track.fadeInDuration()), 1.0);
+
     track.m_transition = Transition::CrossFade;
     compare_float_values(track.fadeVolume(track.fadeInDuration()), 1.0);
   }
 
   {
     track.m_transition = Transition::FadeOutIn;
+    compare_float_values(track.fadeVolume(track.duration() - track.fadeOutDuration()), 1.0);
+
+    track.m_transition = Transition::FadeOutGapIn;
     compare_float_values(track.fadeVolume(track.duration() - track.fadeOutDuration()), 1.0);
 
     track.m_transition = Transition::CrossFade;
@@ -243,12 +281,19 @@ void TestTrack::testFadeVolume()
     track.m_transition = Transition::FadeOutIn;
     compare_float_values(track.fadeVolume(track.duration() - track.fadeOutDuration() / 2), 0.151);
 
+    track.m_transition = Transition::FadeOutGapIn;
+    compare_float_values(track.fadeVolume(track.duration() - track.fadeOutDuration() / 2), 0.151);
+
     track.m_transition = Transition::CrossFade;
     compare_float_values(track.fadeVolume(track.duration() - track.fadeOutDuration() / 2), 0.5);
   }
 
   {
     track.m_transition = Transition::FadeOutIn;
+    QCOMPARE(track.fadeVolume(track.duration()), 0.0);
+    QCOMPARE(track.fadeVolume(track.duration() + 1), 0.0);
+
+    track.m_transition = Transition::FadeOutGapIn;
     QCOMPARE(track.fadeVolume(track.duration()), 0.0);
     QCOMPARE(track.fadeVolume(track.duration() + 1), 0.0);
 
@@ -361,6 +406,17 @@ void TestTrack::testStartNextPlayer()
   QCOMPARE(track.startNextPlayer(track.duration() + 0), true);
   QCOMPARE(track.startNextPlayer(track.duration() + 1), true);
 
+  track.m_transition = Transition::FadeOutGapIn;
+  QCOMPARE(track.startNextPlayer(-1), false);
+  QCOMPARE(track.startNextPlayer(0), false);
+  QCOMPARE(track.startNextPlayer(1), false);
+  QCOMPARE(track.startNextPlayer(track.duration() - track.fadeOutDuration() - 1), false);
+  QCOMPARE(track.startNextPlayer(track.duration() - track.fadeOutDuration() + 0), false);
+  QCOMPARE(track.startNextPlayer(track.duration() - track.fadeOutDuration() + 1), false);
+  QCOMPARE(track.startNextPlayer(track.duration() - 1), false);
+  QCOMPARE(track.startNextPlayer(track.duration() + 0), true);
+  QCOMPARE(track.startNextPlayer(track.duration() + 1), true);
+
   track.m_transition = Transition::CrossFade;
   QCOMPARE(track.startNextPlayer(-1), false);
   QCOMPARE(track.startNextPlayer(0), false);
@@ -371,6 +427,19 @@ void TestTrack::testStartNextPlayer()
   QCOMPARE(track.startNextPlayer(track.duration() - 1), true);
   QCOMPARE(track.startNextPlayer(track.duration() + 0), true);
   QCOMPARE(track.startNextPlayer(track.duration() + 1), true);
+}
+
+void TestTrack::testStartDelay()
+{
+  Track track;
+
+  QCOMPARE(track.m_random_gap, false);
+  QCOMPARE(track.startDelay(), track.m_gap * 1000);
+
+  track.m_random_gap = true;
+  const auto delay = track.startDelay();
+  QVERIFY(delay >= track.m_gap * 1000);
+  QVERIFY(delay < track.m_gap_max * 1000);
 }
 
 QTEST_MAIN(TestTrack)

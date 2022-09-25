@@ -3,6 +3,8 @@
 #include "JsonRW.h"
 #include "Player.h"
 
+#include <QRandomGenerator>
+
 Track::Track(QObject* parent) :
     QObject(parent),
     m_player_A(new Player(this)),
@@ -13,7 +15,10 @@ Track::Track(QObject* parent) :
     m_track_duration(-1),
     m_fade_in_duration(-1),
     m_fade_out_duration(-1),
-    m_transition(Transition::FadeOutIn)
+    m_transition(Transition::FadeOutIn),
+    m_gap(10),
+    m_gap_max(300),
+    m_random_gap(false)
 {
   m_player_A->setNextPlayer(m_player_B);
   m_player_B->setNextPlayer(m_player_A);
@@ -35,6 +40,9 @@ void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
   m_fade_in_duration = JsonRW::readInteger(JsonRW::FadeInDurationTag, json).value_or(m_fade_in_duration);
   m_fade_out_duration = JsonRW::readInteger(JsonRW::FadeOutDurationTag, json).value_or(m_fade_out_duration);
   m_transition = static_cast<Transition>(JsonRW::readInteger(JsonRW::TransitionTag, json).value_or(static_cast<qint64>(m_transition)));
+  m_gap = JsonRW::readDouble(JsonRW::GapTag, json).value_or(m_gap);
+  m_gap_max = JsonRW::readDouble(JsonRW::GapMaxTag, json).value_or(m_gap_max);
+  m_random_gap = JsonRW::readBool(JsonRW::RandomGapTag, json).value_or(m_random_gap);
 
   const auto& source = QUrl::fromLocalFile(m_file_name);
   m_player_A->setSource(source);
@@ -49,7 +57,9 @@ QJsonObject Track::toJsonObject(const QDir& base_dir) const
   json[JsonRW::FadeInDurationTag] = m_fade_in_duration;
   json[JsonRW::FadeOutDurationTag] = m_fade_out_duration;
   json[JsonRW::TransitionTag] = static_cast<int>(m_transition);
-
+  json[JsonRW::GapTag] = m_gap;
+  json[JsonRW::GapMaxTag] = m_gap_max;
+  json[JsonRW::RandomGapTag] = m_random_gap;
   return json;
 }
 
@@ -82,6 +92,7 @@ float Track::fadeVolume(qint64 position) const
   switch (m_transition)
   {
     case Transition::FadeOutIn:
+    case Transition::FadeOutGapIn:
       volume = QAudio::convertVolume(coeff * volume, QAudio::VolumeScale::LogarithmicVolumeScale, QAudio::VolumeScale::LinearVolumeScale);
       break;
     case Transition::CrossFade:
@@ -155,6 +166,46 @@ bool Track::startNextPlayer(qint64 position) const
     threshold -= m_fade_out_duration;
   }
   return position >= threshold;
+}
+
+double Track::gap() const
+{
+  return m_gap;
+}
+
+void Track::setGap(double value)
+{
+  m_gap = value;
+}
+
+double Track::maxGap() const
+{
+  return m_gap_max;
+}
+
+void Track::setMaxGap(double value)
+{
+  m_gap_max = value;
+}
+
+bool Track::randomGap() const
+{
+  return m_random_gap;
+}
+
+void Track::setRandomGap(bool value)
+{
+  m_random_gap = value;
+}
+
+int Track::startDelay() const
+{
+  auto d = m_gap;
+  if (m_random_gap)
+  {
+    d += (m_gap_max - m_gap) * QRandomGenerator::global()->generateDouble();
+  }
+  return static_cast<int>(d * 1000);
 }
 
 Player* Track::playerA() const

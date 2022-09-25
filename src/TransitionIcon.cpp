@@ -8,6 +8,6 @@ TransitionIcon::TransitionIcon(QWidget* parent) :
 {
   QFile file(":/styles/transition-icon.css");
   file.open(QIODevice::ReadOnly);
-  const QString style = QString(file.readAll()).arg(":/icons/fade-out-in.svg", ":/icons/cross-fade.svg");
+  const QString style = QString(file.readAll()).arg(":/icons/fade-out-in.svg", ":/icons/cross-fade.svg", ":/icons/fade-gap.svg");
   setStyleSheet(style);
 }

@@ -10,13 +10,17 @@ Player::Player(Track* parent) :
     m_ready(false),
     m_active(false),
     m_next_media_player_started(false),
-    m_next_media_player(nullptr)
+    m_next_media_player(nullptr),
+    m_next_player_timer(new QTimer(this))
 {
   setAudioOutput(new QAudioOutput(this));
   audioOutput()->setVolume(0);
 
   connect(this, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaPlayerStatusChanged);
   connect(this, &QMediaPlayer::positionChanged, this, &Player::mediaPlayerPositionChanged);
+
+  m_next_player_timer->setSingleShot(true);
+  connect(m_next_player_timer, &QTimer::timeout, [this]() { m_next_media_player->playActive(true); });
 }
 
 bool Player::isReady() const
@@ -42,6 +46,7 @@ bool Player::playActive(const bool force)
 
 void Player::pauseActive()
 {
+  m_next_player_timer->stop();
   pause();
 }
 
@@ -98,6 +103,16 @@ void Player::startNextPlayer(qint64 position)
   if (m_track->startNextPlayer(position))
   {
     m_next_media_player_started = true;
-    m_next_media_player->playActive(true);
+    if (m_track->transition() == Transition::FadeOutGapIn)
+    {
+      m_next_player_timer->stop();
+      const auto delay = m_track->startDelay();
+      m_next_player_timer->setInterval(delay);
+      m_next_player_timer->start();
+    }
+    else
+    {
+      m_next_media_player->playActive(true);
+    }
   }
 }

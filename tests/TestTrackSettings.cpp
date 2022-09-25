@@ -31,6 +31,7 @@ private slots:
   void testPlayerPositionChanged();
   void testTrackToSliderPosition();
   void testFadeSliderChanged();
+  void testGap();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -80,6 +81,10 @@ void TestTrackSettings::testInitialTrackProperties()
 
   QCOMPARE(track_settings->m_position_slider_B->value(), 0);
   QCOMPARE(track_settings->m_position_label_B->text(), "0.0 s");
+
+  QCOMPARE(track_settings->m_gap_spin_box->value(), 10);
+  QCOMPARE(track_settings->m_random_gap_check_box->checkState(), Qt::CheckState::Unchecked);
+  QCOMPARE(track_settings->m_gap_max_spin_box->value(), 300);
 }
 
 void TestTrackSettings::testPlayerPositionChanged()
@@ -175,6 +180,32 @@ void TestTrackSettings::testFadeSliderChanged()
   QCOMPARE(track_settings->m_fade_in_slider->value(), 375);
   QCOMPARE(track_settings->m_fade_in_label->text(), "0.8 s");
   QCOMPARE(track->fadeInDuration(), 750);
+}
+
+void TestTrackSettings::testGap()
+{
+  track_settings->m_gap_spin_box->setValue(20.0);
+  QCOMPARE(track->gap(), 20.0);
+  track_settings->m_gap_max_spin_box->setValue(200.0);
+  QCOMPARE(track->maxGap(), 200.0);
+  track_settings->m_random_gap_check_box->setChecked(true);
+  QCOMPARE(track->randomGap(), true);
+  track_settings->m_random_gap_check_box->setChecked(false);
+  QCOMPARE(track->randomGap(), false);
+
+  // gap > gapMax is prevented
+  track_settings->m_gap_max_spin_box->setValue(100.0);
+  auto value = track_settings->m_gap_max_spin_box->value() + 0.1;
+  track_settings->m_gap_spin_box->setValue(value);
+  QVERIFY(track_settings->m_gap_spin_box->value() != value);
+  QCOMPARE(track_settings->m_gap_spin_box->value(), track_settings->m_gap_max_spin_box->value());
+
+  // gapMax < gap is prevented
+  track_settings->m_gap_spin_box->setValue(10.0);
+  value = track_settings->m_gap_spin_box->value() - 0.1;
+  track_settings->m_gap_max_spin_box->setValue(value);
+  QVERIFY(track_settings->m_gap_max_spin_box->value() != value);
+  QCOMPARE(track_settings->m_gap_max_spin_box->value(), track_settings->m_gap_spin_box->value());
 }
 
 QTEST_MAIN(TestTrackSettings)
