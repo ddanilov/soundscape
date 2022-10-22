@@ -20,7 +20,6 @@ Player::Player(Track* parent) :
   connect(this, &QMediaPlayer::positionChanged, this, &Player::mediaPlayerPositionChanged);
 
   m_next_player_timer->setSingleShot(true);
-  connect(m_next_player_timer, &QTimer::timeout, [this]() { m_next_media_player->playActive(true); });
 }
 
 bool Player::isReady() const
@@ -93,6 +92,7 @@ void Player::setupNextPlayer()
   if (m_next_media_player && !m_next_media_player->isReady())
   {
     m_next_media_player->setSource(source());
+    connect(m_next_player_timer, &QTimer::timeout, m_next_media_player, [this]() { m_next_media_player->playActive(true); });
   }
 }
 
