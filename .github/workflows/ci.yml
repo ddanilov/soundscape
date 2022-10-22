@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        qt-version: ['6.2.4']
+        qt-arch: [win64_msvc2019_64, win64_mingw]
+        build-type: [Release]
+    steps:
+    - uses: actions/checkout@v3
+    - name: install aqt
+      run: |
+        pip install aqtinstall
+    - name: install build tools
+      run: |
+        O_DIR=$HOME/Qt
+        echo "O_DIR=$O_DIR" >>$GITHUB_ENV
+        aqt install-tool windows desktop tools_cmake -O $O_DIR
+        CMake_BIN=$O_DIR/Tools/CMake_64/bin
+        echo "CMake_BIN=$CMake_BIN" >>$GITHUB_ENV
+        aqt install-tool windows desktop tools_ninja -O $O_DIR
+        Ninja_BIN=$O_DIR/Tools/Ninja
+        echo "Ninja_BIN=$Ninja_BIN" >>$GITHUB_ENV
+    - name: install Qt
+      run: |
+        aqt install-qt windows desktop ${{ matrix.qt-version }} ${{ matrix.qt-arch }} -m qtmultimedia -O $O_DIR
+    - name: Qt dir
+      run: |
+        Qt6_QMAKE=`find $O_DIR -name "qmake6*"`
+        echo $Qt6_QMAKE
+        Qt6_BINDIR=`dirname $Qt6_QMAKE`
+        echo $Qt6_BINDIR
+        Qt6_DIR=`dirname $Qt6_BINDIR`
+        echo $Qt6_DIR
+        QT_PLUGIN_PATH=$Qt6_DIR/plugins
+        QML2_IMPORT_PATH=$Qt6_DIR/qml
+        echo "Qt6_DIR=$Qt6_DIR" >>$GITHUB_ENV
+        echo "Qt6_BINDIR=$Qt6_BINDIR" >>$GITHUB_ENV
+        echo "QT_PLUGIN_PATH=$QT_PLUGIN_PATH" >>$GITHUB_ENV
+        echo "QML2_IMPORT_PATH=$QML2_IMPORT_PATH" >>$GITHUB_ENV
+    - name: install MinGW
+      if: matrix.qt-arch == 'win64_mingw'
+      run: |
+        aqt install-tool windows desktop tools_mingw90 -O $O_DIR
+        MinGW_BIN=$O_DIR/Tools/mingw1120_64/bin
+        echo "MinGW_BIN=$MinGW_BIN" >>$GITHUB_ENV
+    - name: install MSVC
+      if: matrix.qt-arch == 'win64_msvc2019_64'
+      uses: ilammy/msvc-dev-cmd@v1
+    - name: configure
+      run: |
+        PATH=$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
+        INSTALL_PATH=${{ github.event.repository.name }}-${GITHUB_SHA:0:8}-${{ matrix.qt-arch }}
+        echo "INSTALL_PATH=$INSTALL_PATH" >>$GITHUB_ENV
+        cmake -DCMAKE_PREFIX_PATH=$Qt6_DIR -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -GNinja -B build
+    - name: build
+      run: |
+        PATH=$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
+        cmake --build build --target install
+    - name: test
+      run: |
+        PATH=$Qt6_BINDIR:$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
+        ctest --verbose --output-on-failure --test-dir build/
+    - name: upload artefacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: '${{ env.INSTALL_PATH }}'
+        path: ${{ env.INSTALL_PATH }}/*
