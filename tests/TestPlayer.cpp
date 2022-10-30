@@ -97,6 +97,10 @@ void TestPlayer::testAudioFileBroken()
 
 void TestPlayer::testMediaFileWithoutAudio()
 {
+#if defined Q_OS_WIN
+  QSKIP("Test does not work on Windows");
+#endif
+
   Track track;
   auto* player = track.playerA();
   QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
