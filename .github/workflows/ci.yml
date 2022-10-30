@@ -70,15 +70,15 @@ jobs:
       run: |
         PATH=$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
         cmake --build build --target install
-    - name: setup audio
-      run: |
-        git clone https://github.com/LABSN/sound-ci-helpers $HOME/sound-ci-helpers
-        powershell $HOME/sound-ci-helpers/windows/setup_sound.ps1
-        net start audiosrv
-    - name: test
-      run: |
-        PATH=$Qt6_BINDIR:$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
-        ctest --verbose --output-on-failure --test-dir build/
+    # - name: setup audio
+    #   run: |
+    #     git clone https://github.com/LABSN/sound-ci-helpers $HOME/sound-ci-helpers
+    #     powershell $HOME/sound-ci-helpers/windows/setup_sound.ps1
+    #     net start audiosrv
+    # - name: test
+    #   run: |
+    #     PATH=$Qt6_BINDIR:$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
+    #     ctest --verbose --output-on-failure --test-dir build/
     - name: upload artefacts
       uses: actions/upload-artifact@v3
       with:
