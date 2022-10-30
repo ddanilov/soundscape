@@ -159,7 +159,7 @@ void TestPlayer::testNextPlayer()
   QVERIFY(player_B_state.wait());
   QVERIFY(player_B->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
   const auto t2 = QDateTime::currentDateTime();
-  QVERIFY(t1.msecsTo(t2) >= track->gap() * 1000);
+  QVERIFY(t1.msecsTo(t2) >= track->gap() * 1000 * 0.95);
 }
 
 void TestPlayer::testPlayPauseActive()
