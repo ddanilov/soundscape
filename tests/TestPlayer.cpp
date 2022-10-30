@@ -127,14 +127,16 @@ void TestPlayer::testNextPlayer()
   QVERIFY(player_B_loaded.wait());
   QCOMPARE(player_B->source(), player_A->source());
 
+  QSignalSpy player_A_state(player_A, &Player::playbackStateChanged);
+  QSignalSpy player_B_state(player_B, &Player::playbackStateChanged);
   player_A->play();
+  QVERIFY(player_A_state.wait());
+  QVERIFY(player_B_state.wait());
   QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
   QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
   QCOMPARE(track->transition(), Transition::FadeOutIn);
 
-  QSignalSpy player_A_state(player_A, &Player::playbackStateChanged);
-  QSignalSpy player_B_state(player_B, &Player::playbackStateChanged);
   player_A->mediaPlayerPositionChanged(player_A->duration());
   player_A->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
   QVERIFY(player_A_state.wait());
