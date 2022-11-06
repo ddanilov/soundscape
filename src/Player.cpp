@@ -89,10 +89,10 @@ void Player::mediaPlayerPositionChanged(qint64 position)
 
 void Player::setupNextPlayer()
 {
-  if (m_next_media_player && !m_next_media_player->isReady())
+  if (m_next_media_player)
   {
-    m_next_media_player->setSource(source());
     connect(m_next_player_timer, &QTimer::timeout, m_next_media_player, [this]() { m_next_media_player->playActive(true); });
+    if (!m_next_media_player->isReady()) { m_next_media_player->setSource(source()); }
   }
 }
 

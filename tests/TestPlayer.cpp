@@ -155,13 +155,21 @@ void TestPlayer::testNextPlayer()
   track->setGap(1.0);
   track->setRandomGap(false);
 
-  const auto t1 = QDateTime::currentDateTime();
+  const auto t1_AB = QDateTime::currentDateTime();
   player_A->mediaPlayerPositionChanged(player_A->duration());
   player_A->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
   QVERIFY(player_B_state.wait());
   QVERIFY(player_B->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
-  const auto t2 = QDateTime::currentDateTime();
-  QVERIFY(t1.msecsTo(t2) >= track->gap() * 1000 * 0.95);
+  const auto t2_AB = QDateTime::currentDateTime();
+  QVERIFY(t1_AB.msecsTo(t2_AB) >= track->gap() * 1000 * 0.95);
+
+  const auto t1_BA = QDateTime::currentDateTime();
+  player_B->mediaPlayerPositionChanged(player_B->duration());
+  player_B->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+  QVERIFY(player_A_state.wait());
+  QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+  const auto t2_BA = QDateTime::currentDateTime();
+  QVERIFY(t1_BA.msecsTo(t2_BA) >= track->gap() * 1000 * 0.95);
 }
 
 void TestPlayer::testPlayPauseActive()
