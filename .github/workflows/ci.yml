@@ -84,3 +84,21 @@ jobs:
       with:
         name: '${{ env.INSTALL_PATH }}'
         path: ${{ env.INSTALL_PATH }}/*
+    - name: release archive
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        ZIP_PATH=${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.qt-arch }}
+        ZIP_FILE=$ZIP_PATH.zip
+        echo "ZIP_FILE=$ZIP_FILE" >>$GITHUB_ENV
+        mv ${{ env.INSTALL_PATH }} $ZIP_PATH
+        7z a $ZIP_FILE $ZIP_PATH
+    - name: release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        files: |
+          ${{ env.ZIP_FILE }}
