@@ -37,6 +37,7 @@ set(SOURCES
 
 set(RESOURCES
   ${PROJECT_SOURCE_DIR}/icons/icons.qrc
+  ${PROJECT_SOURCE_DIR}/icons/win32.rc
   ${PROJECT_SOURCE_DIR}/styles/styles.qrc
 )
 
