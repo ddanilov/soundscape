@@ -43,6 +43,9 @@ MainWindow::MainWindow(QWidget* parent) :
 
 void MainWindow::addItemsToMenu(QMenu* menu) const
 {
+  auto* toggle_window = menu->addAction(tr("Toggle window"));
+  connect(toggle_window, &QAction::triggered, this, &MainWindow::windowShowOrHide);
+
   auto* pause_tracks = menu->addAction(tr("Pause playing tracks"));
   connect(pause_tracks, &QAction::triggered, this, &MainWindow::pausePlayingTracks);
 

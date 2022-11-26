@@ -359,18 +359,22 @@ void TestMainWindow::testMenu()
   MainWindow window;
 
   auto actions = window.m_tray_menu->actions();
-  QCOMPARE(actions.at(0)->text(), "Pause playing tracks");
-  QCOMPARE(actions.at(1)->text(), "Resume paused tracks");
-  QCOMPARE(actions.at(2)->text(), "Add track");
-  QCOMPARE(actions.at(3)->text(), "Save track list");
-  QCOMPARE(actions.at(4)->text(), "Load track list");
+  int index = 0;
+  QCOMPARE(actions.at(index++)->text(), "Toggle window");
+  QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
+  QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
+  QCOMPARE(actions.at(index++)->text(), "Add track");
+  QCOMPARE(actions.at(index++)->text(), "Save track list");
+  QCOMPARE(actions.at(index++)->text(), "Load track list");
 
   actions = window.m_mouse_menu->actions();
-  QCOMPARE(actions.at(0)->text(), "Pause playing tracks");
-  QCOMPARE(actions.at(1)->text(), "Resume paused tracks");
-  QCOMPARE(actions.at(2)->text(), "Add track");
-  QCOMPARE(actions.at(3)->text(), "Save track list");
-  QCOMPARE(actions.at(4)->text(), "Load track list");
+  index = 0;
+  QCOMPARE(actions.at(index++)->text(), "Toggle window");
+  QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
+  QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
+  QCOMPARE(actions.at(index++)->text(), "Add track");
+  QCOMPARE(actions.at(index++)->text(), "Save track list");
+  QCOMPARE(actions.at(index++)->text(), "Load track list");
 }
 
 QTEST_MAIN(TestMainWindow)
