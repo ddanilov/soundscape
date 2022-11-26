@@ -50,6 +50,7 @@ TrackSettings::TrackSettings(TrackControls* parent) :
 
 void TrackSettings::trackLoaded()
 {
+  setWindowTitle(QString("Soundscape: %1").arg(m_track->title()));
   setTrackProperties();
   setFade(Slider::FadeIn);
   setFade(Slider::FadeOut);

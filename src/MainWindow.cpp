@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget* parent) :
                           Qt::WindowMaximizeButtonHint |
                           Qt::WindowCloseButtonHint;
   setWindowFlags(flags);
+  setWindowTitle("Soundscape");
 
   setupTrayIcon();
   addItemsToMenu(m_tray_menu);
