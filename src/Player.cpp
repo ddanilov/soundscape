@@ -9,7 +9,6 @@ Player::Player(Track* parent) :
     m_track(parent),
     m_ready(false),
     m_active(false),
-    m_next_media_player_started(false),
     m_next_media_player(nullptr),
     m_next_player_timer(new QTimer(this))
 {
@@ -73,9 +72,13 @@ void Player::mediaPlayerStatusChanged(MediaStatus status)
   if (m_ready && status == QMediaPlayer::MediaStatus::EndOfMedia)
   {
     m_active = false;
+    if (m_track->transition() == Transition::FadeOutIn ||
+        m_track->transition() == Transition::FadeOutGapIn)
+    {
+      startNextPlayerOutIn();
+    }
     pause();
     setPosition(0);
-    m_next_media_player_started = false;
   }
 }
 
@@ -84,7 +87,7 @@ void Player::mediaPlayerPositionChanged(qint64 position)
   if (!m_active) { return; }
   const auto volume = m_track->fadeVolume(position);
   audioOutput()->setVolume(volume);
-  startNextPlayer(position);
+  startNextPlayerCrossFade(position);
 }
 
 void Player::setupNextPlayer()
@@ -96,23 +99,28 @@ void Player::setupNextPlayer()
   }
 }
 
-void Player::startNextPlayer(qint64 position)
+void Player::startNextPlayerOutIn()
 {
-  if (m_next_media_player_started) { return; }
+  if (m_next_media_player->playbackState() == QMediaPlayer::PlaybackState::PlayingState) { return; }
+  if (m_track->transition() == Transition::FadeOutGapIn)
+  {
+    m_next_player_timer->stop();
+    const auto delay = m_track->startDelay();
+    m_next_player_timer->setInterval(delay);
+    m_next_player_timer->start();
+  }
+  else
+  {
+    m_next_media_player->playActive(true);
+  }
+}
+
+void Player::startNextPlayerCrossFade(qint64 position)
+{
+  if (m_track->transition() != Transition::CrossFade) { return; }
   if (m_next_media_player->playbackState() == QMediaPlayer::PlaybackState::PlayingState) { return; }
   if (m_track->startNextPlayer(position))
   {
-    m_next_media_player_started = true;
-    if (m_track->transition() == Transition::FadeOutGapIn)
-    {
-      m_next_player_timer->stop();
-      const auto delay = m_track->startDelay();
-      m_next_player_timer->setInterval(delay);
-      m_next_player_timer->start();
-    }
-    else
-    {
-      m_next_media_player->playActive(true);
-    }
+    m_next_media_player->playActive(true);
   }
 }
