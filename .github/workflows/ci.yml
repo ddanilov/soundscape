@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['6.2.4']
+        qt-version: ['6.3.2']
         qt-arch: [win64_msvc2019_64, win64_mingw]
         build-type: [Release]
     steps:
