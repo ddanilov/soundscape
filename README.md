@@ -6,6 +6,8 @@
 desktop application to play a mix of sounds, e.g. natural sounds produced by
 animals or wind and water.
 
+![](screenshots/overview.png)
+
 ## Usage
 
 **soundscape-qt** itself comes with no sounds, however you can use example
