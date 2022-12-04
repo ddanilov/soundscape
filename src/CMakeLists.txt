@@ -1,7 +1,8 @@
-find_package(Qt6 COMPONENTS Multimedia Widgets REQUIRED)
+find_package(Qt6 6.3 COMPONENTS Multimedia Widgets REQUIRED)
+message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")
 
+qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
 
 set(HEADERS
   IconLabel.h
@@ -41,31 +42,17 @@ set(RESOURCES
   ${PROJECT_SOURCE_DIR}/styles/styles.qrc
 )
 
-add_library(${APP_LIB} STATIC
+qt_add_library(${APP_LIB} STATIC
   ${HEADERS}
   ${SOURCES}
 )
 target_link_libraries(${APP_LIB} Qt::Multimedia Qt::Widgets)
 
-add_executable(${APP_EXE} ${RESOURCES})
+qt_add_executable(${APP_EXE} WIN32 ${RESOURCES})
 target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
 
 if(WIN32)
-    get_target_property(_qmake_executable Qt::qmake IMPORTED_LOCATION)
-    get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
-    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
-
-    message(STATUS "windeploy: ${WINDEPLOYQT_EXECUTABLE}")
-    message(STATUS "install prefix: ${CMAKE_INSTALL_PREFIX}")
-
-    set(CMAKE_INSTALL_BINDIR "")
-    message(STATUS "bin dir: ${CMAKE_INSTALL_BINDIR}")
-
-    set(APP_TARGET_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
-    message(STATUS "target  dir: ${APP_TARGET_DIR}")
-
-    install(FILES ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${APP_TARGET_DIR})
-    install(FILES ${PROJECT_SOURCE_DIR}/LICENSE DESTINATION ${APP_TARGET_DIR})
-    install(TARGETS ${APP_EXE} DESTINATION ${APP_TARGET_DIR})
-    install(CODE "execute_process(COMMAND \"${WINDEPLOYQT_EXECUTABLE}\" --compiler-runtime \"${APP_TARGET_DIR}\")")
+  install(TARGETS ${APP_EXE} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  qt_generate_deploy_app_script(TARGET ${APP_EXE} FILENAME_VARIABLE deploy_script)
+  install(SCRIPT ${deploy_script})
 endif(WIN32)
