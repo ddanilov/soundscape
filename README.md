@@ -19,10 +19,15 @@ media files. Use mouse right-click in the main window or on the tray icon to
 access application menu where you can add or remove soundtracks and change their
 settings.
 
+Use the `Quit` item from the application menu to finish the application.
+Pressing the close window button will just minimize it to the tray.
+
 [Freesound](https://freesound.org/) is a good source of sounds for your own
 soundscapes.
 
 ## Installation
 
-Prebuilt binaries for Microsoft Windows are avaiable from the
+Prebuilt binaries for Microsoft Windows (built with MSVC and MinGW toolchains)
+are available from the
 [Releases page](https://github.com/ddanilov/soundscape-qt/releases).
+If you are unsure which version to download then take the MinGW.
