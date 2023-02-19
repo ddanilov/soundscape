@@ -224,31 +224,3 @@ void TrackControls::updateControls()
   m_status_control->setText(m_track->title());
   m_status_control->setToolTip(m_track->fileName());
 }
-
-Transition TrackControls::convertTransition(const Qt::CheckState state)
-{
-  switch (state)
-  {
-    case Qt::CheckState::Unchecked:
-      return Transition::FadeOutIn;
-    case Qt::CheckState::PartiallyChecked:
-      return Transition::CrossFade;
-    case Qt::CheckState::Checked:
-      return Transition::FadeOutGapIn;
-  }
-  return Transition::FadeOutIn;
-}
-
-Qt::CheckState TrackControls::convertTransition(const Transition transition)
-{
-  switch (transition)
-  {
-    case Transition::FadeOutIn:
-      return Qt::CheckState::Unchecked;
-    case Transition::CrossFade:
-      return Qt::CheckState::PartiallyChecked;
-    case Transition::FadeOutGapIn:
-      return Qt::CheckState::Checked;
-  }
-  return Qt::CheckState::Unchecked;
-}

@@ -32,6 +32,7 @@ set(SOURCES
   Track.cpp
   TrackControls.cpp
   TrackSettings.cpp
+  Transition.cpp
   TransitionIcon.cpp
   Volume.cpp
 )

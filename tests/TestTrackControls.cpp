@@ -30,7 +30,6 @@ private slots:
   void testAudioFileBroken();
   void testMenu();
   void testPauseAndResume();
-  void testConvertTransition();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -185,18 +184,6 @@ void TestTrackControls::testPauseAndResume()
   track->playerA()->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
   // player B is active, player A is not
   test_playing_state(track->playerB(), track->playerA());
-}
-
-void TestTrackControls::testConvertTransition()
-{
-  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Unchecked), Transition::FadeOutIn);
-  QCOMPARE(TrackControls::convertTransition(Transition::FadeOutIn), Qt::CheckState::Unchecked);
-
-  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::PartiallyChecked), Transition::CrossFade);
-  QCOMPARE(TrackControls::convertTransition(Transition::CrossFade), Qt::CheckState::PartiallyChecked);
-
-  QCOMPARE(TrackControls::convertTransition(Qt::CheckState::Checked), Transition::FadeOutGapIn);
-  QCOMPARE(TrackControls::convertTransition(Transition::FadeOutGapIn), Qt::CheckState::Checked);
 }
 
 QTEST_MAIN(TestTrackControls)

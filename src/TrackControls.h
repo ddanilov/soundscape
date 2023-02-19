@@ -49,9 +49,6 @@ private:
   void enableControls();
   void updateControls();
 
-  static Transition convertTransition(Qt::CheckState state);
-  static Qt::CheckState convertTransition(Transition transition);
-
   MainWindow* m_main_window;
 
   QPointer<QHBoxLayout> m_layout;

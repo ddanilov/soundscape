@@ -21,6 +21,7 @@ unit_test(TestPositionLabel.cpp)
 unit_test(TestTrack.cpp)
 unit_test(TestTrackControls.cpp)
 unit_test(TestTrackSettings.cpp)
+unit_test(TestTransition.cpp)
 
 if(GCOVR_COVERAGE_ENABLED)
   set(CTEST_COVERAGE_TARGET ctest_coverage)
