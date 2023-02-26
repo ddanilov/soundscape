@@ -32,7 +32,9 @@ TrackControls::TrackControls(const QJsonObject& json, const QDir& base_dir, Main
 
   addItemsToMenu(m_mouse_menu);
   m_mouse_menu->addSeparator();
-  m_main_window->addItemsToMenu(m_mouse_menu);
+  m_main_window->addPauseResumeItemsToMenu(m_mouse_menu);
+  m_main_window->addTrackItemsToMenu(m_mouse_menu);
+  m_main_window->addQuitItemToMenu(m_mouse_menu);
 
   connect(m_track, &Track::loaded, this, &TrackControls::trackLoaded);
   connect(m_track, &Track::errorOccurred, this, &TrackControls::playerError);

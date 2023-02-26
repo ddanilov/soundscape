@@ -358,23 +358,26 @@ void TestMainWindow::testMenu()
 {
   MainWindow window;
 
-  auto actions = window.m_tray_menu->actions();
+  auto actions = window.m_mouse_menu->actions();
   int index = 0;
-  QCOMPARE(actions.at(index++)->text(), "Toggle window");
   QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
   QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
   QCOMPARE(actions.at(index++)->text(), "Add track");
   QCOMPARE(actions.at(index++)->text(), "Save track list");
   QCOMPARE(actions.at(index++)->text(), "Load track list");
+  QCOMPARE(actions.at(index++)->text(), ""); // separator
+  QCOMPARE(actions.at(index++)->text(), "Quit");
 
-  actions = window.m_mouse_menu->actions();
+//#if !defined Q_OS_MACOS && 0
+//#if defined(Q_OS_WIN)
+  actions = window.m_tray_menu->actions();
   index = 0;
-  QCOMPARE(actions.at(index++)->text(), "Toggle window");
+  QCOMPARE(actions.at(index++)->text(), "Show window");
   QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
   QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
-  QCOMPARE(actions.at(index++)->text(), "Add track");
-  QCOMPARE(actions.at(index++)->text(), "Save track list");
-  QCOMPARE(actions.at(index++)->text(), "Load track list");
+  QCOMPARE(actions.at(index++)->text(), ""); // separator
+  QCOMPARE(actions.at(index++)->text(), "Quit");
+//#endif
 }
 
 QTEST_MAIN(TestMainWindow)

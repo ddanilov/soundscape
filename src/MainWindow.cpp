@@ -14,22 +14,29 @@
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     m_tray_icon(new QSystemTrayIcon(this)),
     m_tray_menu(new QMenu(this)),
+#endif
     m_mouse_menu(new QMenu(this)),
     m_widget(new QWidget(this)),
     m_box_layout(new QVBoxLayout(m_widget)),
     m_menu_info(new QLabel(this))
 {
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   Qt::WindowFlags flags = Qt::CustomizeWindowHint |
                           Qt::WindowMaximizeButtonHint |
                           Qt::WindowCloseButtonHint;
   setWindowFlags(flags);
+#endif
   setWindowTitle("Soundscape");
 
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   setupTrayIcon();
-  addItemsToMenu(m_tray_menu);
-  addItemsToMenu(m_mouse_menu);
+#endif
+  addPauseResumeItemsToMenu(m_mouse_menu);
+  addTrackItemsToMenu(m_mouse_menu);
+  addQuitItemToMenu(m_mouse_menu);
 
   setCentralWidget(m_widget);
 
@@ -42,17 +49,17 @@ MainWindow::MainWindow(QWidget* parent) :
   m_box_layout->addWidget(m_menu_info, 0, Qt::AlignCenter);
 }
 
-void MainWindow::addItemsToMenu(QMenu* menu) const
+void MainWindow::addPauseResumeItemsToMenu(QMenu* menu) const
 {
-  auto* toggle_window = menu->addAction(tr("Toggle window"));
-  connect(toggle_window, &QAction::triggered, this, &MainWindow::windowShowOrHide);
-
   auto* pause_tracks = menu->addAction(tr("Pause playing tracks"));
   connect(pause_tracks, &QAction::triggered, this, &MainWindow::pausePlayingTracks);
 
   auto* resume_tracks = menu->addAction(tr("Resume paused tracks"));
   connect(resume_tracks, &QAction::triggered, this, &MainWindow::resumePausedTracks);
+}
 
+void MainWindow::addTrackItemsToMenu(QMenu* menu) const
+{
   auto* add_track = menu->addAction(tr("Add track"));
   connect(add_track, &QAction::triggered, this, &MainWindow::addTrack);
 
@@ -61,28 +68,25 @@ void MainWindow::addItemsToMenu(QMenu* menu) const
 
   auto* load_track_list = menu->addAction(tr("Load track list"));
   connect(load_track_list, &QAction::triggered, this, &MainWindow::loadTrackList);
+}
 
+void MainWindow::addQuitItemToMenu(QMenu* menu)
+{
   menu->addSeparator();
 
   auto* quit_app = menu->addAction(tr("Quit"));
   connect(quit_app, &QAction::triggered, qApp, &QCoreApplication::quit);
 }
 
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason reason)
 {
-  if (reason == QSystemTrayIcon::Trigger)
-  {
-    windowShowOrHide();
-  }
+  m_tray_icon->contextMenu()->exec(QCursor::pos());
 }
+#endif
 
 void MainWindow::addTrack()
 {
-  if (isMinimized())
-  {
-    windowShowOrHide();
-  }
-
   QString file_name = QFileDialog::getOpenFileName();
   if (!file_name.isEmpty())
   {
@@ -93,18 +97,10 @@ void MainWindow::addTrack()
   {
     m_menu_info->hide();
   }
-
-  raise();
-  activateWindow();
 }
 
 void MainWindow::saveTrackList()
 {
-  if (isMinimized())
-  {
-    windowShowOrHide();
-  }
-
   QString file_name = QFileDialog::getSaveFileName();
   if (!file_name.isEmpty())
   {
@@ -120,8 +116,6 @@ void MainWindow::saveTrackList()
 
 void MainWindow::loadTrackList()
 {
-  if (isMinimized()) { windowShowOrHide(); }
-
   QString file_name = QFileDialog::getOpenFileName();
   if (!file_name.isEmpty())
   {
@@ -138,9 +132,6 @@ void MainWindow::loadTrackList()
   {
     m_menu_info->hide();
   }
-
-  raise();
-  activateWindow();
 }
 
 void MainWindow::moveTrackUp(const QString& id)
@@ -199,14 +190,16 @@ void MainWindow::resumePausedTracks()
   }
 }
 
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
   if (m_tray_icon->isVisible())
   {
-    windowShowOrHide();
+    windowHide();
     event->ignore();
   }
 }
+#endif
 
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
@@ -216,8 +209,15 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
   }
 }
 
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::setupTrayIcon()
 {
+  auto* show_window = m_tray_menu->addAction(tr("Show window"));
+  connect(show_window, &QAction::triggered, this, &MainWindow::windowShow);
+
+  addPauseResumeItemsToMenu(m_tray_menu);
+  addQuitItemToMenu(m_tray_menu);
+
   m_tray_icon->setContextMenu(m_tray_menu);
   connect(m_tray_icon, &QSystemTrayIcon::activated, this, &MainWindow::trayIconAction);
 
@@ -227,24 +227,37 @@ void MainWindow::setupTrayIcon()
 
   m_tray_icon->show();
 }
+#endif
 
-void MainWindow::windowShowOrHide()
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+void MainWindow::windowFocus()
 {
-  if (isMinimized())
-  {
-    showNormal();
-    restoreGeometry(m_old_geometry);
-    raise();
-    activateWindow();
-    setFocus();
-  }
-  else
-  {
-    m_old_geometry = saveGeometry();
-    showMinimized();
-    setVisible(false);
-  }
+  raise();
+  activateWindow();
 }
+#endif
+
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+void MainWindow::windowShow()
+{
+  showNormal();
+#if defined(Q_OS_LINUX)
+  restoreGeometry(m_old_geometry);
+#endif
+  windowFocus();
+}
+#endif
+
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+void MainWindow::windowHide()
+{
+#if defined(Q_OS_LINUX)
+  m_old_geometry = saveGeometry();
+#endif
+  showMinimized();
+  setVisible(false);
+}
+#endif
 
 void MainWindow::addTrackFromMedia(const QString& file_name)
 {
