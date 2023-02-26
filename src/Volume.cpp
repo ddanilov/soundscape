@@ -4,7 +4,7 @@
 
 Volume::Volume(QWidget* parent) :
     QDial(parent),
-    m_tool_tip(),
+    m_tool_tip_template("Volume %1%"),
     m_min_angle(40.0),
     m_max_angle(360.0 - m_min_angle)
 {
@@ -14,19 +14,13 @@ Volume::Volume(QWidget* parent) :
   setMinimum(0);
   setMaximum(100);
 
-  const auto vol = value() / static_cast<double>(maximum());
-  setVolToolTip(vol);
+  updateToolTip(value());
+  connect(this, &Volume::valueChanged, this, &Volume::updateToolTip);
 }
 
 QSize Volume::sizeHint() const
 {
   return {10, 10};
-}
-
-void Volume::setVolToolTip(double volume)
-{
-  m_tool_tip.setNum(volume, 'f', 2);
-  setToolTip(m_tool_tip);
 }
 
 void Volume::paintEvent(QPaintEvent* /*event*/)
@@ -71,4 +65,10 @@ double Volume::fraction() const
 double Volume::arcLength() const
 {
   return (m_max_angle - m_min_angle) * fraction();
+}
+
+void Volume::updateToolTip(int /*value*/)
+{
+  const auto volume = static_cast<int>(fraction() * 100);
+  setToolTip(m_tool_tip_template.arg(volume));
 }

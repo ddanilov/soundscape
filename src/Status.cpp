@@ -12,6 +12,9 @@ Status::Status(QWidget* parent) :
   m_paused_style = style_template.arg(":/icons/switch-paused.svg", ":/icons/switch-off.svg");
 
   setPlayingStyle();
+
+  updateToolTip(checkState());
+  connect(this, &Status::stateChanged, this, &Status::updateToolTip);
 }
 
 void Status::setPlayingStyle()
@@ -22,4 +25,17 @@ void Status::setPlayingStyle()
 void Status::setPausedStyle()
 {
   setStyleSheet(m_paused_style);
+}
+
+void Status::updateToolTip(int /*value*/)
+{
+  switch (checkState())
+  {
+    case Qt::CheckState::Unchecked:
+      setToolTip("paused");
+      break;
+    case Qt::CheckState::Checked:
+      setToolTip("playing");
+      break;
+  }
 }

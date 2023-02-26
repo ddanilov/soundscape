@@ -87,7 +87,6 @@ void TrackControls::volumeChanged(int value)
   const auto max = static_cast<double>(m_volume_control->maximum());
   const auto volume = val / max;
   m_track->setVolume(volume);
-  m_volume_control->setVolToolTip(volume);
 }
 
 void TrackControls::transitionChanged(int state)
@@ -126,10 +125,13 @@ void TrackControls::playerError()
     disableControls();
     updateControls();
 
-    m_transition_control->setToolTip(m_transition_control->toolTip().append(": ").append(m_track->errors().front()));
+    const auto& error = QString("[error] %1: %2").arg(m_track->fileName(), m_track->errors().front());
+    m_volume_control->setToolTip(error);
+
+    m_transition_control->setToolTip(error);
     m_transition_control->installEventFilter(this);
 
-    m_status_control->setToolTip(m_status_control->toolTip().append(": ").append(m_track->errors().front()));
+    m_status_control->setToolTip(error);
     m_status_control->installEventFilter(this);
 
     emit updated();
@@ -218,9 +220,7 @@ void TrackControls::updateControls()
   m_volume_control->setValue(val);
 
   m_transition_control->setCheckState(convertTransition(m_track->transition()));
-  m_transition_control->setToolTip(m_track->fileName());
 
   m_status_control->setChecked(m_track->isPlaying());
   m_status_control->setText(m_track->title());
-  m_status_control->setToolTip(m_track->fileName());
 }

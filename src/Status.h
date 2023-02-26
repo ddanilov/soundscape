@@ -10,6 +10,8 @@ public:
   void setPausedStyle();
 
 private:
+  void updateToolTip(int value);
+
   QString m_playing_style;
   QString m_paused_style;
 };
