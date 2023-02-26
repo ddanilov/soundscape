@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         qt-version: ['6.3.2']
-        qt-arch: [win64_msvc2019_64, win64_mingw]
+        qt-arch: [win64_mingw]
         build-type: [Release]
     steps:
     - uses: actions/checkout@v3
@@ -52,14 +52,10 @@ jobs:
         echo "QT_PLUGIN_PATH=$QT_PLUGIN_PATH" >>$GITHUB_ENV
         echo "QML2_IMPORT_PATH=$QML2_IMPORT_PATH" >>$GITHUB_ENV
     - name: install MinGW
-      if: matrix.qt-arch == 'win64_mingw'
       run: |
         aqt install-tool windows desktop tools_mingw90 -O $O_DIR
         MinGW_BIN=$O_DIR/Tools/mingw1120_64/bin
         echo "MinGW_BIN=$MinGW_BIN" >>$GITHUB_ENV
-    - name: install MSVC
-      if: matrix.qt-arch == 'win64_msvc2019_64'
-      uses: ilammy/msvc-dev-cmd@v1
     - name: configure
       run: |
         PATH=$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
@@ -70,15 +66,6 @@ jobs:
       run: |
         PATH=$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
         cmake --build build --target install
-    # - name: setup audio
-    #   run: |
-    #     git clone https://github.com/LABSN/sound-ci-helpers $HOME/sound-ci-helpers
-    #     powershell $HOME/sound-ci-helpers/windows/setup_sound.ps1
-    #     net start audiosrv
-    # - name: test
-    #   run: |
-    #     PATH=$Qt6_BINDIR:$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
-    #     ctest --verbose --output-on-failure --test-dir build/
     - name: upload artefacts
       uses: actions/upload-artifact@v3
       with:
