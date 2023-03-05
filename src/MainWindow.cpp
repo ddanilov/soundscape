@@ -14,6 +14,7 @@
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
+    m_tray_available(QSystemTrayIcon::isSystemTrayAvailable()),
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     m_tray_icon(new QSystemTrayIcon(this)),
     m_tray_menu(new QMenu(this)),
@@ -24,16 +25,11 @@ MainWindow::MainWindow(QWidget* parent) :
     m_menu_info(new QLabel(this))
 {
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-  Qt::WindowFlags flags = Qt::CustomizeWindowHint |
-                          Qt::WindowMaximizeButtonHint |
-                          Qt::WindowCloseButtonHint;
-  setWindowFlags(flags);
-#endif
-  setWindowTitle("Soundscape");
-
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   setupTrayIcon();
 #endif
+
+  setWindowTitle("Soundscape");
+
   addPauseResumeItemsToMenu(m_mouse_menu);
   addTrackItemsToMenu(m_mouse_menu);
   addQuitItemToMenu(m_mouse_menu);
@@ -193,11 +189,11 @@ void MainWindow::resumePausedTracks()
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-  if (m_tray_icon->isVisible())
-  {
-    windowHide();
-    event->ignore();
-  }
+  if (!m_tray_available) { event->accept(); }
+  if (!m_tray_icon->isVisible()) { event->accept(); }
+
+  windowHide();
+  event->ignore();
 }
 #endif
 
@@ -212,6 +208,13 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::setupTrayIcon()
 {
+  if (!m_tray_available) { return; }
+
+  Qt::WindowFlags flags = Qt::CustomizeWindowHint |
+                          Qt::WindowMaximizeButtonHint |
+                          Qt::WindowCloseButtonHint;
+  setWindowFlags(flags);
+
   auto* show_window = m_tray_menu->addAction(tr("Show window"));
   connect(show_window, &QAction::triggered, this, &MainWindow::windowShow);
 

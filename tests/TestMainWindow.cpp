@@ -368,8 +368,7 @@ void TestMainWindow::testMenu()
   QCOMPARE(actions.at(index++)->text(), ""); // separator
   QCOMPARE(actions.at(index++)->text(), "Quit");
 
-//#if !defined Q_OS_MACOS && 0
-//#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   actions = window.m_tray_menu->actions();
   index = 0;
   QCOMPARE(actions.at(index++)->text(), "Show window");
@@ -377,7 +376,7 @@ void TestMainWindow::testMenu()
   QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
   QCOMPARE(actions.at(index++)->text(), ""); // separator
   QCOMPARE(actions.at(index++)->text(), "Quit");
-//#endif
+#endif
 }
 
 QTEST_MAIN(TestMainWindow)

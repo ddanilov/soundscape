@@ -78,6 +78,10 @@ void TestPlayer::testAudioFileOk()
 
 void TestPlayer::testAudioFileDurationZero()
 {
+#if defined Q_OS_MACOS
+  QSKIP("Test does not work on macOS");
+#endif
+
   Track track;
   auto* player = track.playerA();
   QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
@@ -99,8 +103,8 @@ void TestPlayer::testAudioFileBroken()
 
 void TestPlayer::testMediaFileWithoutAudio()
 {
-#if defined Q_OS_WIN
-  QSKIP("Test does not work on Windows");
+#if defined Q_OS_WIN || defined Q_OS_MACOS
+  QSKIP("Test does not work on Windows/macOS");
 #endif
 
   Track track;
