@@ -80,8 +80,44 @@ endif()
 qt_add_executable(${APP_EXE} WIN32 MACOSX_BUNDLE ${RESOURCES} ${APP_ICON})
 target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
 
-if(WIN32)
-  install(TARGETS ${APP_EXE} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+if((CMAKE_SYSTEM_NAME MATCHES "Windows" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
+  OR (CMAKE_SYSTEM_NAME MATCHES "Darwin" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
+  OR (CMAKE_SYSTEM_NAME MATCHES "Linux" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.5))
+
+  install(TARGETS ${APP_EXE}
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+  install(FILES
+    "${PROJECT_SOURCE_DIR}/README.md"
+    "${PROJECT_SOURCE_DIR}/LICENSE"
+    DESTINATION .)
+
   qt_generate_deploy_app_script(TARGET ${APP_EXE} FILENAME_VARIABLE deploy_script)
   install(SCRIPT ${deploy_script})
-endif(WIN32)
+
+  include(InstallRequiredSystemLibraries)
+
+  find_package(Git)
+  execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_VERSION
+  )
+  string(STRIP ${GIT_VERSION} GIT_VERSION)
+  message(STATUS "git version: ${GIT_VERSION}")
+
+  set(CPACK_PACKAGE_VERSION_MAJOR "${GIT_VERSION}")
+  set(CPACK_PACKAGE_VERSION_MINOR "")
+  set(CPACK_PACKAGE_VERSION_PATCH "")
+
+  if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(CPACK_GENERATOR "ZIP")
+  elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(CPACK_GENERATOR "DragNDrop")
+  elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(CPACK_GENERATOR "TGZ")
+  endif()
+
+  include(CPack)
+
+endif()
