@@ -49,7 +49,35 @@ qt_add_library(${APP_LIB} STATIC
 )
 target_link_libraries(${APP_LIB} Qt::Multimedia Qt::Widgets)
 
-qt_add_executable(${APP_EXE} WIN32 ${RESOURCES})
+message(STATUS "system name: ${CMAKE_SYSTEM_NAME}")
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+  set(ICON_NAME "icon")
+  set(ICONSET_DIR "${ICON_NAME}.iconset")
+  set(ICON_TMP "macos_icon.svg")
+  # brew install librsvg
+  find_program(RSVG_CONVERT rsvg-convert HINTS /usr/local/bin/ REQUIRED)
+  add_custom_command(
+    OUTPUT icon.icns
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${ICONSET_DIR}
+    COMMAND cat ${PROJECT_SOURCE_DIR}/icons/icon.svg | sed -e 's/r="16"/r="12"/' > ${ICON_TMP}
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=16   --height=16   --output=${ICONSET_DIR}/icon_16x16.png
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=32   --height=32   --output=${ICONSET_DIR}/icon_32x32.png
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=64   --height=64   --output=${ICONSET_DIR}/icon_64x64.png
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=128  --height=128  --output=${ICONSET_DIR}/icon_128x128.png
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=256  --height=256  --output=${ICONSET_DIR}/icon_256x256.png
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=512  --height=512  --output=${ICONSET_DIR}/icon_512x512.png
+    COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=1024 --height=1024 --output=${ICONSET_DIR}/icon_1024x1024.png
+    COMMAND iconutil -c icns ${ICONSET_DIR}
+    DEPENDS ${PROJECT_SOURCE_DIR}/icons/icon.svg
+  )
+
+  set(APP_ICON "${ICON_NAME}.icns")
+  set(MACOSX_BUNDLE_ICON_FILE ${APP_ICON})
+  set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+endif()
+
+qt_add_executable(${APP_EXE} WIN32 MACOSX_BUNDLE ${RESOURCES} ${APP_ICON})
 target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
 
 if(WIN32)
