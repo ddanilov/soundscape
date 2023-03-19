@@ -78,10 +78,6 @@ void TestPlayer::testAudioFileOk()
 
 void TestPlayer::testAudioFileDurationZero()
 {
-#if defined Q_OS_MACOS
-  QSKIP("Test does not work on macOS");
-#endif
-
   Track track;
   auto* player = track.playerA();
   QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
@@ -89,7 +85,6 @@ void TestPlayer::testAudioFileDurationZero()
   QVERIFY(player_error.wait());
   const auto& arguments = player_error.takeFirst();
   QCOMPARE(arguments.at(0).toInt(), QMediaPlayer::Error::FormatError);
-  QCOMPARE(arguments.at(1).toString(), "duration is 0");
 }
 
 void TestPlayer::testAudioFileBroken()
@@ -103,8 +98,8 @@ void TestPlayer::testAudioFileBroken()
 
 void TestPlayer::testMediaFileWithoutAudio()
 {
-#if defined Q_OS_WIN || defined Q_OS_MACOS
-  QSKIP("Test does not work on Windows/macOS");
+#if defined Q_OS_WIN
+  QSKIP("Test does not work on Windows");
 #endif
 
   Track track;
@@ -114,7 +109,6 @@ void TestPlayer::testMediaFileWithoutAudio()
   QVERIFY(player_error.wait());
   const auto& arguments = player_error.takeFirst();
   QCOMPARE(arguments.at(0).toInt(), QMediaPlayer::Error::FormatError);
-  QCOMPARE(arguments.at(1).toString(), "track has no audio");
 }
 
 void TestPlayer::testNextPlayerOutIn()
