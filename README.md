@@ -27,7 +27,5 @@ soundscapes.
 
 ## Installation
 
-Prebuilt binaries for Microsoft Windows (built with MSVC and MinGW toolchains)
-are available from the
+Prebuilt binaries for Windows and macOS are available from the
 [Releases page](https://github.com/ddanilov/soundscape-qt/releases).
-If you are unsure which version to download then take the MinGW.
