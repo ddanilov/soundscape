@@ -75,7 +75,7 @@ void MainWindow::addQuitItemToMenu(QMenu* menu)
 }
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason reason)
+void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason /*reason*/)
 {
   m_tray_icon->contextMenu()->exec(QCursor::pos());
 }
@@ -88,11 +88,6 @@ void MainWindow::addTrack()
   {
     addTrackFromMedia(file_name);
   }
-
-  if (m_box_layout->count() > 1)
-  {
-    m_menu_info->hide();
-  }
 }
 
 void MainWindow::saveTrackList()
@@ -101,11 +96,6 @@ void MainWindow::saveTrackList()
   if (!file_name.isEmpty())
   {
     QFile file(file_name);
-    if (!file.open(QIODevice::WriteOnly))
-    {
-      qWarning("couldn't open file");
-      return;
-    }
     saveTracksToJson(file);
   }
 }
@@ -116,17 +106,7 @@ void MainWindow::loadTrackList()
   if (!file_name.isEmpty())
   {
     QFile file(file_name);
-    if (!file.open(QIODevice::ReadOnly))
-    {
-      qWarning("couldn't open file.");
-      return;
-    }
     loadTracksFromJson(file);
-  }
-
-  if (m_box_layout->count() > 1)
-  {
-    m_menu_info->hide();
   }
 }
 
@@ -268,10 +248,17 @@ void MainWindow::addTrackFromMedia(const QString& file_name)
   json[JsonRW::FileNameTag] = file_name;
   auto* track = new TrackControls(json, QDir(), this);
   m_box_layout->addWidget(track);
+  m_menu_info->hide();
 }
 
 void MainWindow::saveTracksToJson(QFile& file)
 {
+  if (!file.open(QIODevice::WriteOnly))
+  {
+    qWarning("couldn't open file");
+    return;
+  }
+
   const QFileInfo file_info(file.fileName());
   const auto& base_dir = file_info.dir();
   QJsonObject data;
@@ -287,6 +274,12 @@ void MainWindow::saveTracksToJson(QFile& file)
 
 void MainWindow::loadTracksFromJson(QFile& file)
 {
+  if (!file.open(QIODevice::ReadOnly))
+  {
+    qWarning("couldn't open file.");
+    return;
+  }
+
   QFileInfo file_info(file.fileName());
   const auto& base_dir = file_info.dir();
 
@@ -301,5 +294,10 @@ void MainWindow::loadTracksFromJson(QFile& file)
       auto* track = new TrackControls(jdata.toObject(), base_dir, this);
       m_box_layout->addWidget(track);
     }
+  }
+
+  if (m_box_layout->count() > 1)
+  {
+    m_menu_info->hide();
   }
 }
