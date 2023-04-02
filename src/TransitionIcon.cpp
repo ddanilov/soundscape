@@ -10,7 +10,15 @@ TransitionIcon::TransitionIcon(QWidget* parent) :
 {
   QFile file(":/styles/transition-icon.css");
   file.open(QIODevice::ReadOnly);
-  const QString style = QString(file.readAll()).arg(":/icons/fade-out-in.svg", ":/icons/cross-fade.svg", ":/icons/fade-gap.svg");
+  QString style = QString(file.readAll()).arg(":/icons/fade-out-in.svg", ":/icons/cross-fade.svg", ":/icons/fade-gap.svg");
+
+  const auto p = fontInfo().pixelSize();
+  const auto h = static_cast<int>(2.0 * p);
+  const auto w = 2 * h;
+
+  qDebug() << w << h;
+  style.append(QString("QCheckBox::indicator {width: %1; height: %2; }").arg(w).arg(h));
+  qDebug() << style;
   setStyleSheet(style);
 
   updateToolTip(checkState());

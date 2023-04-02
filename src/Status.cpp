@@ -11,6 +11,16 @@ Status::Status(QWidget* parent) :
   m_playing_style = style_template.arg(":/icons/switch-on.svg", ":/icons/switch-off.svg");
   m_paused_style = style_template.arg(":/icons/switch-paused.svg", ":/icons/switch-off.svg");
 
+  const auto p = fontInfo().pixelSize();
+  const auto h = static_cast<int>(2.0 * p);
+  const auto w = 2 * h;
+
+  m_playing_style.append(QString("QCheckBox::indicator {width: %1; height: %2; }").arg(w).arg(h));
+  m_paused_style.append(QString("QCheckBox::indicator {width: %1; height: %2; }").arg(w).arg(h));
+
+  qDebug() << m_playing_style;
+  qDebug() << m_paused_style;
+
   setPlayingStyle();
 
   updateToolTip(checkState());
