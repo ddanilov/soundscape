@@ -1,0 +1,37 @@
+{
+    "tracks": [
+        {
+            "fadeInDuration": 5000,
+            "fadeOutDuration": 5000,
+            "fileName": "615519_river.mp3",
+            "gap": 30,
+            "gapMax": 60,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 0.5
+        },
+        {
+            "fadeInDuration": 5000,
+            "fadeOutDuration": 5000,
+            "fileName": "620193_river.mp3",
+            "gap": 10,
+            "gapMax": 300,
+            "playing": true,
+            "randomGap": false,
+            "transition": 1,
+            "volume": 0.5
+        },
+        {
+            "fadeInDuration": 5000,
+            "fadeOutDuration": 5000,
+            "fileName": "620288_river.mp3",
+            "gap": 10,
+            "gapMax": 300,
+            "playing": true,
+            "randomGap": false,
+            "transition": 1,
+            "volume": 0.5
+        }
+    ]
+}

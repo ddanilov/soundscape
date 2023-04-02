@@ -1,0 +1,70 @@
+{
+    "tracks": [
+        {
+            "fadeInDuration": 2000,
+            "fadeOutDuration": 2000,
+            "fileName": "2519_rain.mp3",
+            "gap": 0,
+            "gapMax": 15,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 0.5
+        },
+        {
+            "fadeInDuration": 2000,
+            "fadeOutDuration": 2000,
+            "fileName": "2520_rain.mp3",
+            "gap": 0,
+            "gapMax": 15,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 0.5
+        },
+        {
+            "fadeInDuration": 2000,
+            "fadeOutDuration": 2000,
+            "fileName": "2522_rain.mp3",
+            "gap": 0,
+            "gapMax": 15,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 0.5
+        },
+        {
+            "fadeInDuration": 1000,
+            "fadeOutDuration": 1000,
+            "fileName": "2524_thunder.mp3",
+            "gap": 30,
+            "gapMax": 300,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 1
+        },
+        {
+            "fadeInDuration": 1000,
+            "fadeOutDuration": 1000,
+            "fileName": "2525_thunder.mp3",
+            "gap": 30,
+            "gapMax": 300,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 1
+        },
+        {
+            "fadeInDuration": 1000,
+            "fadeOutDuration": 5000,
+            "fileName": "2528_thunder.mp3",
+            "gap": 300,
+            "gapMax": 900,
+            "playing": true,
+            "randomGap": true,
+            "transition": 2,
+            "volume": 1
+        }
+    ]
+}

@@ -365,6 +365,7 @@ void TestMainWindow::testMenu()
   QCOMPARE(actions.at(index++)->text(), "Add track");
   QCOMPARE(actions.at(index++)->text(), "Save track list");
   QCOMPARE(actions.at(index++)->text(), "Load track list");
+  QCOMPARE(actions.at(index++)->text(), "Examples");
   QCOMPARE(actions.at(index++)->text(), ""); // separator
   QCOMPARE(actions.at(index++)->text(), "Quit");
 

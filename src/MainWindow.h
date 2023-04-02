@@ -28,6 +28,10 @@ public slots:
   void saveTrackList();
   void loadTrackList();
 
+  void loadExample(const QString& name);
+  void loadExampleRain();
+  void loadExampleRiver();
+
   void moveTrackUp(const QString& id);
   void moveTrackDown(const QString& id);
   void removeTrack(const QString& id);

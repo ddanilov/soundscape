@@ -88,13 +88,22 @@ if((CMAKE_SYSTEM_NAME MATCHES "Windows" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.
     BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+  set(RESOURCES_DIR ".")
+  if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(RESOURCES_DIR "${APP_EXE}.app/Contents/Resources")
+  endif()
+
   install(FILES
     "${PROJECT_SOURCE_DIR}/README.md"
     "${PROJECT_SOURCE_DIR}/LICENSE"
-    DESTINATION .)
+    DESTINATION ${RESOURCES_DIR})
 
   qt_generate_deploy_app_script(TARGET ${APP_EXE} FILENAME_VARIABLE deploy_script)
   install(SCRIPT ${deploy_script})
+
+  install(DIRECTORY
+    "${PROJECT_SOURCE_DIR}/examples"
+    DESTINATION ${RESOURCES_DIR})
 
   include(InstallRequiredSystemLibraries)
 

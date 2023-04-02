@@ -64,6 +64,15 @@ void MainWindow::addTrackItemsToMenu(QMenu* menu) const
 
   auto* load_track_list = menu->addAction(tr("Load track list"));
   connect(load_track_list, &QAction::triggered, this, &MainWindow::loadTrackList);
+
+  auto* example_menu = new QMenu(tr("Examples"));
+  menu->addMenu(example_menu);
+
+  auto* example_rain = example_menu->addAction(tr("Rain and Thunder"));
+  connect(example_rain, &QAction::triggered, this, &MainWindow::loadExampleRain);
+
+  auto* example_river = example_menu->addAction(tr("River"));
+  connect(example_river, &QAction::triggered, this, &MainWindow::loadExampleRiver);
 }
 
 void MainWindow::addQuitItemToMenu(QMenu* menu)
@@ -108,6 +117,30 @@ void MainWindow::loadTrackList()
     QFile file(file_name);
     loadTracksFromJson(file);
   }
+}
+
+void MainWindow::loadExample(const QString& name)
+{
+  const auto& app_dir = QDir(QCoreApplication::applicationDirPath());
+  QString file_name("..");
+#if defined Q_OS_MACOS
+  file_name.append("/Resources");
+#endif
+  file_name.append("/examples/");
+  file_name.append(name);
+  file_name = QDir::cleanPath(app_dir.absoluteFilePath(file_name));
+  QFile file(file_name);
+  loadTracksFromJson(file);
+}
+
+void MainWindow::loadExampleRain()
+{
+  loadExample("rain_and_thunder/rain_and_thunder.json");
+}
+
+void MainWindow::loadExampleRiver()
+{
+  loadExample("river/river.json");
 }
 
 void MainWindow::moveTrackUp(const QString& id)
