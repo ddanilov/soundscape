@@ -2,7 +2,6 @@
 
 #include "Transition.h"
 
-#include <QDebug>
 #include <QFile>
 
 TransitionIcon::TransitionIcon(QWidget* parent) :
@@ -16,9 +15,7 @@ TransitionIcon::TransitionIcon(QWidget* parent) :
   const auto h = static_cast<int>(2.0 * p);
   const auto w = 2 * h;
 
-  qDebug() << w << h;
   style.append(QString("QCheckBox::indicator {width: %1; height: %2; }").arg(w).arg(h));
-  qDebug() << style;
   setStyleSheet(style);
 
   updateToolTip(checkState());

@@ -18,9 +18,6 @@ Status::Status(QWidget* parent) :
   m_playing_style.append(QString("QCheckBox::indicator {width: %1; height: %2; }").arg(w).arg(h));
   m_paused_style.append(QString("QCheckBox::indicator {width: %1; height: %2; }").arg(w).arg(h));
 
-  qDebug() << m_playing_style;
-  qDebug() << m_paused_style;
-
   setPlayingStyle();
 
   updateToolTip(checkState());
