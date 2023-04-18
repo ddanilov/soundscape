@@ -57,8 +57,8 @@ private:
   void saveTracksToJson(QFile& file);
   void loadTracksFromJson(QFile& file);
 
-  bool m_tray_available;
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+  bool m_tray_available;
   QPointer<QSystemTrayIcon> m_tray_icon;
   QPointer<QMenu> m_tray_menu;
 #endif

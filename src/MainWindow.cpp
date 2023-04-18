@@ -14,8 +14,8 @@
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    m_tray_available(QSystemTrayIcon::isSystemTrayAvailable()),
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+    m_tray_available(QSystemTrayIcon::isSystemTrayAvailable()),
     m_tray_icon(new QSystemTrayIcon(this)),
     m_tray_menu(new QMenu(this)),
 #endif
@@ -202,7 +202,12 @@ void MainWindow::resumePausedTracks()
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-  if (!m_tray_available) { event->accept(); }
+  if (!m_tray_available)
+  {
+    event->accept();
+    return;
+  }
+
   if (!m_tray_icon->isVisible()) { event->accept(); }
 
   windowHide();
