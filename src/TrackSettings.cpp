@@ -6,6 +6,7 @@
 #include "PositionSlider.h"
 #include "Track.h"
 #include "TrackControls.h"
+#include "Version.h"
 
 TrackSettings::TrackSettings(TrackControls* parent) :
     QDialog(parent),
@@ -50,7 +51,7 @@ TrackSettings::TrackSettings(TrackControls* parent) :
 
 void TrackSettings::trackLoaded()
 {
-  setWindowTitle(QString("Soundscape: %1").arg(m_track->title()));
+  setWindowTitle(QString("%1: %2").arg(APP_TITLE, m_track->title()));
   setTrackProperties();
   setFade(Slider::FadeIn);
   setFade(Slider::FadeOut);

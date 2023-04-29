@@ -17,7 +17,7 @@ public:
   explicit MainWindow(QWidget* parent = nullptr);
   void addPauseResumeItemsToMenu(QMenu* menu) const;
   void addTrackItemsToMenu(QMenu* menu) const;
-  static void addQuitItemToMenu(QMenu* menu);
+  void addQuitItemToMenu(QMenu* menu) const;
 
 public slots:
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
@@ -56,6 +56,8 @@ private:
   void addTrackFromMedia(const QString& file_name);
   void saveTracksToJson(QFile& file);
   void loadTracksFromJson(QFile& file);
+
+  void showAbout();
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   bool m_tray_available;

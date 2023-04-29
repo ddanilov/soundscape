@@ -18,6 +18,8 @@ set(HEADERS
   Transition.h
   TransitionIcon.h
   Volume.h
+  #
+  Version.h.in
 )
 
 set(SOURCES
@@ -48,6 +50,9 @@ qt_add_library(${APP_LIB} STATIC
   ${SOURCES}
 )
 target_link_libraries(${APP_LIB} Qt::Multimedia Qt::Widgets)
+
+configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+target_include_directories(${APP_LIB} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 
 message(STATUS "system name: ${CMAKE_SYSTEM_NAME}")
 
@@ -106,14 +111,6 @@ if((CMAKE_SYSTEM_NAME MATCHES "Windows" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.
     DESTINATION ${RESOURCES_DIR})
 
   include(InstallRequiredSystemLibraries)
-
-  find_package(Git)
-  execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_VERSION
-  )
-  string(STRIP ${GIT_VERSION} GIT_VERSION)
-  message(STATUS "git version: ${GIT_VERSION}")
 
   set(CPACK_PACKAGE_VERSION_MAJOR "${GIT_VERSION}")
   set(CPACK_PACKAGE_VERSION_MINOR "")

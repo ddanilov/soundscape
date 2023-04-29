@@ -3,6 +3,7 @@
 #include "JsonRW.h"
 #include "Track.h"
 #include "TrackControls.h"
+#include "Version.h"
 
 #include <QCloseEvent>
 #include <QCoreApplication>
@@ -11,6 +12,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMenu>
+#include <QMenuBar>
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -29,7 +31,7 @@ MainWindow::MainWindow(QWidget* parent) :
   setupTrayIcon();
 #endif
 
-  setWindowTitle("Soundscape");
+  setWindowTitle(tr(APP_TITLE));
 
   addPauseResumeItemsToMenu(m_mouse_menu);
   addTrackItemsToMenu(m_mouse_menu);
@@ -44,6 +46,13 @@ MainWindow::MainWindow(QWidget* parent) :
   m_menu_info->setText("Use mouse right-click\n"
                        "to access application menu");
   m_box_layout->addWidget(m_menu_info, 0, Qt::AlignCenter);
+
+#if defined(Q_OS_MACOS)
+  auto* menu_bar = new QMenuBar(nullptr);
+  auto* about_menu = menu_bar->addMenu(tr("About"));
+  auto* about_action = about_menu->addAction(tr("About"));
+  connect(about_action, &QAction::triggered, this, &MainWindow::showAbout);
+#endif
 }
 
 void MainWindow::addPauseResumeItemsToMenu(QMenu* menu) const
@@ -76,9 +85,14 @@ void MainWindow::addTrackItemsToMenu(QMenu* menu) const
   connect(example_river, &QAction::triggered, this, &MainWindow::loadExampleRiver);
 }
 
-void MainWindow::addQuitItemToMenu(QMenu* menu)
+void MainWindow::addQuitItemToMenu(QMenu* menu) const
 {
   menu->addSeparator();
+
+#if !defined(Q_OS_MACOS)
+  auto* about_app = menu->addAction(tr("About"));
+  connect(about_app, &QAction::triggered, this, &MainWindow::showAbout);
+#endif
 
   auto* quit_app = menu->addAction(tr("Quit"));
   connect(quit_app, &QAction::triggered, qApp, &QCoreApplication::quit);
@@ -343,4 +357,24 @@ void MainWindow::loadTracksFromJson(QFile& file)
   {
     m_menu_info->hide();
   }
+}
+
+void MainWindow::showAbout()
+{
+  QString info;
+  info.append("<h3>" + tr(APP_TITLE) + "</h3>" + "\n");
+  info.append("<h4>" + tr("Version: %1").arg(GIT_VERSION) + "</h4>" + "\n");
+
+  info.append(tr("open-source system-tray resident desktop application for playing soundscapes") + "<br>" + "\n");
+  info.append("<br>");
+
+  info.append(tr(R"(Website: <a href="%1">%1</a>)").arg(WEB_SITE) + "<br>" + "\n");
+  info.append(tr("Copyright: © 2022-2023 Denis Danilov") + "<br>" + "\n");
+  info.append(tr("License: GNU General Public License (GPL) version 3") + "<br>" + "\n");
+  info.append("<br>");
+
+  info.append(tr("Qt Version: %1").arg(qVersion()) + "\n");
+  info.append("<br>");
+
+  QMessageBox::about(this, tr("About") + " " + tr(APP_TITLE), info);
 }

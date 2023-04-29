@@ -1,0 +1,5 @@
+#pragma once
+
+#cmakedefine APP_TITLE "@APP_TITLE@"
+#cmakedefine GIT_VERSION "@GIT_VERSION@"
+#cmakedefine WEB_SITE "@WEB_SITE@"

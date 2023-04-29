@@ -379,6 +379,9 @@ void TestMainWindow::testMenu()
   QCOMPARE(actions.at(index++)->text(), "Load track list");
   QCOMPARE(actions.at(index++)->text(), "Examples");
   QCOMPARE(actions.at(index++)->text(), ""); // separator
+#if !defined(Q_OS_MACOS)
+  QCOMPARE(actions.at(index++)->text(), "About");
+#endif
   QCOMPARE(actions.at(index++)->text(), "Quit");
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
@@ -388,6 +391,7 @@ void TestMainWindow::testMenu()
   QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
   QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
   QCOMPARE(actions.at(index++)->text(), ""); // separator
+  QCOMPARE(actions.at(index++)->text(), "About");
   QCOMPARE(actions.at(index++)->text(), "Quit");
 #endif
 }
