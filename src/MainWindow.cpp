@@ -11,6 +11,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMenu>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -293,7 +294,9 @@ void MainWindow::saveTracksToJson(QFile& file)
 {
   if (!file.open(QIODevice::WriteOnly))
   {
-    qWarning("couldn't open file");
+    const auto& title = tr("Save Tracks");
+    const auto& message = tr("couldn't open file: %1").arg(file.fileName());
+    QMessageBox::warning(this, title, message);
     return;
   }
 
@@ -314,7 +317,9 @@ void MainWindow::loadTracksFromJson(QFile& file)
 {
   if (!file.open(QIODevice::ReadOnly))
   {
-    qWarning("couldn't open file.");
+    const auto& title = tr("Load Tracks");
+    const auto& message = tr("couldn't open file: %1").arg(file.fileName());
+    QMessageBox::warning(this, title, message);
     return;
   }
 
