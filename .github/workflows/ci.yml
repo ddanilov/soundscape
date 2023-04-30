@@ -21,6 +21,8 @@ jobs:
         build-type: [Release]
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: install aqt
       run: |
         pip3 install aqtinstall==2.2.3
@@ -86,6 +88,8 @@ jobs:
         build-type: [Release]
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: install aqt
       run: |
         pip3 install aqtinstall==2.2.3
@@ -142,6 +146,8 @@ jobs:
         build-type: [Release]
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: install aqt
       run: |
         pip3 install aqtinstall==2.2.3
