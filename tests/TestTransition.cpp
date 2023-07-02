@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2023 Denis Danilov
+// SPDX-License-Identifier: GPL-3.0-only
+
 #include "Transition.h"
 
 #include <QTest>

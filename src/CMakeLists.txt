@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+# SPDX-License-Identifier: GPL-3.0-only
+
 find_package(Qt6 6.3 COMPONENTS Multimedia Widgets REQUIRED)
 message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")
 

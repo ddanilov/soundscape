@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Denis Danilov
+# SPDX-License-Identifier: GPL-3.0-only
+
 find_program(GCOVR gcovr)
 
 set(GCOVR_COVERAGE_ENABLED OFF)
