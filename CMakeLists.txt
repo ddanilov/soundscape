@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-project(soundscape-qt LANGUAGES CXX)
+project(soundscape LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,7 +17,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(ClangFormat)
 include(CodeCoverage)
 
-set(WEB_SITE "https://github.com/ddanilov/soundscape-qt")
+set(WEB_SITE "https://github.com/ddanilov/soundscape")
 
 set(APP_TITLE "Soundscape")
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")

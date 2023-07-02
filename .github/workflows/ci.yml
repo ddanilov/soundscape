@@ -71,7 +71,7 @@ jobs:
     - name: upload artefacts
       uses: actions/upload-artifact@v3
       with:
-        path: ${{ env.BUILD_DIR }}/soundscape-qt-*
+        path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
@@ -80,7 +80,7 @@ jobs:
         name: ${{ github.ref_name }}
         draft: false
         prerelease: false
-        files: ${{ env.BUILD_DIR }}/soundscape-qt-*
+        files: ${{ env.BUILD_DIR }}/soundscape-*
 
   macos:
     runs-on: macos-12
@@ -126,7 +126,7 @@ jobs:
     - name: upload artefacts
       uses: actions/upload-artifact@v3
       with:
-        path: ${{ env.BUILD_DIR }}/soundscape-qt-*
+        path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: test
       run: |
         ctest --output-on-failure --test-dir $BUILD_DIR
@@ -138,7 +138,7 @@ jobs:
         name: ${{ github.ref_name }}
         draft: false
         prerelease: false
-        files: ${{ env.BUILD_DIR }}/soundscape-qt-*
+        files: ${{ env.BUILD_DIR }}/soundscape-*
 
   linux:
     runs-on: ubuntu-20.04
@@ -186,7 +186,7 @@ jobs:
     - name: upload artefacts
       uses: actions/upload-artifact@v3
       with:
-        path: ${{ env.BUILD_DIR }}/soundscape-qt-*
+        path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
@@ -195,4 +195,4 @@ jobs:
         name: ${{ github.ref_name }}
         draft: false
         prerelease: false
-        files: ${{ env.BUILD_DIR }}/soundscape-qt-*
+        files: ${{ env.BUILD_DIR }}/soundscape-*
