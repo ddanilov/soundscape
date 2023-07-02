@@ -1,8 +1,8 @@
 # Soundscape
 
-[![GitHub release](https://img.shields.io/github/release/ddanilov/soundscape-qt)](https://github.com/ddanilov/soundscape-qt/releases/)
+[![GitHub release](https://img.shields.io/github/release/ddanilov/soundscape)](https://github.com/ddanilov/soundscape/releases/)
 
-[**Soundscape**](https://github.com/ddanilov/soundscape-qt) is an open-source
+[**Soundscape**](https://github.com/ddanilov/soundscape) is an open-source
 system-tray resident desktop application for playing a mix of sounds, e.g.
 natural sounds by animals or wind and water.
 
@@ -24,7 +24,7 @@ soundscapes.
 ## Installation
 
 Prebuilt binaries for Windows, macOS and Linux are available from the
-[Releases page](https://github.com/ddanilov/soundscape-qt/releases).
+[Releases page](https://github.com/ddanilov/soundscape/releases).
 
 On Linux you may need to install additional packages in order to run the
 application. Most likely XCB util-cursor module is missing. On Debian-based
@@ -36,7 +36,7 @@ on openSUSE with
 
     sudo zypper install libxcb-cursor0
 
-and on RedHat-based sytems with
+and on RedHat-based systems with
 
     sudo dnf install xcb-util-cursor
 
