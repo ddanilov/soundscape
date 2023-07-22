@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Soundscape
+Icon=soundscape
+Exec=soundscape
+Terminal=false
+Categories=Audio;Player;AudioVideo;
+Keywords=Sound;Audio;Player;
+X-Desktop-File-Install-Version=0.26

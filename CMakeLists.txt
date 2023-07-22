@@ -40,5 +40,9 @@ set(APP_EXE ${APP_NAME})
 
 add_subdirectory(src)
 
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  add_subdirectory(linux)
+endif()
+
 enable_testing(TRUE)
 add_subdirectory(tests)
