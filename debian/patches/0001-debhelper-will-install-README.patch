@@ -1,0 +1,24 @@
+From: Denis Danilov <ddanilov@users.noreply.github.com>
+Date: Sun, 23 Jul 2023 18:15:25 +0200
+Subject: debhelper will install README
+
+---
+ src/CMakeLists.txt | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index fbcafce..70f1daf 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -127,7 +127,7 @@ configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+ target_include_directories(${APP_LIB} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+ 
+ install(DIRECTORY "${PROJECT_SOURCE_DIR}/examples" TYPE DATA)
+-install(FILES
+-  "${PROJECT_SOURCE_DIR}/README.md"
+-  "${PROJECT_SOURCE_DIR}/LICENSE"
+-  TYPE DOC)
++# install(FILES
++#   "${PROJECT_SOURCE_DIR}/README.md"
++#   "${PROJECT_SOURCE_DIR}/LICENSE"
++#   TYPE DOC)
