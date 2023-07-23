@@ -27,13 +27,18 @@ else()
 endif()
 message(STATUS "application name: ${APP_NAME}")
 
-find_package(Git)
-execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-  OUTPUT_VARIABLE GIT_VERSION
-)
-string(STRIP ${GIT_VERSION} GIT_VERSION)
-message(STATUS "git version: ${GIT_VERSION}")
+if(NOT DEFINED APP_VERSION)
+  find_package(Git)
+  if(Git_FOUND)
+    execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
+      WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+      OUTPUT_VARIABLE APP_VERSION)
+  elseif()
+    set(APP_VERSION "unknown")
+  endif()
+endif()
+string(STRIP ${APP_VERSION} APP_VERSION)
+message(STATUS "version: ${APP_VERSION}")
 
 set(APP_LIB ${APP_NAME}-lib)
 set(APP_EXE ${APP_NAME})

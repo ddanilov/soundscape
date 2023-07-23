@@ -366,7 +366,7 @@ void MainWindow::showAbout()
 {
   QString info;
   info.append("<h3>" + tr(APP_TITLE) + "</h3>" + "\n");
-  info.append("<h4>" + tr("Version: %1").arg(GIT_VERSION) + "</h4>" + "\n");
+  info.append("<h4>" + tr("Version: %1").arg(APP_VERSION) + "</h4>" + "\n");
 
   info.append(tr("open-source system-tray resident desktop application for playing soundscapes") + "<br>" + "\n");
   info.append("<br>");
