@@ -54,9 +54,6 @@ qt_add_library(${APP_LIB} STATIC
 )
 target_link_libraries(${APP_LIB} Qt::Multimedia Qt::Widgets)
 
-configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
-target_include_directories(${APP_LIB} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
-
 message(STATUS "system name: ${CMAKE_SYSTEM_NAME}")
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -88,45 +85,49 @@ endif()
 qt_add_executable(${APP_EXE} WIN32 MACOSX_BUNDLE ${RESOURCES} ${APP_ICON})
 target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
 
-if((CMAKE_SYSTEM_NAME MATCHES "Windows" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
-  OR (CMAKE_SYSTEM_NAME MATCHES "Darwin" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
-  OR (CMAKE_SYSTEM_NAME MATCHES "Linux" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.5))
+install(TARGETS ${APP_EXE} RUNTIME BUNDLE DESTINATION ".")
 
-  install(TARGETS ${APP_EXE}
-    BUNDLE DESTINATION .
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATADIR}/${APP_NAME}")
 
-  set(RESOURCES_DIR ".")
-  if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-    set(RESOURCES_DIR "${APP_EXE}.app/Contents/Resources")
+if(WITH_DEPLOY_SCRIPT)
+  if((CMAKE_SYSTEM_NAME MATCHES "Windows" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
+    OR (CMAKE_SYSTEM_NAME MATCHES "Darwin" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
+    OR (CMAKE_SYSTEM_NAME MATCHES "Linux" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.5))
+
+    set(CMAKE_INSTALL_DATADIR ".")
+    if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+      set(CMAKE_INSTALL_DATADIR "${APP_NAME}.app/Contents/Resources")
+    endif()
+    set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATADIR})
+
+    qt_generate_deploy_app_script(TARGET ${APP_EXE} FILENAME_VARIABLE deploy_script)
+    install(SCRIPT ${deploy_script})
+
+    include(InstallRequiredSystemLibraries)
+
+    set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION}")
+    set(CPACK_PACKAGE_VERSION_MINOR "")
+    set(CPACK_PACKAGE_VERSION_PATCH "")
+
+    if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+      set(CPACK_GENERATOR "ZIP")
+    elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+      set(CPACK_GENERATOR "DragNDrop")
+    elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+      set(CPACK_GENERATOR "TGZ")
+    endif()
+
+    include(CPack)
+
   endif()
-
-  install(FILES
-    "${PROJECT_SOURCE_DIR}/README.md"
-    "${PROJECT_SOURCE_DIR}/LICENSE"
-    DESTINATION ${RESOURCES_DIR})
-
-  qt_generate_deploy_app_script(TARGET ${APP_EXE} FILENAME_VARIABLE deploy_script)
-  install(SCRIPT ${deploy_script})
-
-  install(DIRECTORY
-    "${PROJECT_SOURCE_DIR}/examples"
-    DESTINATION ${RESOURCES_DIR})
-
-  include(InstallRequiredSystemLibraries)
-
-  set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION}")
-  set(CPACK_PACKAGE_VERSION_MINOR "")
-  set(CPACK_PACKAGE_VERSION_PATCH "")
-
-  if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-    set(CPACK_GENERATOR "ZIP")
-  elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-    set(CPACK_GENERATOR "DragNDrop")
-  elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-    set(CPACK_GENERATOR "TGZ")
-  endif()
-
-  include(CPack)
-
 endif()
+
+message(STATUS "data dir: ${CMAKE_INSTALL_DATADIR}")
+configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+target_include_directories(${APP_LIB} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/examples" TYPE DATA)
+install(FILES
+  "${PROJECT_SOURCE_DIR}/README.md"
+  "${PROJECT_SOURCE_DIR}/LICENSE"
+  TYPE DOC)

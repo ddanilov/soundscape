@@ -140,9 +140,11 @@ void MainWindow::loadTrackList()
 void MainWindow::loadExample(const QString& name)
 {
   const auto& app_dir = QDir(QCoreApplication::applicationDirPath());
-  QString file_name("..");
+  QString file_name("../");
 #if defined Q_OS_MACOS
-  file_name.append("/Resources");
+  file_name.append("Resources");
+#else
+  file_name.append(CMAKE_INSTALL_DATADIR);
 #endif
   file_name.append("/examples/");
   file_name.append(name);

@@ -6,3 +6,5 @@
 #cmakedefine APP_TITLE "@APP_TITLE@"
 #cmakedefine APP_VERSION "@APP_VERSION@"
 #cmakedefine WEB_SITE "@WEB_SITE@"
+
+#cmakedefine CMAKE_INSTALL_DATADIR "@CMAKE_INSTALL_DATADIR@"
