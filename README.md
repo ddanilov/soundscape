@@ -23,11 +23,26 @@ soundscapes.
 
 ## Installation
 
+### Linux distributions
+
+Packages for some Linux distributions are available.
+
+**Ubuntu** users can install the application from PPA repository
+`ppa:ddanilov/soundscape`, see
+<https://launchpad.net/~ddanilov/+archive/ubuntu/soundscape> for
+details.
+
+**Debian**, **openSUSE** and **Fedora** packages can be installed from
+download page of `home:danilov:soundscape` OBS project, see
+<https://software.opensuse.org/download/package?package=soundscape&project=home:danilov:soundscape>.
+
+### Prebuilt binaries
+
 Prebuilt binaries for Windows, macOS and Linux are available from the
 [Releases page](https://github.com/ddanilov/soundscape/releases).
 
 On Linux you may need to install additional packages in order to run the
-application. Most likely XCB util-cursor module is missing. On Debian-based
+prebuilt binary. Most likely XCB util-cursor module is missing. On Debian-based
 systems you can install it with
 
     sudo apt-get install libxcb-cursor0
