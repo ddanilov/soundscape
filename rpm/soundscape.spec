@@ -16,6 +16,15 @@ BuildRequires:  pkgconfig(Qt6Multimedia)
 BuildRequires:  pkgconfig(Qt6Test)
 BuildRequires:  pkgconfig(Qt6Widgets)
 
+%if 0%{?suse_version}
+Requires:       qt6-multimedia
+Requires:       libQt6Svg6
+%endif
+
+%if %{defined fedora}
+Requires:       qt6-qtsvg
+%endif
+
 %description
 Soundscape is an open-source system-tray resident desktop application
 for playing a mix of sounds, e.g. natural sounds by animals or wind
