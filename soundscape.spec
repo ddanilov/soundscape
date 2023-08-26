@@ -1,14 +1,20 @@
 Name:           soundscape
-Version:        1.3.2
+Version:        1.3.3
 Release:        1
 Summary:        Desktop soundscape application
 
 License:        GPL-3.0-only
 Source:         %{name}_%{version}.orig.tar.gz
 
+%define is_leap %{defined suse_version} && 0%{?suse_version} < 01600
+
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
-BuildRequires:  gcc-c++
+%if %{is_leap}
+BuildRequires:	gcc12-c++
+%else
+BuildRequires:	gcc-c++
+%endif
 BuildRequires:  hicolor-icon-theme
 BuildRequires:  pkgconfig
 BuildRequires:  pkgconfig(Qt6Core)
@@ -16,7 +22,7 @@ BuildRequires:  pkgconfig(Qt6Multimedia)
 BuildRequires:  pkgconfig(Qt6Test)
 BuildRequires:  pkgconfig(Qt6Widgets)
 
-%if 0%{?suse_version}
+%if %{defined suse_version}
 Requires:       qt6-multimedia
 Requires:       libQt6Svg6
 %endif
@@ -34,6 +40,9 @@ and water.
 %autosetup
 
 %build
+%if %{is_leap}
+export CXX=g++-12
+%endif
 %cmake -DCMAKE_SKIP_RPATH=ON -DAPP_VERSION=%{version} -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name}
 %cmake_build
 
@@ -48,5 +57,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/soundscape.desktop
 %{_datadir}/icons/hicolor/scalable/apps/soundscape.svg
 %{_docdir}/%{name}/
 
+%if %{defined fedora}
 %changelog
 %autochangelog
+%endif
