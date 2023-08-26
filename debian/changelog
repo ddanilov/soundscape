@@ -1,5 +1,5 @@
-soundscape (1.3.2-1) UNRELEASED; urgency=medium
+soundscape (1.3.3-1) UNRELEASED; urgency=medium
 
   * debian packaging
 
- -- Denis Danilov <danilovdenis@yandex.ru>  Sun, 23 Jul 2023 18:58:02 +0200
+ -- Denis Danilov <danilovdenis@yandex.ru>  Sat, 26 Aug 2023 23:29:52 +0200
