@@ -4,6 +4,7 @@ Section: sound
 Priority: optional
 Build-Depends: debhelper-compat (=13),
  cmake,
+ libgl-dev,
  qt6-base-dev,
  qt6-multimedia-dev,
 Standards-Version: 4.6.2
