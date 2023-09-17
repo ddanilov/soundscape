@@ -56,8 +56,6 @@ IndentWidth: 2
 #PackConstructorInitializers: CurrentLine
 PointerAlignment: Left
 
-ReferenceAlignment: Left
-
 #QualifierAlignment: Left
 
 ReferenceAlignment: Left

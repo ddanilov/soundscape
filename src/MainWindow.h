@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <QAtomicInteger>
 #include <QFile>
 #include <QLabel>
 #include <QMainWindow>
@@ -48,6 +49,9 @@ protected:
 #endif
   void mousePressEvent(QMouseEvent* event) override;
 
+private slots:
+  void quit();
+
 private:
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   void setupTrayIcon();
@@ -66,6 +70,7 @@ private:
   bool m_tray_available;
   QPointer<QSystemTrayIcon> m_tray_icon;
   QPointer<QMenu> m_tray_menu;
+  QAtomicInteger<bool> m_quit{false};
 #endif
   QPointer<QMenu> m_mouse_menu;
 #if defined(Q_OS_LINUX)

@@ -8,8 +8,8 @@
 #include "TrackControls.h"
 #include "Version.h"
 
+#include <QApplication>
 #include <QCloseEvent>
-#include <QCoreApplication>
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -98,7 +98,7 @@ void MainWindow::addQuitItemToMenu(QMenu* menu) const
 #endif
 
   auto* quit_app = menu->addAction(tr("Quit"));
-  connect(quit_app, &QAction::triggered, qApp, &QCoreApplication::quit);
+  connect(quit_app, &QAction::triggered, this, &MainWindow::quit);
 }
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
@@ -222,13 +222,11 @@ void MainWindow::resumePausedTracks()
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-  if (!m_tray_available)
+  if (m_quit || !m_tray_available)
   {
     event->accept();
     return;
   }
-
-  if (!m_tray_icon->isVisible()) { event->accept(); }
 
   windowHide();
   event->ignore();
@@ -241,6 +239,15 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
   {
     m_mouse_menu->exec(QCursor::pos());
   }
+}
+
+void MainWindow::quit()
+{
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+  m_quit = true;
+#endif
+
+  QApplication::quit();
 }
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
