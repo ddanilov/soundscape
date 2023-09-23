@@ -18,21 +18,17 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
-MainWindow::MainWindow(QWidget* parent) :
+MainWindow::MainWindow(const bool disable_tray, QWidget* parent) :
     QMainWindow(parent),
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-    m_tray_available(QSystemTrayIcon::isSystemTrayAvailable()),
+    m_tray_available(disable_tray ? false : QSystemTrayIcon::isSystemTrayAvailable()),
     m_tray_icon(new QSystemTrayIcon(this)),
     m_tray_menu(new QMenu(this)),
-#endif
     m_mouse_menu(new QMenu(this)),
     m_widget(new QWidget(this)),
     m_box_layout(new QVBoxLayout(m_widget)),
     m_menu_info(new QLabel(this))
 {
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   setupTrayIcon();
-#endif
 
   setWindowTitle(tr(APP_TITLE));
 
@@ -56,6 +52,24 @@ MainWindow::MainWindow(QWidget* parent) :
   auto* about_action = about_menu->addAction(tr("About"));
   connect(about_action, &QAction::triggered, this, &MainWindow::showAbout);
 #endif
+}
+
+void MainWindow::start(const QString& file_name, const bool hidden)
+{
+  if (m_tray_available && hidden)
+  {
+    hide();
+  }
+  else
+  {
+    show();
+  }
+
+  if (!file_name.isEmpty())
+  {
+    QFile file(file_name);
+    loadTracksFromJson(file);
+  }
 }
 
 void MainWindow::addPauseResumeItemsToMenu(QMenu* menu) const
@@ -101,12 +115,10 @@ void MainWindow::addQuitItemToMenu(QMenu* menu) const
   connect(quit_app, &QAction::triggered, this, &MainWindow::quit);
 }
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::trayIconAction(QSystemTrayIcon::ActivationReason /*reason*/)
 {
   m_tray_icon->contextMenu()->exec(QCursor::pos());
 }
-#endif
 
 void MainWindow::addTrack()
 {
@@ -219,7 +231,6 @@ void MainWindow::resumePausedTracks()
   }
 }
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
   if (m_quit || !m_tray_available)
@@ -231,7 +242,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
   windowHide();
   event->ignore();
 }
-#endif
 
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
@@ -247,7 +257,6 @@ void MainWindow::quit()
   QApplication::quit();
 }
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::setupTrayIcon()
 {
   if (!m_tray_available) { return; }
@@ -272,17 +281,13 @@ void MainWindow::setupTrayIcon()
 
   m_tray_icon->show();
 }
-#endif
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::windowFocus()
 {
   raise();
   activateWindow();
 }
-#endif
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::windowShow()
 {
   showNormal();
@@ -291,9 +296,7 @@ void MainWindow::windowShow()
 #endif
   windowFocus();
 }
-#endif
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 void MainWindow::windowHide()
 {
 #if defined(Q_OS_LINUX)
@@ -302,7 +305,6 @@ void MainWindow::windowHide()
   showMinimized();
   setVisible(false);
 }
-#endif
 
 void MainWindow::addTrackFromMedia(const QString& file_name)
 {

@@ -387,16 +387,16 @@ void TestMainWindow::testMenu()
 #endif
   QCOMPARE(actions.at(index++)->text(), "Quit");
 
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   actions = window.m_tray_menu->actions();
   index = 0;
   QCOMPARE(actions.at(index++)->text(), "Show window");
   QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
   QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
   QCOMPARE(actions.at(index++)->text(), ""); // separator
+#if !defined(Q_OS_MACOS)
   QCOMPARE(actions.at(index++)->text(), "About");
-  QCOMPARE(actions.at(index++)->text(), "Quit");
 #endif
+  QCOMPARE(actions.at(index++)->text(), "Quit");
 }
 
 QTEST_MAIN(TestMainWindow)
