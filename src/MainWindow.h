@@ -66,11 +66,11 @@ private:
 
   void showAbout();
 
+  QAtomicInteger<bool> m_quit{false};
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   bool m_tray_available;
   QPointer<QSystemTrayIcon> m_tray_icon;
   QPointer<QMenu> m_tray_menu;
-  QAtomicInteger<bool> m_quit{false};
 #endif
   QPointer<QMenu> m_mouse_menu;
 #if defined(Q_OS_LINUX)

@@ -243,10 +243,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 
 void MainWindow::quit()
 {
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
   m_quit = true;
-#endif
-
   QApplication::quit();
 }
 
