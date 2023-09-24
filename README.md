@@ -18,6 +18,12 @@ On Linux and Windows, use the `Quit` item from the application menu to finish
 the application. Pressing the close window button will just minimize the
 application to the tray.
 
+Command line options:
+
+* `--load <path to file>` load track list from a file on start,
+* `--minimize` minimize window to tray on start,
+* `--disable-tray` disable tray icon.
+
 [Freesound](https://freesound.org/) is a good source of sounds for your own
 soundscapes.
 
@@ -35,6 +41,13 @@ details.
 **Debian**, **openSUSE** and **Fedora** packages can be installed from
 download page of `home:danilov:soundscape` OBS project, see
 <https://software.opensuse.org/download/package?package=soundscape&project=home:danilov:soundscape>.
+
+### Windows
+
+You can install the application using **Windows Package Manager**
+
+    winget search soundscape
+    winget install Danilov.Soundscape
 
 ### Prebuilt binaries
 
