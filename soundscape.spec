@@ -1,5 +1,5 @@
 Name:           soundscape
-Version:        1.3.3
+Version:        1.4.0
 Release:        1
 Summary:        Desktop soundscape application
 
