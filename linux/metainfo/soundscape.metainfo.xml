@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.ddanilov.soundscape</id>
+
+  <url type="homepage">https://github.com/ddanilov/soundscape</url>
+  <developer_name>Denis Danilov</developer_name>
+
+  <name>Soundscape</name>
+  <summary>Desktop soundscape application</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only AND CC-BY-3.0</project_license>
+
+  <description>
+    <p>
+      Soundscape is an open-source system-tray resident desktop application for playing a mix of sounds, e.g. natural sounds by animals or wind and water.
+    </p>
+  </description>
+
+  <categories>
+    <category>Audio</category>
+  </categories>
+
+  <keywords>
+    <keyword>ambient</keyword>
+    <keyword>audio</keyword>
+    <keyword>foss</keyword>
+    <keyword>meditation</keyword>
+    <keyword>nature</keyword>
+    <keyword>noise</keyword>
+    <keyword>open-source</keyword>
+    <keyword>qt</keyword>
+    <keyword>sound</keyword>
+    <keyword>soundscape</keyword>
+    <keyword>system-tray</keyword>
+  </keywords>
+
+  <launchable type="desktop-id">soundscape.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/ddanilov/soundscape/main/screenshots/overview.png</image>
+    </screenshot>
+  </screenshots>
+</component>
