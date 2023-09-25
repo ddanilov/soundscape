@@ -2,11 +2,11 @@
 <component type="desktop-application">
   <id>io.github.ddanilov.soundscape</id>
 
-  <url type="homepage">https://github.com/ddanilov/soundscape</url>
-  <developer_name>Denis Danilov</developer_name>
-
   <name>Soundscape</name>
   <summary>Desktop soundscape application</summary>
+
+  <url type="homepage">@WEB_SITE@</url>
+  <developer_name>Denis Danilov</developer_name>
 
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-only AND CC-BY-3.0</project_license>
@@ -42,4 +42,11 @@
       <image>https://raw.githubusercontent.com/ddanilov/soundscape/main/screenshots/overview.png</image>
     </screenshot>
   </screenshots>
+
+  <releases>
+    <release version="@APP_VERSION@" date="@BUILD_DATE@" />
+  </releases>
+
+  <content_rating type="oars-1.0"/>
+
 </component>
