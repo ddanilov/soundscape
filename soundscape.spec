@@ -1,9 +1,9 @@
 Name:           soundscape
-Version:        1.4.0
+Version:        1.4.2
 Release:        1
 Summary:        Desktop soundscape application
 
-License:        GPL-3.0-only
+License:        GPL-3.0-only AND CC-BY-3.0
 Source:         %{name}_%{version}.orig.tar.gz
 
 %define is_leap %{defined suse_version} && 0%{?suse_version} < 01600
