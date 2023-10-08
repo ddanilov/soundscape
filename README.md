@@ -42,6 +42,9 @@ details.
 download page of `home:danilov:soundscape` OBS project, see
 <https://software.opensuse.org/download/package?package=soundscape&project=home:danilov:soundscape>.
 
+**Flatpak** package is available from **Flathub** app store at
+<https://flathub.org/apps/io.github.ddanilov.soundscape>
+
 ### Windows
 
 You can install the application using **Windows Package Manager**
