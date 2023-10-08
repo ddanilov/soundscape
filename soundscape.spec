@@ -55,6 +55,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/soundscape.desktop
 %{_datadir}/%{name}/
 %{_datadir}/applications/soundscape.desktop
 %{_datadir}/icons/hicolor/scalable/apps/soundscape.svg
+%{_datadir}/metainfo/soundscape.metainfo.xml
 %{_docdir}/%{name}/
 
 %if %{defined fedora}
