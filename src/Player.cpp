@@ -20,6 +20,7 @@ Player::Player(Track* parent) :
 
   connect(this, &QMediaPlayer::mediaStatusChanged, this, &Player::mediaPlayerStatusChanged);
   connect(this, &QMediaPlayer::positionChanged, this, &Player::mediaPlayerPositionChanged);
+  connect(this, &QMediaPlayer::errorOccurred, m_track, &Track::playerErrorOccurred);
 
   m_next_player_timer->setSingleShot(true);
 }

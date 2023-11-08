@@ -27,17 +27,11 @@ Track::Track(QObject* parent) :
   m_player_B->setNextPlayer(m_player_A);
 
   connect(m_player_A, &Player::playerLoaded, this, &Track::playerLoaded);
-  connect(m_player_A, &QMediaPlayer::errorOccurred, this, &Track::playerErrorOccurred);
-  connect(m_player_B, &QMediaPlayer::errorOccurred, this, &Track::playerErrorOccurred);
 }
 
 void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
 {
   m_file_name = JsonRW::readString(JsonRW::FileNameTag, json).value_or(m_file_name);
-  if (!m_file_name.isEmpty())
-  {
-    m_file_name = QDir::cleanPath(base_dir.absoluteFilePath(m_file_name));
-  }
   m_volume = JsonRW::readDouble(JsonRW::VolumeTag, json).value_or(m_volume);
   m_playing = JsonRW::readBool(JsonRW::PlayingTag, json).value_or(m_playing);
   m_fade_in_duration = JsonRW::readInteger(JsonRW::FadeInDurationTag, json).value_or(m_fade_in_duration);
@@ -47,8 +41,12 @@ void Track::fromJsonObject(const QJsonObject& json, const QDir& base_dir)
   m_gap_max = JsonRW::readDouble(JsonRW::GapMaxTag, json).value_or(m_gap_max);
   m_random_gap = JsonRW::readBool(JsonRW::RandomGapTag, json).value_or(m_random_gap);
 
-  const auto& source = QUrl::fromLocalFile(m_file_name);
-  m_player_A->setSource(source);
+  if (!m_file_name.isEmpty())
+  {
+    m_file_name = QDir::cleanPath(base_dir.absoluteFilePath(m_file_name));
+    const auto& source = QUrl::fromLocalFile(m_file_name);
+    m_player_A->setSource(source);
+  }
 }
 
 QJsonObject Track::toJsonObject(const QDir& base_dir) const

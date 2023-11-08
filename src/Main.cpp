@@ -17,16 +17,16 @@ int main(int argc, char* argv[])
   parser.addHelpOption();
   parser.addVersionOption();
 
-  const QCommandLineOption load_option(QStringList{"load"}, "Load track list from file.", "path to file");
+  const QCommandLineOption load_option("load", "Load track list from file.", "path to file");
   parser.addOption(load_option);
 
-  const QCommandLineOption minimize_option(QStringList{"minimize"}, "Minimize window to tray.");
+  const QCommandLineOption minimize_option("minimize", "Minimize window to tray.");
   parser.addOption(minimize_option);
 
 #if defined(Q_OS_MACOS)
-  const QCommandLineOption tray_option(QStringList{"enable-tray"}, "Enable tray icon.");
+  const QCommandLineOption tray_option("enable-tray", "Enable tray icon.");
 #else
-  const QCommandLineOption tray_option(QStringList{"disable-tray"}, "Disable tray icon.");
+  const QCommandLineOption tray_option("disable-tray", "Disable tray icon.");
 #endif
   parser.addOption(tray_option);
 
@@ -43,5 +43,5 @@ int main(int argc, char* argv[])
   MainWindow w(disable_tray);
   w.start(file_name, minimize);
 
-  return a.exec();
+  return QApplication::exec();
 }

@@ -49,7 +49,7 @@ private:
   void setTrackProperties();
   void setFade(Slider type);
 
-  int trackToSliderPosition(qint64 pos, PositionSlider* slider);
+  int trackToSliderPosition(qint64 pos, const PositionSlider* slider) const;
 
   void fadeSliderChanged(int value, Slider type);
 

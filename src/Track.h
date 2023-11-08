@@ -57,13 +57,15 @@ public:
 
   const QList<QString>& errors() const;
 
+public slots:
+  void playerErrorOccurred(QMediaPlayer::Error error, const QString& error_string);
+
 signals:
   void loaded();
   void errorOccurred();
 
 private slots:
   void playerLoaded();
-  void playerErrorOccurred(QMediaPlayer::Error error, const QString& error_string);
 
 private:
   float fade(qint64 position) const;

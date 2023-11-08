@@ -33,8 +33,6 @@ void Volume::paintEvent(QPaintEvent* /*event*/)
   painter.setRenderHint(QPainter::Antialiasing);
   painter.setBrush(Qt::NoBrush);
 
-  const auto& pal = palette();
-
   const auto width = static_cast<double>(rect().width());
   const auto height = static_cast<double>(rect().height());
   const auto size = 0.8 * std::min(width, height);

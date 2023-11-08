@@ -176,7 +176,7 @@ void TrackSettings::addGap()
   layout->addWidget(m_gap_spin_box);
   layout->addWidget(new QLabel(tr("s")));
 
-  layout->addWidget(new QLabel(tr("   ")));
+  layout->addWidget(new QLabel("   "));
   layout->addWidget(m_random_gap_check_box);
   layout->addWidget(new QLabel(tr("random up to")));
   layout->addWidget(m_gap_max_spin_box);
@@ -251,7 +251,7 @@ void TrackSettings::setFade(Slider type)
   label->setValue(v);
 }
 
-int TrackSettings::trackToSliderPosition(qint64 pos, PositionSlider* slider)
+int TrackSettings::trackToSliderPosition(const qint64 pos, const PositionSlider* slider) const
 {
   const auto p = static_cast<double>(pos);
   const auto d = static_cast<double>(m_track->duration());
