@@ -1,7 +1,11 @@
 # SPDX-FileCopyrightText: 2022-2023 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
 
-find_package(Qt6 6.2 COMPONENTS Multimedia Widgets REQUIRED)
+find_package(Qt6 6.2 COMPONENTS
+  LinguistTools
+  Multimedia
+  Widgets
+  REQUIRED)
 message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")
 
 if(Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
@@ -58,7 +62,12 @@ qt_add_library(${APP_LIB} STATIC
   ${HEADERS}
   ${SOURCES}
 )
-target_link_libraries(${APP_LIB} Qt::Multimedia Qt::Widgets)
+target_link_libraries(${APP_LIB} PUBLIC Qt::Multimedia Qt::Widgets)
+
+qt_add_translations(${APP_LIB} TS_FILES
+  translations/soundscape_ru.ts
+)
+add_dependencies(${APP_LIB} ${APP_LIB}_lupdate)
 
 message(STATUS "system name: ${CMAKE_SYSTEM_NAME}")
 

@@ -7,13 +7,15 @@
 
 class PositionLabel : public QLabel
 {
+  Q_OBJECT
+
 public:
   explicit PositionLabel(QWidget* parent = nullptr);
   void setMax(double value);
   void setValue(double value);
 
 private:
-  const QString m_text_template{"%1 s"};
+  const QString m_text_template{tr("%1 s")};
   int m_field_width{3};
   int m_precision{1};
 

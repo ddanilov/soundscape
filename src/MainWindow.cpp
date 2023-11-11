@@ -30,7 +30,7 @@ MainWindow::MainWindow(const bool disable_tray, QWidget* parent) :
 {
   setupTrayIcon();
 
-  setWindowTitle(tr(APP_TITLE));
+  setWindowTitle(APP_TITLE);
 
   addPauseResumeItemsToMenu(m_mouse_menu);
   addTrackItemsToMenu(m_mouse_menu);
@@ -42,8 +42,8 @@ MainWindow::MainWindow(const bool disable_tray, QWidget* parent) :
   m_box_layout->setAlignment(Qt::AlignTop);
 
   m_menu_info->setTextFormat(Qt::PlainText);
-  m_menu_info->setText("Use mouse right-click\n"
-                       "to access application menu");
+  m_menu_info->setText(tr("Use mouse right-click\n"
+                          "to access application menu"));
   m_box_layout->addWidget(m_menu_info, 0, Qt::AlignCenter);
 
 #if defined(Q_OS_MACOS)
@@ -373,7 +373,7 @@ void MainWindow::loadTracksFromJson(QFile& file)
 void MainWindow::showAbout()
 {
   QString info;
-  info.append("<h3>" + tr(APP_TITLE) + "</h3>" + "\n");
+  info.append(QString("<h3>%1</h3>\n").arg(APP_TITLE));
   info.append("<h4>" + tr("Version: %1").arg(APP_VERSION) + "</h4>" + "\n");
 
   info.append(tr("open-source system-tray resident desktop application for playing soundscapes") + "<br>" + "\n");
@@ -387,5 +387,5 @@ void MainWindow::showAbout()
   info.append(tr("Qt Version: %1").arg(qVersion()) + "\n");
   info.append("<br>");
 
-  QMessageBox::about(this, tr("About") + " " + tr(APP_TITLE), info);
+  QMessageBox::about(this, tr("About"), info);
 }
