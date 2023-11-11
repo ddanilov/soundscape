@@ -1,5 +1,5 @@
 Name:           soundscape
-Version:        1.4.2
+Version:        1.4.3
 Release:        1
 Summary:        Desktop soundscape application
 
@@ -18,6 +18,7 @@ BuildRequires:	gcc-c++
 BuildRequires:  hicolor-icon-theme
 BuildRequires:  pkgconfig
 BuildRequires:  pkgconfig(Qt6Core)
+BuildRequires:  pkgconfig(Qt6Linguist)
 BuildRequires:  pkgconfig(Qt6Multimedia)
 BuildRequires:  pkgconfig(Qt6Test)
 BuildRequires:  pkgconfig(Qt6Widgets)
