@@ -6,7 +6,7 @@
     <message>
         <location filename="../Main.cpp" line="36"/>
         <source>Load track list from file.</source>
-        <translation>Carica l'elenco delle tracce da file.</translation>
+        <translation>Carica l&apos;elenco delle tracce da file.</translation>
     </message>
     <message>
         <location filename="../Main.cpp" line="37"/>
@@ -21,12 +21,12 @@
     <message>
         <location filename="../Main.cpp" line="44"/>
         <source>Enable tray icon.</source>
-        <translation>Abilita l'icona nella barra delle applicazioni.</translation>
+        <translation>Abilita l&apos;icona nella barra delle applicazioni.</translation>
     </message>
     <message>
         <location filename="../Main.cpp" line="46"/>
         <source>Disable tray icon.</source>
-        <translation>Disattiva l'icona nella barra delle applicazioni.</translation>
+        <translation>Disattiva l&apos;icona nella barra delle applicazioni.</translation>
     </message>
 </context>
 <context>
@@ -63,7 +63,7 @@ to access application menu</source>
     <message>
         <location filename="../MainWindow.cpp" line="89"/>
         <source>Save track list</source>
-        <translation>Salva l'elenco delle tracce</translation>
+        <translation>Salva l&apos;elenco delle tracce</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="92"/>
