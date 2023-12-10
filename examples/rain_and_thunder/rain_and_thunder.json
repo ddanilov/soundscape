@@ -9,7 +9,7 @@
             "playing": true,
             "randomGap": true,
             "transition": 2,
-            "volume": 0.5
+            "volume": 0.2
         },
         {
             "fadeInDuration": 2000,
@@ -20,7 +20,7 @@
             "playing": true,
             "randomGap": true,
             "transition": 2,
-            "volume": 0.5
+            "volume": 0.2
         },
         {
             "fadeInDuration": 2000,
@@ -31,7 +31,7 @@
             "playing": true,
             "randomGap": true,
             "transition": 2,
-            "volume": 0.5
+            "volume": 0.2
         },
         {
             "fadeInDuration": 1000,
@@ -42,7 +42,7 @@
             "playing": true,
             "randomGap": true,
             "transition": 2,
-            "volume": 1
+            "volume": 0.5
         },
         {
             "fadeInDuration": 1000,
@@ -53,7 +53,7 @@
             "playing": true,
             "randomGap": true,
             "transition": 2,
-            "volume": 1
+            "volume": 0.5
         },
         {
             "fadeInDuration": 1000,
@@ -64,7 +64,7 @@
             "playing": true,
             "randomGap": true,
             "transition": 2,
-            "volume": 1
+            "volume": 0.5
         }
     ]
 }
