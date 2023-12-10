@@ -151,6 +151,19 @@ to access application menu</source>
     </message>
 </context>
 <context>
+    <name>Status</name>
+    <message>
+        <location filename="../Status.cpp" line="45"/>
+        <source>paused</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Status.cpp" line="48"/>
+        <source>playing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TrackControls</name>
     <message>
         <location filename="../TrackControls.cpp" line="173"/>
@@ -215,6 +228,24 @@ to access application menu</source>
         <location filename="../TrackSettings.cpp" line="181"/>
         <source>random up to</source>
         <translation>casuale fino a</translation>
+    </message>
+</context>
+<context>
+    <name>TransitionIcon</name>
+    <message>
+        <location filename="../TransitionIcon.cpp" line="34"/>
+        <source>loop with fade-out/in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TransitionIcon.cpp" line="37"/>
+        <source>loop with cross-fade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TransitionIcon.cpp" line="40"/>
+        <source>loop with gap</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

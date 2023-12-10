@@ -7,6 +7,8 @@
 
 class Status : public QCheckBox
 {
+  Q_OBJECT
+
 public:
   explicit Status(QWidget* parent = nullptr);
   void setPlayingStyle();

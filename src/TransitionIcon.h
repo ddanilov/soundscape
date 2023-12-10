@@ -7,6 +7,8 @@
 
 class TransitionIcon : public QCheckBox
 {
+  Q_OBJECT
+
 public:
   explicit TransitionIcon(QWidget* parent = nullptr);
 

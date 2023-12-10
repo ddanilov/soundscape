@@ -42,10 +42,10 @@ void Status::updateToolTip(int /*value*/)
   switch (checkState())
   {
     case Qt::CheckState::Unchecked:
-      setToolTip("paused");
+      setToolTip(tr("paused"));
       break;
     case Qt::CheckState::Checked:
-      setToolTip("playing");
+      setToolTip(tr("playing"));
       break;
   }
 }

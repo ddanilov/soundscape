@@ -31,13 +31,13 @@ void TransitionIcon::updateToolTip(int /*value*/)
   switch (transition)
   {
     case Transition::FadeOutIn:
-      setToolTip("loop with fade-out/in");
+      setToolTip(tr("loop with fade-out/in"));
       break;
     case Transition::CrossFade:
-      setToolTip("loop with cross-fade");
+      setToolTip(tr("loop with cross-fade"));
       break;
     case Transition::FadeOutGapIn:
-      setToolTip("loop with gap");
+      setToolTip(tr("loop with gap"));
       break;
   }
 }

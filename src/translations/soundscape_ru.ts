@@ -49,12 +49,12 @@ to access application menu</source>
     <message>
         <location filename="../MainWindow.cpp" line="77"/>
         <source>Pause playing tracks</source>
-        <translation>Приостановить возпроизведение</translation>
+        <translation>Приостановить воспроизведение</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="80"/>
         <source>Resume paused tracks</source>
-        <translation>Возобновить возпроизведение</translation>
+        <translation>Возобновить воспроизведение</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="86"/>
@@ -152,6 +152,19 @@ to access application menu</source>
     </message>
 </context>
 <context>
+    <name>Status</name>
+    <message>
+        <location filename="../Status.cpp" line="45"/>
+        <source>paused</source>
+        <translation>приостановлена</translation>
+    </message>
+    <message>
+        <location filename="../Status.cpp" line="48"/>
+        <source>playing</source>
+        <translation>воспроизводится</translation>
+    </message>
+</context>
+<context>
     <name>TrackControls</name>
     <message>
         <location filename="../TrackControls.cpp" line="173"/>
@@ -216,6 +229,28 @@ to access application menu</source>
         <location filename="../TrackSettings.cpp" line="181"/>
         <source>random up to</source>
         <translation>случайный до</translation>
+    </message>
+</context>
+<context>
+    <name>TransitionIcon</name>
+    <message>
+        <location filename="../TransitionIcon.cpp" line="34"/>
+        <source>loop with fade-out/in</source>
+        <translation>затухание и
+нарастание</translation>
+    </message>
+    <message>
+        <location filename="../TransitionIcon.cpp" line="37"/>
+        <source>loop with cross-fade</source>
+        <translation>перекрёстное
+затухание и
+нарастание</translation>
+    </message>
+    <message>
+        <location filename="../TransitionIcon.cpp" line="40"/>
+        <source>loop with gap</source>
+        <translation>затухание и нарастание
+с перерывом</translation>
     </message>
 </context>
 <context>
