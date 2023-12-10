@@ -7,6 +7,8 @@
 
 class Volume : public QDial
 {
+  Q_OBJECT
+
 public:
   explicit Volume(QWidget* parent = nullptr);
 

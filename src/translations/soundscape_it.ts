@@ -217,4 +217,12 @@ to access application menu</source>
         <translation>casuale fino a</translation>
     </message>
 </context>
+<context>
+    <name>Volume</name>
+    <message>
+        <location filename="../Volume.cpp" line="10"/>
+        <source>Volume: %1 dB</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

@@ -218,4 +218,12 @@ to access application menu</source>
         <translation>случайный до</translation>
     </message>
 </context>
+<context>
+    <name>Volume</name>
+    <message>
+        <location filename="../Volume.cpp" line="10"/>
+        <source>Volume: %1 dB</source>
+        <translation>громкость: %1 дБ</translation>
+    </message>
+</context>
 </TS>

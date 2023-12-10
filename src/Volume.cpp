@@ -7,7 +7,7 @@
 
 Volume::Volume(QWidget* parent) :
     QDial(parent),
-    m_tool_tip_template("Volume %1%"),
+    m_tool_tip_template(tr("Volume: %1 dB")),
     m_min_angle(40.0),
     m_max_angle(360.0 - m_min_angle)
 {
@@ -70,6 +70,6 @@ double Volume::arcLength() const
 
 void Volume::updateToolTip(int /*value*/)
 {
-  const auto volume = static_cast<int>(fraction() * 100);
-  setToolTip(m_tool_tip_template.arg(volume));
+  const auto volume = 20 * log10(fraction());
+  setToolTip(m_tool_tip_template.arg(volume, 0, 'f', 1));
 }
