@@ -129,7 +129,7 @@ to access application menu</source>
     <message>
         <location filename="../MainWindow.cpp" line="383"/>
         <source>Copyright: © 2022-2023 Denis Danilov and contributors</source>
-        <translation>Copyright: © 2022-2023 Denis Danilov and contributors</translation>
+        <translation>Copyright: © 2022-2023 Denis Danilov e contributori</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="384"/>
@@ -155,12 +155,12 @@ to access application menu</source>
     <message>
         <location filename="../Status.cpp" line="45"/>
         <source>paused</source>
-        <translation type="unfinished"></translation>
+        <translation>In pausa</translation>
     </message>
     <message>
         <location filename="../Status.cpp" line="48"/>
         <source>playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvio</translation>
     </message>
 </context>
 <context>
@@ -235,17 +235,17 @@ to access application menu</source>
     <message>
         <location filename="../TransitionIcon.cpp" line="34"/>
         <source>loop with fade-out/in</source>
-        <translation type="unfinished"></translation>
+        <translation>loop con dissolvenza in chiusura</translation>
     </message>
     <message>
         <location filename="../TransitionIcon.cpp" line="37"/>
         <source>loop with cross-fade</source>
-        <translation type="unfinished"></translation>
+        <translation>loop con dissolvenza incrociata</translation>
     </message>
     <message>
         <location filename="../TransitionIcon.cpp" line="40"/>
         <source>loop with gap</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">loop con gap</translation>
     </message>
 </context>
 <context>
@@ -253,7 +253,7 @@ to access application menu</source>
     <message>
         <location filename="../Volume.cpp" line="10"/>
         <source>Volume: %1 dB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Volume: %1 dB</translation>
     </message>
 </context>
 </TS>
