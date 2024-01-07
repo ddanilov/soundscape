@@ -1,0 +1,72 @@
+# SPDX-FileCopyrightText: 2024 Denis Danilov
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: Coverage
+
+on: [push, pull_request]
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        qt-version: ['6.5.3']
+        build-type: [Debug]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: install aqt
+      run: |
+        pip3 install aqtinstall
+    - name: install Qt
+      run: |
+        O_DIR=$HOME/Qt
+        echo "O_DIR=$O_DIR" >>$GITHUB_ENV
+        aqt install-qt linux desktop ${{ matrix.qt-version }} -m qtmultimedia -O $O_DIR
+    - name: Qt dir
+      run: |
+        Qt6_QMAKE=`find $O_DIR -name "qmake6*"`
+        Qt6_BINDIR=`dirname $Qt6_QMAKE`
+        Qt6_DIR=`dirname $Qt6_BINDIR`
+        QT_PLUGIN_PATH=$Qt6_DIR/plugins
+        QML2_IMPORT_PATH=$Qt6_DIR/qml
+        echo "Qt6_DIR=$Qt6_DIR" >>$GITHUB_ENV
+        echo "Qt6_BINDIR=$Qt6_BINDIR" >>$GITHUB_ENV
+        echo "QT_PLUGIN_PATH=$QT_PLUGIN_PATH" >>$GITHUB_ENV
+        echo "QML2_IMPORT_PATH=$QML2_IMPORT_PATH" >>$GITHUB_ENV
+    - name: build dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install --assume-yes gcovr
+        sudo apt-get install --assume-yes libgl1-mesa-dev
+        sudo apt-get install --assume-yes libpulse0
+        sudo apt-get install --assume-yes libqt5gui5
+        sudo apt-get install --assume-yes libxcb-cursor0
+        sudo apt-get install --assume-yes pulseaudio
+        sudo apt-get install --assume-yes xvfb
+    - name: configure
+      run: |
+        BUILD_DIR=$HOME/build
+        echo "BUILD_DIR=$BUILD_DIR" >>$GITHUB_ENV
+        cmake -DWITH_COVERAGE=ON -DCMAKE_PREFIX_PATH=$Qt6_DIR -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -B $BUILD_DIR
+    - name: build
+      run: |
+        cmake --build $BUILD_DIR --target all
+    - name: test
+      run: |
+        systemctl --user start pulseaudio
+        xvfb-run ctest --output-on-failure --test-dir $BUILD_DIR
+        cmake --build $BUILD_DIR --target coveralls
+    - name: coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        file: ${{ env.BUILD_DIR }}/coverage.json
