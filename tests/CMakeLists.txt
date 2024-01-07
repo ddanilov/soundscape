@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+# SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
 
 find_package(Qt6 COMPONENTS Test REQUIRED)
@@ -25,22 +25,3 @@ unit_test(TestTrack.cpp)
 unit_test(TestTrackControls.cpp)
 unit_test(TestTrackSettings.cpp)
 unit_test(TestTransition.cpp)
-
-if(GCOVR_COVERAGE_ENABLED)
-  set(CTEST_COVERAGE_TARGET ctest_coverage)
-  set(CTEST_COVERAGE_DIR ${GCOVR_REPORT_BASE}/${CTEST_COVERAGE_TARGET})
-  add_CUSTOM_TARGET(${CTEST_COVERAGE_TARGET}
-    COMMAND ctest -C $<CONFIG> $ENV{ARGS} $$ARGS
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
-  add_custom_command(TARGET ${CTEST_COVERAGE_TARGET} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/${CTEST_COVERAGE_DIR}
-    COMMAND gcovr
-      --html --html-details
-      --output ${CTEST_COVERAGE_DIR}/index.html
-      --exclude-unreachable-branches
-      --exclude-throw-branches
-      --root ${PROJECT_SOURCE_DIR}
-      --object-directory ${PROJECT_BINARY_DIR}
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-    COMMENT "code coverage report by gcovr")
-endif()
