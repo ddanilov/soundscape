@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "MainWindow.h"
@@ -387,16 +387,19 @@ void TestMainWindow::testMenu()
 #endif
   QCOMPARE(actions.at(index++)->text(), "Quit");
 
-  actions = window.m_tray_menu->actions();
-  index = 0;
-  QCOMPARE(actions.at(index++)->text(), "Show window");
-  QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
-  QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
-  QCOMPARE(actions.at(index++)->text(), ""); // separator
+  if (window.m_tray_available)
+  {
+    actions = window.m_tray_menu->actions();
+    index = 0;
+    QCOMPARE(actions.at(index++)->text(), "Show window");
+    QCOMPARE(actions.at(index++)->text(), "Pause playing tracks");
+    QCOMPARE(actions.at(index++)->text(), "Resume paused tracks");
+    QCOMPARE(actions.at(index++)->text(), ""); // separator
 #if !defined(Q_OS_MACOS)
-  QCOMPARE(actions.at(index++)->text(), "About");
+    QCOMPARE(actions.at(index++)->text(), "About");
 #endif
-  QCOMPARE(actions.at(index++)->text(), "Quit");
+    QCOMPARE(actions.at(index++)->text(), "Quit");
+  }
 }
 
 QTEST_MAIN(TestMainWindow)
