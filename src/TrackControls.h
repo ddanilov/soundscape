@@ -1,9 +1,7 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #pragma once
-
-#include "Transition.h"
 
 #include <QDir>
 #include <QFrame>
