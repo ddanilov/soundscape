@@ -1,6 +1,7 @@
 # Soundscape
 
 [![GitHub release](https://img.shields.io/github/release/ddanilov/soundscape)](https://github.com/ddanilov/soundscape/releases/)
+[![Coverage Status](https://coveralls.io/repos/github/ddanilov/soundscape/badge.svg)](https://coveralls.io/github/ddanilov/soundscape)
 
 [**Soundscape**](https://github.com/ddanilov/soundscape) is an open-source
 system-tray resident desktop application for playing a mix of sounds, e.g.
