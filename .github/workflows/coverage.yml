@@ -25,6 +25,7 @@ jobs:
       run: |
         sudo apt-get -qq update
         sudo apt-get install --assume-yes gcovr
+        sudo apt-get install --assume-yes gstreamer1.0-plugins-good
         sudo apt-get install --assume-yes libgl-dev
         sudo apt-get install --assume-yes pulseaudio
         sudo apt-get install --assume-yes qt6-base-dev
