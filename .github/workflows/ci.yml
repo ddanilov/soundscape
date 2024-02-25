@@ -22,7 +22,7 @@ jobs:
         qt-arch: [win64_mingw]
         build-type: [Release]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: install aqt
@@ -68,7 +68,7 @@ jobs:
         PATH=$MinGW_BIN:$CMake_BIN:$Ninja_BIN:$PATH
         cmake --build $BUILD_DIR --target package
     - name: upload artefacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: release
@@ -89,7 +89,7 @@ jobs:
         qt-version: ['6.5.3']
         build-type: [Release]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: install aqt
@@ -123,7 +123,7 @@ jobs:
       run: |
         cmake --build $BUILD_DIR --target package
     - name: upload artefacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: test
@@ -147,7 +147,7 @@ jobs:
         qt-version: ['6.5.3']
         build-type: [Release]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: install aqt
@@ -187,7 +187,7 @@ jobs:
       run: |
         cmake --build $BUILD_DIR --target package
     - name: upload artefacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: test
