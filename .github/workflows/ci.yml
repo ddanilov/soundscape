@@ -70,6 +70,7 @@ jobs:
     - name: upload artefacts
       uses: actions/upload-artifact@v4
       with:
+        name: ${{ vars.JOB_NAME }}-artifact
         path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: release
       uses: softprops/action-gh-release@v1
@@ -125,6 +126,7 @@ jobs:
     - name: upload artefacts
       uses: actions/upload-artifact@v4
       with:
+        name: ${{ vars.JOB_NAME }}-artifact
         path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: test
       run: |
@@ -189,6 +191,7 @@ jobs:
     - name: upload artefacts
       uses: actions/upload-artifact@v4
       with:
+        name: ${{ vars.JOB_NAME }}-artifact
         path: ${{ env.BUILD_DIR }}/soundscape-*
     - name: test
       run: |
