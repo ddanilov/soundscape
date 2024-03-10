@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "MainWindow.h"
@@ -380,7 +380,7 @@ void MainWindow::showAbout()
   info.append("<br>");
 
   info.append(tr(R"(Website: <a href="%1">%1</a>)").arg(WEB_SITE) + "<br>" + "\n");
-  info.append(tr("Copyright: © 2022-2023 Denis Danilov and contributors") + "<br>" + "\n");
+  info.append(tr("Copyright: © 2022-2024 Denis Danilov and contributors") + "<br>" + "\n");
   info.append(tr("License: GNU General Public License (GPL) version 3") + "<br>" + "\n");
   info.append("<br>");
 

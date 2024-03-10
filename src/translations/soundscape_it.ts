@@ -128,8 +128,8 @@ to access application menu</source>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="383"/>
-        <source>Copyright: © 2022-2023 Denis Danilov and contributors</source>
-        <translation>Copyright: © 2022-2023 Denis Danilov e contributori</translation>
+        <source>Copyright: © 2022-2024 Denis Danilov and contributors</source>
+        <translation>Copyright: © 2022-2024 Denis Danilov e contributori</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="384"/>
