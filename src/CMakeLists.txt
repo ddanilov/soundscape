@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-2023 Denis Danilov and contributors
+# SPDX-FileCopyrightText: 2022-2024 Denis Danilov and contributors
 # SPDX-License-Identifier: GPL-3.0-only
 
 find_package(Qt6 6.2 COMPONENTS
