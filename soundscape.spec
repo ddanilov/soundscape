@@ -1,5 +1,5 @@
 Name:           soundscape
-Version:        1.4.5
+Version:        1.4.6
 Release:        1
 Summary:        Desktop soundscape application
 
@@ -11,9 +11,9 @@ Source:         %{name}_%{version}.orig.tar.gz
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
 %if %{is_leap}
-BuildRequires:	gcc12-c++
+BuildRequires:  gcc12-c++
 %else
-BuildRequires:	gcc-c++
+BuildRequires:  gcc-c++
 %endif
 BuildRequires:  hicolor-icon-theme
 BuildRequires:  pkgconfig
