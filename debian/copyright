@@ -3,7 +3,7 @@ Upstream-Name: soundscape
 Source: https://github.com/ddanilov/soundscape
 
 Files:     *
-Copyright: 2022-2023 Denis Danilov and contributors
+Copyright: 2022-2024 Denis Danilov and contributors
 License:   GPL-3.0-only
 
 Files:     examples/rain_and_thunder/*.mp3
@@ -15,7 +15,7 @@ Copyright: 2022 klankbeeld <https://freesound.org/people/klankbeeld/>
 License:   CC-BY-3.0
 
 Files:     debian/*
-Copyright: 2023 Denis Danilov
+Copyright: 2022-2024 Denis Danilov
 License:   GPL-3.0-only
 
 License: GPL-3.0-only
