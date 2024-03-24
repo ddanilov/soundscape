@@ -1,19 +1,21 @@
 From: Denis Danilov <ddanilov@users.noreply.github.com>
-Date: Sun, 23 Jul 2023 18:16:42 +0200
+Date: Sun, 24 Mar 2024 16:12:20 +0100
 Subject: patch README for Debian
 
 ---
- README.md | 4 ----
- 1 file changed, 4 deletions(-)
+ README.md | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/README.md b/README.md
-index 9d42d9d..b216a44 100644
+index 43d5f00..dd7d791 100644
 --- a/README.md
 +++ b/README.md
-@@ -1,13 +1,9 @@
+@@ -1,15 +1,9 @@
  # Soundscape
  
+-[![GitHub License](https://img.shields.io/github/license/ddanilov/soundscape?color=green)](https://www.gnu.org/licenses/gpl-3.0.html)
 -[![GitHub release](https://img.shields.io/github/release/ddanilov/soundscape)](https://github.com/ddanilov/soundscape/releases/)
+-[![Coverage Status](https://coveralls.io/repos/github/ddanilov/soundscape/badge.svg)](https://coveralls.io/github/ddanilov/soundscape)
 -
  [**Soundscape**](https://github.com/ddanilov/soundscape) is an open-source
  system-tray resident desktop application for playing a mix of sounds, e.g.
