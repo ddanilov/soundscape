@@ -43,7 +43,7 @@ void TestMainWindow::testTrackFromMedia()
   auto* track = track_control->track();
   QCOMPARE(track->title(), "sound_01");
   QCOMPARE(track->volume(), 0.50);
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0) || QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
   QVERIFY(track->isPlaying());
 #endif
 
@@ -54,14 +54,14 @@ void TestMainWindow::testTrackFromMedia()
   QVERIFY(track_control != nullptr);
   QCOMPARE(track->title(), "sound_02");
   QCOMPARE(track->volume(), 0.50);
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0) || QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
   QVERIFY(track->isPlaying());
 #endif
 }
 
 void TestMainWindow::testSaveTracksToJson()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
   QSKIP("Test does not work");
 #endif
 
@@ -233,7 +233,7 @@ void TestMainWindow::testLoadTracksFromJson()
   auto* track = track_control->track();
   QCOMPARE(track->title(), "sound_01");
   QCOMPARE(track->volume(), 0.51);
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0) || QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
   QVERIFY(track->isPlaying());
 #endif
   //
@@ -249,7 +249,7 @@ void TestMainWindow::testLoadTracksFromJson()
   track = track_control->track();
   QCOMPARE(track->title(), "sound_03");
   QCOMPARE(track->volume(), 0.53);
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0) || QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
   QVERIFY(track->isPlaying());
 #endif
 }

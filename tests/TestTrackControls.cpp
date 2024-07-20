@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "JsonRW.h"
@@ -104,7 +104,7 @@ void TestTrackControls::testAudioFileOk()
 
 void TestTrackControls::testAudioFileBroken()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
   QSKIP("Test does not work");
 #endif
 
@@ -187,8 +187,14 @@ void TestTrackControls::testPauseAndResume()
   // player A is active, player B is not
   test_playing_state(track->playerA(), track->playerB());
 
+  QSignalSpy playbackStateA(track->playerA(), &QMediaPlayer::playbackStateChanged);
+  QSignalSpy playbackStateB(track->playerB(), &QMediaPlayer::playbackStateChanged);
   track->playerA()->mediaPlayerPositionChanged(track->duration());
   track->playerA()->mediaPlayerStatusChanged(QMediaPlayer::MediaStatus::EndOfMedia);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+  QVERIFY(playbackStateA.wait());
+  QVERIFY(playbackStateB.wait());
+#endif
   // player B is active, player A is not
   test_playing_state(track->playerB(), track->playerA());
 }
