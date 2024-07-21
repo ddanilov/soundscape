@@ -1,8 +1,0 @@
-include:
-  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
-
-extract-source:
-    extends: .provisioning-extract-source
-
-build-source:
-    extends: .build-source-only
