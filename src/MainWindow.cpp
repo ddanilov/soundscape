@@ -276,7 +276,11 @@ void MainWindow::setupTrayIcon()
   connect(m_tray_icon, &QSystemTrayIcon::activated, this, &MainWindow::trayIconAction);
 
   const QIcon& icon = QIcon(":/icons/icon.svg");
+#if defined Q_OS_LINUX
+  m_tray_icon->setIcon(icon.pixmap(256, 256));
+#else
   m_tray_icon->setIcon(icon);
+#endif
   setWindowIcon(icon);
 
   m_tray_icon->show();
