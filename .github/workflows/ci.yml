@@ -27,7 +27,7 @@ jobs:
         fetch-depth: 0
     - name: install aqt
       run: |
-        pip3 install aqtinstall==2.2.3
+        pip3 install aqtinstall
     - name: install build tools
       run: |
         O_DIR=$HOME/Qt
@@ -95,7 +95,7 @@ jobs:
         fetch-depth: 0
     - name: install aqt
       run: |
-        pip3 install aqtinstall==2.2.3
+        pip3 install aqtinstall
     - name: install build tools
       run: |
         brew install librsvg
@@ -154,7 +154,7 @@ jobs:
         fetch-depth: 0
     - name: install aqt
       run: |
-        pip3 install aqtinstall==2.2.3
+        pip3 install aqtinstall
     - name: install Qt
       run: |
         O_DIR=$HOME/Qt
