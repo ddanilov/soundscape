@@ -16,6 +16,24 @@ The application comes with two example soundscapes. Use mouse right-click in the
 main window or on the tray icon to access application menu where you can add or
 remove soundtracks and change their settings.
 
+For each track you can change its volume, loop transition and playback state.
+
+### Volume
+
+![](screenshots/volume.png)
+
+### Loop transition
+
+![](screenshots/transition.png)
+
+### Playback
+
+![](screenshots/playback.png)
+
+From the application menu you can pause and resume all tracks at once.
+
+![](screenshots/pause-tracks.png)
+
 On Linux and Windows, use the `Quit` item from the application menu to finish
 the application. Pressing the close window button will just minimize the
 application to the tray.
