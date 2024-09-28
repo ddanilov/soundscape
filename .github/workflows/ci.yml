@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['6.6.3']
+        qt-version: ['6.7.3']
         qt-arch: [win64_mingw]
         build-type: [Release]
     steps:
@@ -87,7 +87,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['6.6.3']
+        qt-version: ['6.7.3']
         build-type: [Release]
     steps:
     - uses: actions/checkout@v4
@@ -146,7 +146,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['6.6.3']
+        qt-version: ['6.7.3']
         build-type: [Release]
     steps:
     - uses: actions/checkout@v4
