@@ -93,13 +93,11 @@ void TestMainWindow::testSaveTracksToJson()
   window.saveTracksToJson(file);
   file.close();
 
-  QString json;
-  QString jsonExpected;
-
   file.open();
-  json = file.readAll();
+  QString json = file.readAll();
   file.close();
-  jsonExpected = R"({
+
+  QString jsonExpected = R"({
     "tracks": [
         {
             "fadeInDuration": -1,
@@ -150,6 +148,7 @@ void TestMainWindow::testSaveTracksToJson()
   file.open();
   json = file.readAll();
   file.close();
+
   jsonExpected = R"({
     "tracks": [
         {
