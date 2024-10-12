@@ -235,6 +235,10 @@ void MainWindow::closeEvent(QCloseEvent* event)
 {
   if (m_quit || !m_tray_available)
   {
+    for (auto* track_control : m_widget->findChildren<TrackControls*>())
+    {
+      track_control->track()->pause();
+    }
     event->accept();
     return;
   }
