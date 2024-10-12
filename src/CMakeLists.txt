@@ -64,7 +64,7 @@ qt_add_library(${APP_LIB} STATIC
 )
 target_link_libraries(${APP_LIB} PUBLIC Qt::Multimedia Qt::Widgets)
 
-if(Qt6_VERSION VERSION_LESS "6.7.0")
+if(Qt6_VERSION VERSION_LESS 6.7.0 OR Qt6_VERSION VERSION_GREATER_EQUAL 6.7.3)
   qt_add_translations(${APP_LIB} TS_FILES
     translations/soundscape_de.ts
     translations/soundscape_it.ts
@@ -115,49 +115,43 @@ install(TARGETS ${APP_EXE} RUNTIME BUNDLE DESTINATION ".")
 set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATADIR}/${APP_NAME}")
 
 if(WITH_DEPLOY_SCRIPT)
-  if((CMAKE_SYSTEM_NAME MATCHES "Windows" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
-    OR (CMAKE_SYSTEM_NAME MATCHES "Darwin" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.4)
-    OR (CMAKE_SYSTEM_NAME MATCHES "Linux" AND Qt6_VERSION VERSION_GREATER_EQUAL 6.5))
-
-    set(CMAKE_INSTALL_DATADIR ".")
-    if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-      set(CMAKE_INSTALL_DATADIR "${APP_NAME}.app/Contents/Resources")
-    endif()
-    set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATADIR})
-
-    qt_generate_deploy_app_script(TARGET ${APP_EXE} FILENAME_VARIABLE deploy_script)
-    install(SCRIPT ${deploy_script})
-
-    include(InstallRequiredSystemLibraries)
-
-    set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION}")
-    set(CPACK_PACKAGE_VERSION_MINOR "")
-    set(CPACK_PACKAGE_VERSION_PATCH "")
-
-    if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-      set(CPACK_GENERATOR "ZIP")
-      find_program(MAKENSIS_EXE makensis.exe PATHS "$ENV{PROGRAMFILES}/NSIS" "$ENV{PROGRAMFILES\(X86\)}/NSIS")
-      if(MAKENSIS_EXE)
-        list(APPEND CPACK_GENERATOR "NSIS")
-        set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
-        set(CPACK_PACKAGE_INSTALL_DIRECTORY ${APP_TITLE})
-        set(CPACK_NSIS_DISPLAY_NAME "${APP_TITLE}")
-        set(CPACK_NSIS_PACKAGE_NAME "${APP_TITLE}")
-        set(CPACK_NSIS_MENU_LINKS
-          "bin/${APP_EXE}.exe" "${APP_TITLE}"
-          "${WEB_SITE}" "${APP_TITLE} Web Site")
-        set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
-        set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
-      endif()
-    elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-      set(CPACK_GENERATOR "DragNDrop")
-    elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-      set(CPACK_GENERATOR "TGZ")
-    endif()
-
-    include(CPack)
-
+  set(CMAKE_INSTALL_DATADIR ".")
+  if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(CMAKE_INSTALL_DATADIR "${APP_NAME}.app/Contents/Resources")
   endif()
+  set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATADIR})
+
+  qt_generate_deploy_app_script(TARGET ${APP_EXE} OUTPUT_SCRIPT deploy_script)
+  install(SCRIPT ${deploy_script})
+
+  include(InstallRequiredSystemLibraries)
+
+  set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION}")
+  set(CPACK_PACKAGE_VERSION_MINOR "")
+  set(CPACK_PACKAGE_VERSION_PATCH "")
+
+  if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(CPACK_GENERATOR "ZIP")
+    find_program(MAKENSIS_EXE makensis.exe PATHS "$ENV{PROGRAMFILES}/NSIS" "$ENV{PROGRAMFILES\(X86\)}/NSIS")
+    if(MAKENSIS_EXE)
+      list(APPEND CPACK_GENERATOR "NSIS")
+      set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
+      set(CPACK_PACKAGE_INSTALL_DIRECTORY ${APP_TITLE})
+      set(CPACK_NSIS_DISPLAY_NAME "${APP_TITLE}")
+      set(CPACK_NSIS_PACKAGE_NAME "${APP_TITLE}")
+      set(CPACK_NSIS_MENU_LINKS
+        "bin/${APP_EXE}.exe" "${APP_TITLE}"
+        "${WEB_SITE}" "${APP_TITLE} Web Site")
+      set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+      set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
+    endif()
+  elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(CPACK_GENERATOR "DragNDrop")
+  elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(CPACK_GENERATOR "TGZ")
+  endif()
+
+  include(CPack)
 endif()
 
 message(STATUS "data dir: ${CMAKE_INSTALL_DATADIR}")

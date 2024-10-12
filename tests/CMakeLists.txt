@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
 
+enable_testing(TRUE)
+
 find_package(Qt6 COMPONENTS Test REQUIRED)
 
 set(CMAKE_AUTORCC ON)
