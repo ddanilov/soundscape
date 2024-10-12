@@ -3,14 +3,14 @@ Date: Sun, 23 Jul 2023 18:15:25 +0200
 Subject: debhelper will install README
 
 ---
- src/CMakeLists.txt | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ src/CMakeLists.txt | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 4c0c8c4..b9121dd 100644
+index 3bc2ad8..78f7b61 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -165,7 +165,7 @@ configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+@@ -159,8 +159,8 @@ configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
  target_include_directories(${APP_LIB} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
  
  install(DIRECTORY "${PROJECT_SOURCE_DIR}/examples" TYPE DATA)
@@ -18,7 +18,9 @@ index 4c0c8c4..b9121dd 100644
 -  "${PROJECT_SOURCE_DIR}/README.md"
 -  "${PROJECT_SOURCE_DIR}/LICENSE"
 -  TYPE DOC)
+-install(DIRECTORY "${PROJECT_SOURCE_DIR}/screenshots" TYPE DOC)
 +# install(FILES
 +#   "${PROJECT_SOURCE_DIR}/README.md"
 +#   "${PROJECT_SOURCE_DIR}/LICENSE"
 +#   TYPE DOC)
++# install(DIRECTORY "${PROJECT_SOURCE_DIR}/screenshots" TYPE DOC)

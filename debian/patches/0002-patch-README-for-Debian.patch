@@ -3,26 +3,23 @@ Date: Sun, 24 Mar 2024 16:12:20 +0100
 Subject: patch README for Debian
 
 ---
- README.md | 6 ------
- 1 file changed, 6 deletions(-)
+ README.md | 7 -------
+ 1 file changed, 7 deletions(-)
 
 diff --git a/README.md b/README.md
-index 3f4e606..6539d4e 100644
+index 34c31a8..456da01 100644
 --- a/README.md
 +++ b/README.md
-@@ -1,15 +1,9 @@
+@@ -1,12 +1,5 @@
  # Soundscape
  
 -[![GitHub License](https://img.shields.io/github/license/ddanilov/soundscape?color=green)](https://www.gnu.org/licenses/gpl-3.0.html)
 -[![GitHub release](https://img.shields.io/github/release/ddanilov/soundscape)](https://github.com/ddanilov/soundscape/releases/)
 -[![Coverage Status](https://coveralls.io/repos/github/ddanilov/soundscape/badge.svg)](https://coveralls.io/github/ddanilov/soundscape)
+-[![Flathub Downloads](https://img.shields.io/flathub/downloads/io.github.ddanilov.soundscape)](https://flathub.org/apps/io.github.ddanilov.soundscape)
+-[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ddanilov/soundscape/total)](https://github.com/ddanilov/soundscape/releases/)
+-[![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ddanilov/soundscape/latest/total)](https://github.com/ddanilov/soundscape/releases/latest)
 -
  [**Soundscape**](https://github.com/ddanilov/soundscape) is an open-source
  system-tray resident desktop application for playing a mix of sounds, e.g.
  natural sounds by animals or wind and water.
- 
--![](screenshots/overview.png)
--
- ## Usage
- 
- The application comes with two example soundscapes. Use mouse right-click in the
