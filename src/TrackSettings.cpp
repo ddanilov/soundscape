@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "TrackSettings.h"
@@ -100,8 +100,8 @@ void TrackSettings::addTrackTitle()
 
 void TrackSettings::addSlider(Slider type)
 {
-  PositionSlider* slider;
-  PositionLabel* label;
+  PositionSlider* slider = nullptr;
+  PositionLabel* label = nullptr;
   QString tip;
   QString icon;
 
@@ -134,6 +134,9 @@ void TrackSettings::addSlider(Slider type)
     tip = tr("player B");
     icon = ":/icons/position-label.svg";
   }
+
+  Q_CHECK_PTR(slider);
+  Q_CHECK_PTR(label);
 
   if (type == Slider::FadeIn || type == Slider::FadeOut)
   {
