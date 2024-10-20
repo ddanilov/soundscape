@@ -37,9 +37,9 @@ set(SOURCES
 )
 
 set(RESOURCES
-  ${PROJECT_SOURCE_DIR}/icons/icons.qrc
-  ${PROJECT_SOURCE_DIR}/icons/win32.rc
-  ${PROJECT_SOURCE_DIR}/styles/styles.qrc
+  icons/icons.qrc
+  icons/win32.rc
+  styles/styles.qrc
 )
 
 qt_add_library(${APP_LIB} STATIC
@@ -74,7 +74,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   add_custom_command(
     OUTPUT icon.icns
     COMMAND ${CMAKE_COMMAND} -E make_directory ${ICONSET_DIR}
-    COMMAND cat ${PROJECT_SOURCE_DIR}/icons/icon.svg | sed -e 's/r="16"/r="12"/' > ${ICON_TMP}
+    COMMAND cat ${CMAKE_CURRENT_SOURCE_DIR}/icons/icon.svg | sed -e 's/r="16"/r="12"/' > ${ICON_TMP}
     COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=16   --height=16   --output=${ICONSET_DIR}/icon_16x16.png
     COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=32   --height=32   --output=${ICONSET_DIR}/icon_32x32.png
     COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=64   --height=64   --output=${ICONSET_DIR}/icon_64x64.png
@@ -83,7 +83,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=512  --height=512  --output=${ICONSET_DIR}/icon_512x512.png
     COMMAND ${RSVG_CONVERT} ${ICON_TMP} --width=1024 --height=1024 --output=${ICONSET_DIR}/icon_1024x1024.png
     COMMAND iconutil -c icns ${ICONSET_DIR}
-    DEPENDS ${PROJECT_SOURCE_DIR}/icons/icon.svg
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/icons/icon.svg
   )
 
   set(APP_ICON "${ICON_NAME}.icns")
