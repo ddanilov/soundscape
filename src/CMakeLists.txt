@@ -42,20 +42,11 @@ qt_add_library(${APP_LIB} STATIC
 )
 target_link_libraries(${APP_LIB} PUBLIC Qt::Multimedia Qt::Widgets)
 
-if(Qt6_VERSION VERSION_LESS 6.7.0 OR Qt6_VERSION VERSION_GREATER_EQUAL 6.7.3)
-  qt_add_translations(${APP_LIB} TS_FILES
-    translations/soundscape_de.ts
-    translations/soundscape_it.ts
-    translations/soundscape_ru.ts
-  )
-else()
-  qt_add_translations(${APP_LIB} TS_FILES
-    translations/soundscape_de.ts
-    translations/soundscape_it.ts
-    translations/soundscape_ru.ts
-    IMMEDIATE_CALL
-  )
-endif()
+qt_add_translations(${APP_LIB} TS_FILES
+  translations/soundscape_de.ts
+  translations/soundscape_it.ts
+  translations/soundscape_ru.ts
+)
 
 message(STATUS "system name: ${CMAKE_SYSTEM_NAME}")
 

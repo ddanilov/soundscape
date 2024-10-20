@@ -60,9 +60,8 @@ else()
 endif()
 
 add_subdirectory(src)
+add_subdirectory(tests)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   add_subdirectory(linux)
 endif()
-
-add_subdirectory(tests)
