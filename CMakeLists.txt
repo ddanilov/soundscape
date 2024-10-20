@@ -58,7 +58,6 @@ else()
   set(CMAKE_AUTOUIC ON)
   include(GNUInstallDirs)
 endif()
-set(CMAKE_AUTORCC ON)
 
 add_subdirectory(src)
 

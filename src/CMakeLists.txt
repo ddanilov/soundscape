@@ -36,11 +36,9 @@ set(SOURCES
   Volume.cpp
 )
 
-set(RESOURCES
-  icons/icons.qrc
-  icons/win32.rc
-  styles/styles.qrc
-)
+set(RESOURCES icons/win32.rc)
+qt_add_resources(RESOURCES icons/icons.qrc)
+qt_add_resources(RESOURCES styles/styles.qrc)
 
 qt_add_library(${APP_LIB} STATIC
   ${HEADERS}
