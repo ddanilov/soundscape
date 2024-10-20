@@ -36,10 +36,6 @@ set(SOURCES
   Volume.cpp
 )
 
-set(RESOURCES icons/win32.rc)
-qt_add_resources(RESOURCES icons/icons.qrc)
-qt_add_resources(RESOURCES styles/styles.qrc)
-
 qt_add_library(${APP_LIB} STATIC
   ${HEADERS}
   ${SOURCES}
@@ -89,8 +85,35 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
+set(RESOURCES icons/win32.rc)
 qt_add_executable(${APP_EXE} WIN32 MACOSX_BUNDLE ${RESOURCES} ${APP_ICON})
 target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
+
+qt_add_resources(${APP_EXE} icons_resources
+  PREFIX "/icons"
+  BASE "icons"
+  FILES
+    icons/cross-fade.svg
+    icons/fade-gap.svg
+    icons/fade-in-label.svg
+    icons/fade-out-in.svg
+    icons/fade-out-label.svg
+    icons/gap-label.svg
+    icons/icon.svg
+    icons/position-label.svg
+    icons/switch-off.svg
+    icons/switch-on.svg
+    icons/switch-paused.svg
+)
+
+qt_add_resources(${APP_EXE} styles_resources
+  PREFIX "/styles"
+  BASE "styles"
+  FILES
+    styles/status.css
+    styles/track-controls.css
+    styles/transition-icon.css
+)
 
 install(TARGETS ${APP_EXE} RUNTIME BUNDLE DESTINATION ".")
 

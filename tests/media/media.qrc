@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/media">
-        <file>sound_0000.wav</file>
-        <file>sound_0100.wav</file>
-        <file>sound_XXXX.wav</file>
-        <file>video_0100.webm</file>
-    </qresource>
-</RCC>
