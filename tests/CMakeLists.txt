@@ -3,11 +3,6 @@
 
 enable_testing(TRUE)
 
-find_package(Qt6 COMPONENTS Test REQUIRED)
-
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
-
 set(RESOURCES ./media/media.qrc)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)

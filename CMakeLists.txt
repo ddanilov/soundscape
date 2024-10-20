@@ -43,6 +43,23 @@ message(STATUS "version: ${APP_VERSION}")
 set(APP_LIB ${APP_NAME}-lib)
 set(APP_EXE ${APP_NAME})
 
+find_package(Qt6 6.2 COMPONENTS
+  LinguistTools
+  Multimedia
+  Test
+  Widgets
+  REQUIRED)
+message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")
+
+if(Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
+  qt_standard_project_setup()
+else()
+  set(CMAKE_AUTOMOC ON)
+  set(CMAKE_AUTOUIC ON)
+  include(GNUInstallDirs)
+endif()
+set(CMAKE_AUTORCC ON)
+
 add_subdirectory(src)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")

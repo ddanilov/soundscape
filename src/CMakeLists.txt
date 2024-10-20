@@ -1,22 +1,6 @@
 # SPDX-FileCopyrightText: 2022-2024 Denis Danilov and contributors
 # SPDX-License-Identifier: GPL-3.0-only
 
-find_package(Qt6 6.2 COMPONENTS
-  LinguistTools
-  Multimedia
-  Widgets
-  REQUIRED)
-message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")
-
-if(Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
-  qt_standard_project_setup()
-else()
-  set(CMAKE_AUTOMOC ON)
-  set(CMAKE_AUTOUIC ON)
-  include(GNUInstallDirs)
-endif()
-set(CMAKE_AUTORCC ON)
-
 set(HEADERS
   IconLabel.h
   JsonRW.h
