@@ -76,6 +76,7 @@ jobs:
       uses: LABSN/sound-ci-helpers@v1
     - name: test
       run: |
+        PATH=$Qt6_BINDIR:$MinGW_BIN:$PATH
         ctest --output-on-failure --test-dir $BUILD_DIR/tests
     - name: release
       uses: softprops/action-gh-release@v1
