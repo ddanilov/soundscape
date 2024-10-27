@@ -101,7 +101,7 @@ jobs:
         fetch-depth: 0
     - name: install aqt
       run: |
-        pip3 install aqtinstall
+        pipx install aqtinstall
     - name: install build tools
       run: |
         brew install librsvg
