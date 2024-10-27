@@ -89,7 +89,7 @@ jobs:
         files: ${{ env.BUILD_DIR }}/soundscape-*
 
   macos:
-    runs-on: macos-12
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
@@ -148,7 +148,7 @@ jobs:
         files: ${{ env.BUILD_DIR }}/soundscape-*
 
   linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
