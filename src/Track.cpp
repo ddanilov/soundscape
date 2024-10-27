@@ -123,6 +123,12 @@ void Track::pause()
   m_player_B->pauseActive();
 }
 
+void Track::skipToStart()
+{
+  const auto a = m_player_A->skipToStartActive();
+  m_player_B->skipToStartActive(a);
+}
+
 qint64 Track::duration() const
 {
   return m_track_duration;

@@ -19,6 +19,7 @@ public:
   void setNextPlayer(Player* mediaPlayer);
   bool playActive(bool force = false);
   void pauseActive();
+  bool skipToStartActive(bool with_pause = false);
 
 signals:
   void playerLoaded();

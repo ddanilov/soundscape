@@ -167,22 +167,27 @@ für Anwendungsmenü</translation>
 <context>
     <name>TrackControls</name>
     <message>
-        <location filename="../TrackControls.cpp" line="173"/>
+        <location filename="../TrackControls.cpp" line="178"/>
+        <source>Skip to start</source>
+        <translation>An den Anfang springen</translation>
+    </message>
+    <message>
+        <location filename="../TrackControls.cpp" line="181"/>
         <source>Edit Settings</source>
         <translation>Spur-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../TrackControls.cpp" line="176"/>
+        <location filename="../TrackControls.cpp" line="184"/>
         <source>Move Up</source>
         <translation>Spur hoch schieben</translation>
     </message>
     <message>
-        <location filename="../TrackControls.cpp" line="179"/>
+        <location filename="../TrackControls.cpp" line="187"/>
         <source>Move Down</source>
         <translation>Spur runter schieben</translation>
     </message>
     <message>
-        <location filename="../TrackControls.cpp" line="182"/>
+        <location filename="../TrackControls.cpp" line="190"/>
         <source>Remove</source>
         <translation>Spur entfernen</translation>
     </message>

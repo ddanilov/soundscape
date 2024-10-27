@@ -32,6 +32,7 @@ public:
   bool isPlaying() const;
   void play();
   void pause();
+  void skipToStart();
 
   qint64 duration() const;
 

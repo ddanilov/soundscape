@@ -33,6 +33,7 @@ public slots:
   void volumeChanged(int value);
   void transitionChanged(int state);
   void statusChanged(int state);
+  void skipToStart();
   void trackLoaded();
   void playerError();
 

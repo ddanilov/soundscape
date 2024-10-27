@@ -167,22 +167,27 @@ to access application menu</source>
 <context>
     <name>TrackControls</name>
     <message>
-        <location filename="../TrackControls.cpp" line="173"/>
+        <location filename="../TrackControls.cpp" line="178"/>
+        <source>Skip to start</source>
+        <translation>Перейти на начало трека</translation>
+    </message>
+    <message>
+        <location filename="../TrackControls.cpp" line="181"/>
         <source>Edit Settings</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../TrackControls.cpp" line="176"/>
+        <location filename="../TrackControls.cpp" line="184"/>
         <source>Move Up</source>
         <translation>Переместить вверх</translation>
     </message>
     <message>
-        <location filename="../TrackControls.cpp" line="179"/>
+        <location filename="../TrackControls.cpp" line="187"/>
         <source>Move Down</source>
         <translation>Переместить вниз</translation>
     </message>
     <message>
-        <location filename="../TrackControls.cpp" line="182"/>
+        <location filename="../TrackControls.cpp" line="190"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>

@@ -113,6 +113,11 @@ void TrackControls::statusChanged(int state)
   }
 }
 
+void TrackControls::skipToStart()
+{
+  m_track->skipToStart();
+}
+
 void TrackControls::trackLoaded()
 {
   if (m_track->errors().empty())
@@ -170,6 +175,9 @@ bool TrackControls::eventFilter(QObject* watched, QEvent* event)
 
 void TrackControls::addItemsToMenu(QMenu* menu) const
 {
+  auto* skip_to_start = menu->addAction(tr("Skip to start"));
+  connect(skip_to_start, &QAction::triggered, this, &TrackControls::skipToStart);
+
   auto* show_settings = menu->addAction(tr("Edit Settings"));
   connect(show_settings, &QAction::triggered, this, [this]() { m_settings->show(); });
 

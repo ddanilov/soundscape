@@ -52,6 +52,17 @@ void Player::pauseActive()
   pause();
 }
 
+bool Player::skipToStartActive(const bool with_pause)
+{
+  if (with_pause) { pause(); }
+  if (m_active)
+  {
+    setPosition(0);
+    return true;
+  }
+  return false;
+}
+
 void Player::mediaPlayerStatusChanged(MediaStatus status)
 {
   if (!m_ready && status == QMediaPlayer::MediaStatus::LoadedMedia)

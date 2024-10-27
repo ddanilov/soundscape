@@ -132,10 +132,11 @@ void TestTrackControls::testMenu()
   TrackControls track_controls(QJsonObject(), QDir(), &main_window);
   auto menu = track_controls.m_mouse_menu;
   auto actions = menu->actions();
-  QCOMPARE(actions.at(0)->text(), "Edit Settings");
-  QCOMPARE(actions.at(1)->text(), "Move Up");
-  QCOMPARE(actions.at(2)->text(), "Move Down");
-  QCOMPARE(actions.at(3)->text(), "Remove");
+  QCOMPARE(actions.at(0)->text(), "Skip to start");
+  QCOMPARE(actions.at(1)->text(), "Edit Settings");
+  QCOMPARE(actions.at(2)->text(), "Move Up");
+  QCOMPARE(actions.at(3)->text(), "Move Down");
+  QCOMPARE(actions.at(4)->text(), "Remove");
 }
 
 void TestTrackControls::testPauseAndResume()

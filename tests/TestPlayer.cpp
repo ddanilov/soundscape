@@ -32,6 +32,7 @@ private slots:
   void testNextPlayerOutGapIn();
   void testNextPlayerCrossFade();
   void testPlayPauseActive();
+  void testSkipToStartActive();
 
 private:
   const QTemporaryDir tmp_dir;
@@ -253,6 +254,26 @@ void TestPlayer::testPlayPauseActive()
   QVERIFY(player->playActive());
   QVERIFY(player->m_active);
   QVERIFY(player->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+}
+
+void TestPlayer::testSkipToStartActive()
+{
+  Track track;
+  auto* player = track.playerA();
+  QSignalSpy player_loaded(player, &Player::playerLoaded);
+  player->setSource(QUrl::fromLocalFile(file_name_audio_ok));
+  QVERIFY(player_loaded.wait());
+  player->m_active = false;
+  player->stop();
+
+  QVERIFY(!player->playActive());
+  QVERIFY(!player->skipToStartActive());
+
+  QVERIFY(player->playActive(true));
+  QVERIFY(player->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
+  QVERIFY(player->skipToStartActive(true));
+  QVERIFY(player->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
+  QVERIFY(player->position() == 0);
 }
 
 QTEST_MAIN(TestPlayer)
