@@ -42,7 +42,7 @@ to access application menu</source>
         <location filename="../MainWindow.cpp" line="51"/>
         <location filename="../MainWindow.cpp" line="52"/>
         <location filename="../MainWindow.cpp" line="110"/>
-        <location filename="../MainWindow.cpp" line="390"/>
+        <location filename="../MainWindow.cpp" line="398"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
@@ -92,53 +92,53 @@ to access application menu</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="269"/>
+        <location filename="../MainWindow.cpp" line="273"/>
         <source>Show window</source>
         <translation>Показать окно</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="322"/>
+        <location filename="../MainWindow.cpp" line="330"/>
         <source>Save Tracks</source>
         <translation>Сохранение дорожек</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="323"/>
-        <location filename="../MainWindow.cpp" line="346"/>
+        <location filename="../MainWindow.cpp" line="331"/>
+        <location filename="../MainWindow.cpp" line="354"/>
         <source>couldn&apos;t open file: %1</source>
         <translation>невозможно открыть файл %1</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="345"/>
+        <location filename="../MainWindow.cpp" line="353"/>
         <source>Load Tracks</source>
         <translation>Загрузка дорожек</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="377"/>
+        <location filename="../MainWindow.cpp" line="385"/>
         <source>Version: %1</source>
         <translation>Версия: %1</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="379"/>
+        <location filename="../MainWindow.cpp" line="387"/>
         <source>open-source system-tray resident desktop application for playing soundscapes</source>
         <translation>приложение для воспроизведения звуковых ландшафтов</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="382"/>
+        <location filename="../MainWindow.cpp" line="390"/>
         <source>Website: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Веб-сайт: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="383"/>
+        <location filename="../MainWindow.cpp" line="391"/>
         <source>Copyright: © 2022-2024 Denis Danilov and contributors</source>
         <translation>Копирайт: © 2022-2024 Denis Danilov and contributors</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="384"/>
+        <location filename="../MainWindow.cpp" line="392"/>
         <source>License: GNU General Public License (GPL) version 3</source>
         <translation>Лицензия: GNU General Public License (GPL) version 3</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="387"/>
+        <location filename="../MainWindow.cpp" line="395"/>
         <source>Qt Version: %1</source>
         <translation>Версия Qt: %1</translation>
     </message>
@@ -215,18 +215,18 @@ to access application menu</source>
         <translation>проигрыватель Б</translation>
     </message>
     <message>
-        <location filename="../TrackSettings.cpp" line="175"/>
+        <location filename="../TrackSettings.cpp" line="178"/>
         <source>gap</source>
         <translation>промежуток</translation>
     </message>
     <message>
-        <location filename="../TrackSettings.cpp" line="177"/>
-        <location filename="../TrackSettings.cpp" line="183"/>
+        <location filename="../TrackSettings.cpp" line="180"/>
+        <location filename="../TrackSettings.cpp" line="186"/>
         <source>s</source>
         <translation>сек</translation>
     </message>
     <message>
-        <location filename="../TrackSettings.cpp" line="181"/>
+        <location filename="../TrackSettings.cpp" line="184"/>
         <source>random up to</source>
         <translation>случайный до</translation>
     </message>

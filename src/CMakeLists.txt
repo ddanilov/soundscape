@@ -79,6 +79,7 @@ endif()
 set(RESOURCES icons/win32.rc)
 qt_add_executable(${APP_EXE} WIN32 MACOSX_BUNDLE ${RESOURCES} ${APP_ICON})
 target_link_libraries(${APP_EXE} PRIVATE ${APP_LIB})
+add_dependencies(${APP_EXE} update_translations)
 
 qt_add_resources(${APP_EXE} icons_resources
   PREFIX "/icons"
