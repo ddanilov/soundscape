@@ -20,10 +20,10 @@ class TestTrackControls : public QObject
 public:
   explicit TestTrackControls(QObject* parent = nullptr) :
       QObject(parent),
-      tmp_dir(),
       base_dir(tmp_dir.path()),
       file_name_audio_ok("./"),
-      file_name_audio_broken("./")
+      file_name_audio_broken("./"),
+      main_window(true)
   {}
 
 private slots:
@@ -40,6 +40,8 @@ private:
 
   QString file_name_audio_ok;
   QString file_name_audio_broken;
+
+  MainWindow main_window;
 };
 
 void TestTrackControls::initTestCase()
@@ -59,17 +61,16 @@ void TestTrackControls::testAudioFileOk()
 {
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name_audio_ok;
-  auto* main_window = new MainWindow();
-  auto* track_controls = new TrackControls(json, QDir(), main_window);
-  QSignalSpy updated(track_controls, &TrackControls::updated);
+  TrackControls track_controls(json, QDir(), &main_window);
+  QSignalSpy updated(&track_controls, &TrackControls::updated);
   QVERIFY(updated.wait());
 
-  auto* track = track_controls->track();
+  auto* track = track_controls.track();
 
-  auto volume_control = track_controls->m_volume_control;
+  auto volume_control = track_controls.m_volume_control;
   QCOMPARE(volume_control->value(), 50);
 
-  auto transition_control = track_controls->m_transition_control;
+  auto transition_control = track_controls.m_transition_control;
   QCOMPARE(transition_control->isEnabled(), true);
   QCOMPARE(transition_control->checkState(), Qt::CheckState::Unchecked);
   QCOMPARE(track->transition(), Transition::FadeOutIn);
@@ -84,7 +85,7 @@ void TestTrackControls::testAudioFileOk()
   QCOMPARE(transition_control->checkState(), Qt::CheckState::Checked);
   QCOMPARE(track->transition(), Transition::FadeOutGapIn);
 
-  auto status_control = track_controls->m_status_control;
+  auto status_control = track_controls.m_status_control;
   QCOMPARE(status_control->isEnabled(), true);
   QVERIFY(track->isPlaying());
   QCOMPARE(track->playerA()->playbackState(), QMediaPlayer::PlaybackState::PlayingState);
@@ -110,17 +111,16 @@ void TestTrackControls::testAudioFileBroken()
 
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name_audio_broken;
-  auto* main_window = new MainWindow();
-  auto* track_controls = new TrackControls(json, QDir(), main_window);
-  QSignalSpy updated(track_controls, &TrackControls::updated);
+  TrackControls track_controls(json, QDir(), &main_window);
+  QSignalSpy updated(&track_controls, &TrackControls::updated);
   QVERIFY(updated.wait());
 
-  auto* track = track_controls->track();
+  auto* track = track_controls.track();
 
-  auto volume_control = track_controls->m_volume_control;
+  auto volume_control = track_controls.m_volume_control;
   QCOMPARE(volume_control->value(), 50);
 
-  auto status_control = track_controls->m_status_control;
+  auto status_control = track_controls.m_status_control;
   QCOMPARE(status_control->isEnabled(), false);
   QVERIFY(!track->isPlaying());
   QCOMPARE(status_control->checkState(), Qt::CheckState::Unchecked);
@@ -129,9 +129,8 @@ void TestTrackControls::testAudioFileBroken()
 
 void TestTrackControls::testMenu()
 {
-  auto* main_window = new MainWindow();
-  auto* track_controls = new TrackControls(QJsonObject(), QDir(), main_window);
-  auto menu = track_controls->m_mouse_menu;
+  TrackControls track_controls(QJsonObject(), QDir(), &main_window);
+  auto menu = track_controls.m_mouse_menu;
   auto actions = menu->actions();
   QCOMPARE(actions.at(0)->text(), "Edit Settings");
   QCOMPARE(actions.at(1)->text(), "Move Up");
@@ -143,13 +142,12 @@ void TestTrackControls::testPauseAndResume()
 {
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name_audio_ok;
-  auto* main_window = new MainWindow();
-  auto* track_controls = new TrackControls(json, QDir(), main_window);
-  QSignalSpy updated(track_controls, &TrackControls::updated);
+  TrackControls track_controls(json, QDir(), &main_window);
+  QSignalSpy updated(&track_controls, &TrackControls::updated);
   QVERIFY(updated.wait());
 
-  auto* track = track_controls->track();
-  auto status_control = track_controls->m_status_control;
+  auto* track = track_controls.track();
+  auto status_control = track_controls.m_status_control;
 
   auto test_playing_state = [&](auto* player_A, auto* player_B) {
     QCOMPARE(status_control->isChecked(), true);
@@ -157,21 +155,21 @@ void TestTrackControls::testPauseAndResume()
     QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
     QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
-    track_controls->pausePlaying();
+    track_controls.pausePlaying();
     QCOMPARE(status_control->isChecked(), true);
     QCOMPARE(track->isPlaying(), false);
     QVERIFY(player_A->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
     QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
-    track_controls->resumePaused();
+    track_controls.resumePaused();
     QCOMPARE(status_control->isChecked(), true);
     QCOMPARE(track->isPlaying(), true);
     QVERIFY(player_A->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
     QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
 
-    track_controls->pausePlaying();
+    track_controls.pausePlaying();
     QTest::mouseClick(status_control, Qt::MouseButton::LeftButton);
-    track_controls->resumePaused();
+    track_controls.resumePaused();
     QCOMPARE(status_control->isChecked(), false);
     QCOMPARE(track->isPlaying(), false);
     QVERIFY(player_A->playbackState() != QMediaPlayer::PlaybackState::PlayingState);

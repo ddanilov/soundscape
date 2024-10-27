@@ -15,7 +15,6 @@ class TestTrack : public QObject
 public:
   explicit TestTrack(QObject* parent = nullptr) :
       QObject(parent),
-      tmp_dir(),
       base_dir(tmp_dir.path()),
       file_name_audio_ok("./"),
       file_name_audio_duration_zero("./"),

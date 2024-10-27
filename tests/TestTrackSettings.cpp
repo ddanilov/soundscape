@@ -20,10 +20,9 @@ class TestTrackSettings : public QObject
 public:
   explicit TestTrackSettings(QObject* parent = nullptr) :
       QObject(parent),
-      tmp_dir(),
       base_dir(tmp_dir.path()),
       file_name("./"),
-      track(nullptr)
+      main_window(true)
   {}
 
 private slots:
@@ -40,10 +39,10 @@ private:
   const QTemporaryDir tmp_dir;
   const QDir base_dir;
   QString file_name;
-  QPointer<MainWindow> main_window;
+  MainWindow main_window;
   QPointer<TrackControls> track_controls;
   QPointer<TrackSettings> track_settings;
-  Track* track;
+  QPointer<Track> track;
 };
 
 void TestTrackSettings::initTestCase()
@@ -58,8 +57,7 @@ void TestTrackSettings::init()
 {
   QJsonObject json;
   json[JsonRW::FileNameTag] = file_name;
-  main_window = new MainWindow();
-  track_controls = new TrackControls(json, QDir(), main_window);
+  track_controls = new TrackControls(json, QDir(), &main_window);
   track_settings = new TrackSettings(track_controls);
   QSignalSpy loaded(track_settings, &TrackSettings::loaded);
   QVERIFY(loaded.wait());

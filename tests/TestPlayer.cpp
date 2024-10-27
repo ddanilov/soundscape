@@ -14,7 +14,6 @@ class TestPlayer : public QObject
 public:
   explicit TestPlayer(QObject* parent = nullptr) :
       QObject(parent),
-      tmp_dir(),
       base_dir(tmp_dir.path()),
       file_name_audio_ok("./"),
       file_name_audio_duration_zero("./"),
@@ -120,11 +119,11 @@ void TestPlayer::testMediaFileWithoutAudio()
 
 void TestPlayer::testNextPlayerOutIn()
 {
-  QPointer track = new Track;
-  track->setTransition(Transition::FadeOutIn);
+  Track track;
+  track.setTransition(Transition::FadeOutIn);
 
-  auto* player_A = track->playerA();
-  auto* player_B = track->playerB();
+  auto* player_A = track.playerA();
+  auto* player_B = track.playerB();
   QCOMPARE(player_A->m_next_media_player, player_B);
   QCOMPARE(player_B->m_next_media_player, player_A);
 
@@ -152,13 +151,13 @@ void TestPlayer::testNextPlayerOutIn()
 
 void TestPlayer::testNextPlayerOutGapIn()
 {
-  QPointer track = new Track;
-  track->setTransition(Transition::FadeOutGapIn);
-  track->setGap(2.0);
-  track->setRandomGap(false);
+  Track track;
+  track.setTransition(Transition::FadeOutGapIn);
+  track.setGap(2.0);
+  track.setRandomGap(false);
 
-  auto* player_A = track->playerA();
-  auto* player_B = track->playerB();
+  auto* player_A = track.playerA();
+  auto* player_B = track.playerB();
   QCOMPARE(player_A->m_next_media_player, player_B);
   QCOMPARE(player_B->m_next_media_player, player_A);
 
@@ -178,7 +177,7 @@ void TestPlayer::testNextPlayerOutGapIn()
     QVERIFY(player_B_state.wait());
     QVERIFY(player_B->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
     const auto t2_AB = QDateTime::currentDateTime();
-    QVERIFY(t1_AB.msecsTo(t2_AB) >= track->gap() * 1000 * 0.95);
+    QVERIFY(t1_AB.msecsTo(t2_AB) >= track.gap() * 1000 * 0.95);
   };
 
   for (int i = 0; i < 3; ++i)
@@ -190,13 +189,13 @@ void TestPlayer::testNextPlayerOutGapIn()
 
 void TestPlayer::testNextPlayerCrossFade()
 {
-  QPointer track = new Track;
-  track->setTransition(Transition::CrossFade);
-  track->setFadeInDuration(track->duration() / 4);
-  track->setFadeOutDuration(track->duration() / 4);
+  Track track;
+  track.setTransition(Transition::CrossFade);
+  track.setFadeInDuration(track.duration() / 4);
+  track.setFadeOutDuration(track.duration() / 4);
 
-  auto* player_A = track->playerA();
-  auto* player_B = track->playerB();
+  auto* player_A = track.playerA();
+  auto* player_B = track.playerB();
   QCOMPARE(player_A->m_next_media_player, player_B);
   QCOMPARE(player_B->m_next_media_player, player_A);
 
@@ -210,11 +209,11 @@ void TestPlayer::testNextPlayerCrossFade()
   auto test_transition = [&](auto* player_A, auto* player_B) {
     player_A->pauseActive();
     player_B->pauseActive();
-    player_A->mediaPlayerPositionChanged(player_A->duration() - track->fadeOutDuration() - 1);
+    player_A->mediaPlayerPositionChanged(player_A->duration() - track.fadeOutDuration() - 1);
     QVERIFY(player_B->playbackState() != QMediaPlayer::PlaybackState::PlayingState);
     player_A->pauseActive();
     player_B->pauseActive();
-    player_A->mediaPlayerPositionChanged(player_A->duration() - track->fadeOutDuration() + 1);
+    player_A->mediaPlayerPositionChanged(player_A->duration() - track.fadeOutDuration() + 1);
     QVERIFY(player_B->playbackState() == QMediaPlayer::PlaybackState::PlayingState);
   };
 
@@ -227,8 +226,8 @@ void TestPlayer::testNextPlayerCrossFade()
 
 void TestPlayer::testPlayPauseActive()
 {
-  QPointer track = new Track;
-  auto* player = track->playerA();
+  Track track;
+  auto* player = track.playerA();
   QSignalSpy player_loaded(player, &Player::playerLoaded);
   player->setSource(QUrl::fromLocalFile(file_name_audio_ok));
   QVERIFY(player_loaded.wait());
