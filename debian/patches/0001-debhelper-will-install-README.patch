@@ -7,10 +7,10 @@ Subject: debhelper will install README
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 3bc2ad8..78f7b61 100644
+index deaa90a..5fad00b 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -159,8 +159,8 @@ configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+@@ -156,8 +156,8 @@ configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
  target_include_directories(${APP_LIB} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
  
  install(DIRECTORY "${PROJECT_SOURCE_DIR}/examples" TYPE DATA)
