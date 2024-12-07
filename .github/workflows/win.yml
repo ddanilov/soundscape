@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['6.7.3']
+        qt-version: ['6.8.1']
         qt-arch: [win64_mingw]
         build-type: [Release]
     steps:
@@ -54,8 +54,8 @@ jobs:
         echo "QML2_IMPORT_PATH=$QML2_IMPORT_PATH" >>$GITHUB_ENV
     - name: install MinGW
       run: |
-        aqt install-tool windows desktop tools_mingw90 -O $O_DIR
-        MinGW_BIN=$O_DIR/Tools/mingw1120_64/bin
+        aqt install-tool windows desktop tools_mingw1310 -O $O_DIR
+        MinGW_BIN=$O_DIR/Tools/mingw1310_64/bin
         echo "MinGW_BIN=$MinGW_BIN" >>$GITHUB_ENV
     - name: configure
       run: |
