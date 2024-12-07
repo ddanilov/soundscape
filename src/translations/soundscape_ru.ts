@@ -154,12 +154,12 @@ to access application menu</source>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../Status.cpp" line="45"/>
+        <location filename="../Status.cpp" line="49"/>
         <source>paused</source>
         <translation>приостановлена</translation>
     </message>
     <message>
-        <location filename="../Status.cpp" line="48"/>
+        <location filename="../Status.cpp" line="52"/>
         <source>playing</source>
         <translation>воспроизводится</translation>
     </message>
@@ -239,20 +239,20 @@ to access application menu</source>
 <context>
     <name>TransitionIcon</name>
     <message>
-        <location filename="../TransitionIcon.cpp" line="34"/>
+        <location filename="../TransitionIcon.cpp" line="38"/>
         <source>loop with fade-out/in</source>
         <translation>затухание и
 нарастание</translation>
     </message>
     <message>
-        <location filename="../TransitionIcon.cpp" line="37"/>
+        <location filename="../TransitionIcon.cpp" line="41"/>
         <source>loop with cross-fade</source>
         <translation>перекрёстное
 затухание и
 нарастание</translation>
     </message>
     <message>
-        <location filename="../TransitionIcon.cpp" line="40"/>
+        <location filename="../TransitionIcon.cpp" line="44"/>
         <source>loop with gap</source>
         <translation>затухание и нарастание
 с перерывом</translation>

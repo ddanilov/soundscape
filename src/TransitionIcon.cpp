@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "TransitionIcon.h"
@@ -22,7 +22,11 @@ TransitionIcon::TransitionIcon(QWidget* parent) :
   setStyleSheet(style);
 
   updateToolTip(checkState());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+  connect(this, &TransitionIcon::checkStateChanged, this, &TransitionIcon::updateToolTip);
+#else
   connect(this, &TransitionIcon::stateChanged, this, &TransitionIcon::updateToolTip);
+#endif
 }
 
 void TransitionIcon::updateToolTip(int /*value*/)

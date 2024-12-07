@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "Status.h"
@@ -24,7 +24,11 @@ Status::Status(QWidget* parent) :
   setPlayingStyle();
 
   updateToolTip(checkState());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+  connect(this, &Status::checkStateChanged, this, &Status::updateToolTip);
+#else
   connect(this, &Status::stateChanged, this, &Status::updateToolTip);
+#endif
 }
 
 void Status::setPlayingStyle()
@@ -47,5 +51,7 @@ void Status::updateToolTip(int /*value*/)
     case Qt::CheckState::Checked:
       setToolTip(tr("playing"));
       break;
+    default:
+      return;
   }
 }

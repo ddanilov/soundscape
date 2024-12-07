@@ -235,7 +235,11 @@ void TrackSettings::setTrackProperties()
   m_random_gap_check_box->setChecked(m_track->randomGap());
 
   connect(m_gap_spin_box, &QDoubleSpinBox::valueChanged, this, &TrackSettings::gapSpinBoxChanged);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+  connect(m_random_gap_check_box, &QCheckBox::checkStateChanged, this, &TrackSettings::randomGapCheckBoxChanged);
+#else
   connect(m_random_gap_check_box, &QCheckBox::stateChanged, this, &TrackSettings::randomGapCheckBoxChanged);
+#endif
   connect(m_gap_max_spin_box, &QDoubleSpinBox::valueChanged, this, &TrackSettings::gapMaxSpinBoxChanged);
 
   emit loaded();
