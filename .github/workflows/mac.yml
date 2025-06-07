@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['6.8.1']
+        qt-version: ['6.8.3']
         build-type: [Release]
     steps:
     - uses: actions/checkout@v4
