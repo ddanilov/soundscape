@@ -4,29 +4,42 @@
 <context>
     <name>Help</name>
     <message>
-        <location filename="../Main.cpp" line="36"/>
+        <location filename="../Main.cpp" line="38"/>
         <source>Load track list from file.</source>
         <translation>Загрузить дорожки из файла.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="37"/>
+        <location filename="../Main.cpp" line="39"/>
         <source>path to file</source>
         <translation>путь к файлу</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="40"/>
+        <location filename="../Main.cpp" line="42"/>
         <source>Minimize window to tray.</source>
         <translation>Запустить свёрнутым в область уведомления (системный лоток).</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="44"/>
+        <location filename="../Main.cpp" line="46"/>
         <source>Enable tray icon.</source>
         <translation>Включить область уведомления (системный лоток).</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="46"/>
+        <location filename="../Main.cpp" line="48"/>
         <source>Disable tray icon.</source>
         <translation>Выключить область уведомления (системный лоток).</translation>
+    </message>
+</context>
+<context>
+    <name>Main</name>
+    <message>
+        <location filename="../Main.cpp" line="77"/>
+        <source>%1 is already running (PID: %2).</source>
+        <translation>%1 уже запущен (процесс: %2).</translation>
+    </message>
+    <message>
+        <location filename="../Main.cpp" line="79"/>
+        <source>Continue anyway?</source>
+        <translation>Всё равно продолжить?</translation>
     </message>
 </context>
 <context>

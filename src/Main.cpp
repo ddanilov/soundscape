@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2025 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "MainWindow.h"
@@ -8,6 +8,8 @@
 #include <QCommandLineParser>
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QMessageBox>
+#include <QSharedMemory>
 #include <QTranslator>
 
 int main(int argc, char* argv[])
@@ -56,6 +58,36 @@ int main(int argc, char* argv[])
 #else
   const bool disable_tray = parser.isSet(tray_option);
 #endif
+
+  QSharedMemory run_guard("io.github.ddanilov.soundscape");
+  if (run_guard.create(sizeof(qint64)))
+  {
+    qint64 pid = QCoreApplication::applicationPid();
+    auto* data = static_cast<qint64*>(run_guard.data());
+    *data = pid;
+  }
+  else
+  {
+    if (!run_guard.attach())
+    {
+      return 0;
+    }
+    auto* data = static_cast<const qint64*>(run_guard.data());
+
+    const auto& info = QCoreApplication::translate("Main", "%1 is already running (PID: %2).")
+                           .append("\n")
+                           .append(QCoreApplication::translate("Main", "Continue anyway?"))
+                           .arg(APP_TITLE)
+                           .arg(*data);
+
+    const auto clicked = QMessageBox::question(nullptr, APP_TITLE, info,
+                                               QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No),
+                                               QMessageBox::No);
+    if (clicked != QMessageBox::Yes)
+    {
+      return 0;
+    }
+  }
 
   MainWindow w(disable_tray);
   w.start(file_name, minimize);

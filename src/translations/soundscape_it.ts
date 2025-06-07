@@ -4,29 +4,42 @@
 <context>
     <name>Help</name>
     <message>
-        <location filename="../Main.cpp" line="36"/>
+        <location filename="../Main.cpp" line="38"/>
         <source>Load track list from file.</source>
         <translation>Carica l&apos;elenco delle tracce da file.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="37"/>
+        <location filename="../Main.cpp" line="39"/>
         <source>path to file</source>
         <translation>percorso del file</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="40"/>
+        <location filename="../Main.cpp" line="42"/>
         <source>Minimize window to tray.</source>
         <translation>Riduci a icona la finestra.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="44"/>
+        <location filename="../Main.cpp" line="46"/>
         <source>Enable tray icon.</source>
         <translation>Abilita l&apos;icona nella barra delle applicazioni.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="46"/>
+        <location filename="../Main.cpp" line="48"/>
         <source>Disable tray icon.</source>
         <translation>Disattiva l&apos;icona nella barra delle applicazioni.</translation>
+    </message>
+</context>
+<context>
+    <name>Main</name>
+    <message>
+        <location filename="../Main.cpp" line="77"/>
+        <source>%1 is already running (PID: %2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.cpp" line="79"/>
+        <source>Continue anyway?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
