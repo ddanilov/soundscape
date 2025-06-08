@@ -4,40 +4,45 @@
 <context>
     <name>Help</name>
     <message>
-        <location filename="../Main.cpp" line="38"/>
+        <location filename="../Main.cpp" line="40"/>
         <source>Load track list from file.</source>
         <translation>Spuren aus Datei laden.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="39"/>
+        <location filename="../Main.cpp" line="41"/>
         <source>path to file</source>
         <translation>Pfad zur Datei</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="42"/>
+        <location filename="../Main.cpp" line="44"/>
         <source>Minimize window to tray.</source>
         <translation>Minimiert im Benachrichtigungsfeld starten.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="46"/>
+        <location filename="../Main.cpp" line="48"/>
         <source>Enable tray icon.</source>
         <translation>Benachrichtigungsfeld aktivieren.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="48"/>
+        <location filename="../Main.cpp" line="50"/>
         <source>Disable tray icon.</source>
         <translation>Benachrichtigungsfeld deaktivieren.</translation>
+    </message>
+    <message>
+        <location filename="../Main.cpp" line="54"/>
+        <source>Start only single instance.</source>
+        <translation>Nur eine Instanz starten.</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
-        <location filename="../Main.cpp" line="77"/>
+        <location filename="../Main.cpp" line="82"/>
         <source>%1 is already running (PID: %2).</source>
         <translation>%1 läuft schon (PID: %2).</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="79"/>
+        <location filename="../Main.cpp" line="89"/>
         <source>Continue anyway?</source>
         <translation>Trotzdem fortfahren?</translation>
     </message>

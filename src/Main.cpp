@@ -12,6 +12,8 @@
 #include <QSharedMemory>
 #include <QTranslator>
 
+#include <iostream>
+
 int main(int argc, char* argv[])
 {
   QApplication a(argc, argv);
@@ -49,6 +51,9 @@ int main(int argc, char* argv[])
 #endif
   parser.addOption(tray_option);
 
+  const QCommandLineOption single_instance_option("single-instance", QCoreApplication::translate("Help", "Start only single instance."));
+  parser.addOption(single_instance_option);
+
   parser.process(a);
 
   const QString file_name = parser.value(load_option);
@@ -74,13 +79,15 @@ int main(int argc, char* argv[])
     }
     auto* data = static_cast<const qint64*>(run_guard.data());
 
-    const auto& info = QCoreApplication::translate("Main", "%1 is already running (PID: %2).")
-                           .append("\n")
-                           .append(QCoreApplication::translate("Main", "Continue anyway?"))
-                           .arg(APP_TITLE)
-                           .arg(*data);
+    QString info1(QCoreApplication::translate("Main", "%1 is already running (PID: %2).").arg(APP_TITLE).arg(*data));
+    if(parser.isSet(single_instance_option))
+    {
+      std::cerr << info1.toStdString() << std::endl;
+      return 0;
+    }
 
-    const auto clicked = QMessageBox::question(nullptr, APP_TITLE, info,
+    const auto& info2 = info1.append("\n").append(QCoreApplication::translate("Main", "Continue anyway?"));
+    const auto clicked = QMessageBox::question(nullptr, APP_TITLE, info2,
                                                QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No),
                                                QMessageBox::No);
     if (clicked != QMessageBox::Yes)

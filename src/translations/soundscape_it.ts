@@ -4,40 +4,45 @@
 <context>
     <name>Help</name>
     <message>
-        <location filename="../Main.cpp" line="38"/>
+        <location filename="../Main.cpp" line="40"/>
         <source>Load track list from file.</source>
         <translation>Carica l&apos;elenco delle tracce da file.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="39"/>
+        <location filename="../Main.cpp" line="41"/>
         <source>path to file</source>
         <translation>percorso del file</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="42"/>
+        <location filename="../Main.cpp" line="44"/>
         <source>Minimize window to tray.</source>
         <translation>Riduci a icona la finestra.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="46"/>
+        <location filename="../Main.cpp" line="48"/>
         <source>Enable tray icon.</source>
         <translation>Abilita l&apos;icona nella barra delle applicazioni.</translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="48"/>
+        <location filename="../Main.cpp" line="50"/>
         <source>Disable tray icon.</source>
         <translation>Disattiva l&apos;icona nella barra delle applicazioni.</translation>
+    </message>
+    <message>
+        <location filename="../Main.cpp" line="54"/>
+        <source>Start only single instance.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
-        <location filename="../Main.cpp" line="77"/>
+        <location filename="../Main.cpp" line="82"/>
         <source>%1 is already running (PID: %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.cpp" line="79"/>
+        <location filename="../Main.cpp" line="89"/>
         <source>Continue anyway?</source>
         <translation type="unfinished"></translation>
     </message>
