@@ -29,6 +29,10 @@ For each track you can change its volume, loop transition and playback state.
 
 ![](screenshots/transition.png)
 
+For transition with gap you can specify the gap length in track settings. In
+addition, you can also configure the gap length to be chosen randomly each time
+between left and right number of seconds (see `random up to` check box).
+
 ### Playback
 
 ![](screenshots/playback.png)
@@ -41,12 +45,14 @@ On Linux and Windows, use the `Quit` item from the application menu to finish
 the application. Pressing the close window button will just minimize the
 application to the tray.
 
-Command line options:
+### Command line options
 
 * `--load <path to file>` load track list from a file on start,
 * `--minimize` minimize window to tray on start,
-* `--disable-tray` disable tray icon.
+* `--disable-tray` disable tray icon,
+* `--single-instance` prevent starting multiple instances.
 
+### More sounds
 [Freesound](https://freesound.org/) is a good source of sounds for your own
 soundscapes.
 
