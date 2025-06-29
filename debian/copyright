@@ -3,7 +3,7 @@ Upstream-Name: soundscape
 Source: https://github.com/ddanilov/soundscape
 
 Files:     *
-Copyright: 2022-2024 Denis Danilov and contributors
+Copyright: 2022-2025 Denis Danilov and contributors
 License:   GPL-3.0-only
 
 Files:     linux/metainfo/soundscape.metainfo.xml.in
@@ -19,7 +19,7 @@ Copyright: 2022 klankbeeld <https://freesound.org/people/klankbeeld/>
 License:   CC-BY-3.0
 
 Files:     debian/*
-Copyright: 2022-2024 Denis Danilov
+Copyright: 2022-2025 Denis Danilov
 License:   GPL-3.0-only
 
 License: GPL-3.0-only
