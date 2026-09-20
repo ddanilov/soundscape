@@ -172,12 +172,12 @@ für Anwendungsmenü</translation>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../Status.cpp" line="49"/>
+        <location filename="../Status.cpp" line="45"/>
         <source>paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../Status.cpp" line="52"/>
+        <location filename="../Status.cpp" line="48"/>
         <source>playing</source>
         <translation>Wiedergabe</translation>
     </message>
@@ -257,17 +257,17 @@ für Anwendungsmenü</translation>
 <context>
     <name>TransitionIcon</name>
     <message>
-        <location filename="../TransitionIcon.cpp" line="38"/>
+        <location filename="../TransitionIcon.cpp" line="34"/>
         <source>loop with fade-out/in</source>
         <translation>Schleife mit Ein/Aus-blenden</translation>
     </message>
     <message>
-        <location filename="../TransitionIcon.cpp" line="41"/>
+        <location filename="../TransitionIcon.cpp" line="37"/>
         <source>loop with cross-fade</source>
         <translation>Schleife mit Überblenden</translation>
     </message>
     <message>
-        <location filename="../TransitionIcon.cpp" line="44"/>
+        <location filename="../TransitionIcon.cpp" line="40"/>
         <source>loop with gap</source>
         <translation>Schleife mit Lücke</translation>
     </message>

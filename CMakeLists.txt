@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-2024 Denis Danilov
+# SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
 
 cmake_minimum_required(VERSION 3.16)
@@ -33,7 +33,7 @@ if(NOT DEFINED APP_VERSION)
     execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
       OUTPUT_VARIABLE APP_VERSION)
-  elseif()
+  else()
     set(APP_VERSION "unknown")
   endif()
 endif()
@@ -43,7 +43,7 @@ message(STATUS "version: ${APP_VERSION}")
 set(APP_LIB ${APP_NAME}-lib)
 set(APP_EXE ${APP_NAME})
 
-find_package(Qt6 6.2 COMPONENTS
+find_package(Qt6 6.8 COMPONENTS
   LinguistTools
   Multimedia
   Test
@@ -51,13 +51,7 @@ find_package(Qt6 6.2 COMPONENTS
   REQUIRED)
 message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")
 
-if(Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
-  qt_standard_project_setup()
-else()
-  set(CMAKE_AUTOMOC ON)
-  set(CMAKE_AUTOUIC ON)
-  include(GNUInstallDirs)
-endif()
+qt_standard_project_setup()
 
 add_subdirectory(src)
 add_subdirectory(tests)

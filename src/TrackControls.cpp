@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "TrackControls.h"
@@ -205,13 +205,8 @@ void TrackControls::setupControls()
   setLayout(m_layout);
 
   connect(m_volume_control, &QDial::valueChanged, this, &TrackControls::volumeChanged);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
   connect(m_transition_control, &QCheckBox::checkStateChanged, this, &TrackControls::transitionChanged);
   connect(m_status_control, &QCheckBox::checkStateChanged, this, &TrackControls::statusChanged);
-#else
-  connect(m_transition_control, &QCheckBox::stateChanged, this, &TrackControls::transitionChanged);
-  connect(m_status_control, &QCheckBox::stateChanged, this, &TrackControls::statusChanged);
-#endif
 
   m_transition_control->setTristate(true);
 }

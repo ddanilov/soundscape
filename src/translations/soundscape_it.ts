@@ -171,12 +171,12 @@ to access application menu</source>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../Status.cpp" line="49"/>
+        <location filename="../Status.cpp" line="45"/>
         <source>paused</source>
         <translation>In pausa</translation>
     </message>
     <message>
-        <location filename="../Status.cpp" line="52"/>
+        <location filename="../Status.cpp" line="48"/>
         <source>playing</source>
         <translation>Avvio</translation>
     </message>
@@ -256,17 +256,17 @@ to access application menu</source>
 <context>
     <name>TransitionIcon</name>
     <message>
-        <location filename="../TransitionIcon.cpp" line="38"/>
+        <location filename="../TransitionIcon.cpp" line="34"/>
         <source>loop with fade-out/in</source>
         <translation>loop con dissolvenza in chiusura</translation>
     </message>
     <message>
-        <location filename="../TransitionIcon.cpp" line="41"/>
+        <location filename="../TransitionIcon.cpp" line="37"/>
         <source>loop with cross-fade</source>
         <translation>loop con dissolvenza incrociata</translation>
     </message>
     <message>
-        <location filename="../TransitionIcon.cpp" line="44"/>
+        <location filename="../TransitionIcon.cpp" line="40"/>
         <source>loop with gap</source>
         <translation type="unfinished">loop con gap</translation>
     </message>

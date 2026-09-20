@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "Player.h"
@@ -92,10 +92,6 @@ void TestPlayer::testAudioFileDurationZero()
 
 void TestPlayer::testAudioFileBroken()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-  QSKIP("Test does not work");
-#endif
-
   Track track;
   auto* player = track.playerA();
   QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
@@ -105,10 +101,6 @@ void TestPlayer::testAudioFileBroken()
 
 void TestPlayer::testMediaFileWithoutAudio()
 {
-#if defined Q_OS_WIN && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-  QSKIP("Test does not work on Windows");
-#endif
-
   Track track;
   auto* player = track.playerA();
   QSignalSpy player_error(player, &QMediaPlayer::errorOccurred);
