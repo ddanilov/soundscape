@@ -45,7 +45,6 @@ set(APP_EXE ${APP_NAME})
 find_package(Qt6 6.8 COMPONENTS
   LinguistTools
   Multimedia
-  Test
   Widgets
   REQUIRED)
 message(STATUS "Using Qt ${Qt6_VERSION} from ${Qt6_DIR}")

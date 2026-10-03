@@ -1,13 +1,14 @@
-# SPDX-FileCopyrightText: 2022-2024 Denis Danilov
+# SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
 
-enable_testing(TRUE)
+find_package(Qt6 COMPONENTS Test REQUIRED)
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
+enable_testing(TRUE)
 
 macro(unit_test SOURCE_FILE_NAME)
   get_filename_component(TESTNAME ${SOURCE_FILE_NAME} NAME_WE)
   add_executable(${TESTNAME} ${SOURCE_FILE_NAME} ${RESOURCES})
+  target_include_directories(${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
   qt_add_resources(${TESTNAME} media_resources
     PREFIX "/media"
     BASE "media"
