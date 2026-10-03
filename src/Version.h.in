@@ -1,10 +1,10 @@
-// SPDX-FileCopyrightText: 2023 Denis Danilov
+// SPDX-FileCopyrightText: 2023-2026 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #pragma once
 
-#cmakedefine APP_TITLE "@APP_TITLE@"
-#cmakedefine APP_VERSION "@APP_VERSION@"
-#cmakedefine WEB_SITE "@WEB_SITE@"
+#define APP_TITLE "@APP_TITLE@"
+#define APP_VERSION "@APP_VERSION@"
+#define WEB_SITE "@WEB_SITE@"
 
-#cmakedefine CMAKE_INSTALL_DATADIR "@CMAKE_INSTALL_DATADIR@"
+#define CMAKE_INSTALL_DATADIR "@CMAKE_INSTALL_DATADIR@"
