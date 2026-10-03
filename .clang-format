@@ -43,9 +43,12 @@ FixNamespaceComments: true
 
 IncludeBlocks: Regroup
 IncludeCategories:
-  # put third party headers before standard headers
-  - Regex: "<.*\\.(h|hpp|hxx)>"
+  # match own headers
+  - Regex: "\".*\\.h\""
     Priority: 100
+  # match Qt headers
+  - Regex: "<Q[a-z_]+>"
+    Priority: 200
   # match standard headers
   - Regex: "<[a-z_]+>"
     Priority: 1000

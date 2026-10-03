@@ -10,7 +10,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option(WITH_CLANG_FORMAT "Enable clang-format check." OFF)
 option(WITH_DEPLOY_SCRIPT "Enable Qt deploy script." OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")

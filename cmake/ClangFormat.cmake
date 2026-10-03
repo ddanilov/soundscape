@@ -1,5 +1,7 @@
-# SPDX-FileCopyrightText: 2022 Denis Danilov
+# SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
+
+option(WITH_CLANG_FORMAT "Enable clang-format check." OFF)
 
 # let's use CPPLINT property to run clang-format check
 find_program(CLANG_FORMAT clang-format)
