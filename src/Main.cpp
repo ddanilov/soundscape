@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2025 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "MainWindow.h"
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     auto* data = static_cast<const qint64*>(run_guard.data());
 
     QString info1(QCoreApplication::translate("Main", "%1 is already running (PID: %2).").arg(APP_TITLE).arg(*data));
-    if(parser.isSet(single_instance_option))
+    if (parser.isSet(single_instance_option))
     {
       std::cerr << info1.toStdString() << std::endl;
       return 0;
