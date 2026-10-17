@@ -8,18 +8,18 @@
 [![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ddanilov/soundscape/latest/total)](https://github.com/ddanilov/soundscape/releases/latest)
 
 [**Soundscape**](https://github.com/ddanilov/soundscape) is an open-source
-system-tray resident desktop application for playing a mix of sounds, e.g.
-natural sounds by animals or wind and water.
+desktop application that runs in the system tray and plays a mix of sounds,
+such as animal, wind, and water sounds.
 
 ![](screenshots/overview.png)
 
 ## Usage
 
-The application comes with two example soundscapes. Use mouse right-click in the
-main window or on the tray icon to access application menu where you can add or
-remove soundtracks and change their settings.
+The application comes with two example soundscapes. Right-click the main window
+or tray icon to open the application menu, where you can add or remove
+soundtracks and change their settings.
 
-For each track you can change its volume, loop transition and playback state.
+For each track, you can change its volume, loop transition, and playback state.
 
 ### Volume
 
@@ -62,17 +62,17 @@ soundscapes.
 
 Packages for some Linux distributions are available.
 
-**Ubuntu** users can install the application from PPA repository
+**Ubuntu** users can install the application from the PPA repository
 `ppa:ddanilov/soundscape`, see
 <https://launchpad.net/~ddanilov/+archive/ubuntu/soundscape> for
 details.
 
 **Debian**, **openSUSE** and **Fedora** packages can be installed from
-download page of `home:danilov:soundscape` OBS project, see
+the download page for the `home:danilov:soundscape` OBS project, see
 <https://software.opensuse.org/download/package?package=soundscape&project=home:danilov:soundscape>.
 
-**Flatpak** package is available from **Flathub** app store at
-<https://flathub.org/apps/io.github.ddanilov.soundscape>
+**Flatpak** package is available from the **Flathub** app store at
+<https://flathub.org/apps/io.github.ddanilov.soundscape>.
 
 ### Windows
 
@@ -86,9 +86,9 @@ You can install the application using **Windows Package Manager**
 Prebuilt binaries for Windows, macOS and Linux are available from the
 [Releases page](https://github.com/ddanilov/soundscape/releases).
 
-On Linux you may need to install additional packages in order to run the
-prebuilt binary. Most likely XCB util-cursor module is missing. On Debian-based
-systems you can install it with
+On Linux, you may need to install an additional package to run the prebuilt binary.
+Most likely XCB util-cursor module is missing. On Debian-based systems,
+install it with
 
     sudo apt-get install libxcb-cursor0
 
