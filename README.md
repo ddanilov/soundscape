@@ -69,15 +69,41 @@ application.
 
 ### Command line options
 
-* `--load <path to file>` load a track list from a file on startup
+* `--load <path to file>` load a track list from a `.json` file on startup
 * `--minimize` minimize the window to the tray on startup
 * `--disable-tray` disable the tray icon on Linux and Windows
 * `--enable-tray` enable the tray icon on macOS
 * `--single-instance` prevent multiple instances from starting
 
-### More sounds
-[Freesound](https://freesound.org/) is a good source of sounds for your own
-soundscapes.
+### Building your own soundscape
+
+You can create and save your own custom soundscapes.
+
+Gather audio files: collect audio recordings for the atmospheric elements you want to mix.
+[Freesound](https://freesound.org/) is a great source. It is recommended to place the audio files in a dedicated
+folder for your soundscape.
+
+Right-click anywhere in the main window or tray icon and select **Add track** to choose audio files
+to add.
+
+Configure the mix:
+  * adjust each track's **Volume** dial to balance background atmospheres and foreground sound effects.
+  * choose a **Loop transition** mode: crossfade for continuous ambient (like rain, wind, or running water), or
+    fade with a gap and **random up to** for occasional sounds.
+  * right-click a track and choose **Edit Settings** to adjust fade-in/out durations and gap parameters. 
+  * reorder tracks using **Move Up** and **Move Down** in the track context menu (or reorder directly in the `.json` file
+    later).
+
+Right-click and choose **Save track list** to save the soundscape. Save the `.json` file in the same directory as
+your audio files. The file paths are stored relative to the saved `.json` file, making the soundscape folder portable
+and easy to move or share.
+
+Load your soundscape at any time via **Load track list** in the application menu, or load it automatically on startup
+using the `--load` command-line option:
+
+   ```bash
+   soundscape --load /path/to/soundscape.json
+   ```
 
 ## Installation
 
