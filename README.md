@@ -25,32 +25,55 @@ For each track, you can change its volume, loop transition, and playback state.
 
 ![](screenshots/volume.png)
 
+Each track has an individual volume dial. Hovering over the dial displays a tooltip with the current volume level in
+decibels (dB). The volume uses a logarithmic scale for natural sound balancing across tracks.
+
 ### Loop transition
 
 ![](screenshots/transition.png)
 
-For transition with gap you can specify the gap length in track settings. In
-addition, you can also configure the gap length to be chosen randomly each time
-between left and right number of seconds (see `random up to` check box).
+For a transition with a gap (fade-out &rarr; silence &rarr; fade-in), you can configure
+the duration of the silence between loops in the track settings:
+
+* **Fixed gap**: when the `random up to` check box is unchecked, the track waits
+  for the exact duration specified in the `gap` field (in seconds) before
+  restarting.
+* **Randomized gap**: when `random up to` is selected, a new gap duration is
+  chosen randomly each time the track loops, between the lower bound (`gap`) and
+  the upper bound (`random up to`).
+
+Randomized gap is especially useful for sporadic ambient sounds, such as bird chirps, distant thunder, wind gusts, or
+animal calls, so they recur at unpredictable intervals rather than on a rigid schedule.
 
 ### Playback
 
 ![](screenshots/playback.png)
 
-From the application menu you can pause and resume all tracks at once.
+Click the toggle switch next to a track name to start or pause its playback individually. When a track is active, the
+audio loops continuously according to its transition settings. Right-clicking
+a track opens a context menu with additional options, such as **Skip to start** to replay the
+track from the beginning, **Edit Settings**, reordering or removing the track.
 
 ![](screenshots/pause-tracks.png)
 
-On Linux and Windows, use the `Quit` item from the application menu to finish
-the application. Pressing the close window button will just minimize the
-application to the tray.
+From the application menu (opened by right-clicking the window or the tray
+icon), you can pause and resume all playing tracks at once with **Pause playing
+tracks** and **Resume paused tracks**. Pausing globally preserves the playback
+state of each track, so resuming only restarts tracks that were previously
+playing.
+
+On Linux and Windows, pressing the window close button minimizes the
+application to the system tray so audio can continue playing in the background.
+Use the **Quit** item in the application menu to completely exit the
+application.
 
 ### Command line options
 
-* `--load <path to file>` load track list from a file on start,
-* `--minimize` minimize window to tray on start,
-* `--disable-tray` disable tray icon,
-* `--single-instance` prevent starting multiple instances.
+* `--load <path to file>` load a track list from a file on startup
+* `--minimize` minimize the window to the tray on startup
+* `--disable-tray` disable the tray icon on Linux and Windows
+* `--enable-tray` enable the tray icon on macOS
+* `--single-instance` prevent multiple instances from starting
 
 ### More sounds
 [Freesound](https://freesound.org/) is a good source of sounds for your own
