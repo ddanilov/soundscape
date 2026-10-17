@@ -100,6 +100,41 @@ and on RedHat-based systems with
 
     sudo dnf install xcb-util-cursor
 
+## Build from source
+
+Building from source requires Qt, CMake, and C++17 compiler. On macOS, install `librsvg` (with `brew install librsvg`)
+which is required to generate the application icon.
+
+Build the project with CMake:
+
+    cmake -DCMAKE_BUILD_TYPE=Release -S <path-to-source> -B <path-to-build>
+    cmake --build <path-to-build>
+
+Run the test suite with:
+
+    ctest --test-dir <path-to-build>/tests --output-on-failure
+
+If CMake cannot find Qt, add `-DCMAKE_PREFIX_PATH=/path/to/Qt` to the configure command, using the directory for your
+installed Qt kit.
+
+### CMake options
+
+All project-specific options are disabled by default. Enable an option by
+adding `-D<OPTION>=ON` to the CMake configure command.
+
+| Option               | Description                                                                                                                                         |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `WITH_CLANG_FORMAT`  | run `clang-format --dry-run --Werror` while compiling, if `clang-format` is available.                                                              |
+| `WITH_COVERAGE`      | add coverage instrumentation to the tests and provide the `coverage` and `coveralls` build targets. Requires `gcovr` and `Debug` build.             |
+| `WITH_DEPLOY_SCRIPT` | generate a Qt deployment script and enable CPack packaging: ZIP and, when NSIS is available, NSIS on Windows; DragNDrop on macOS; and TGZ on Linux. |
+
+For example, generate an HTML coverage report in `<path-to-build>/coverage` with:
+
+    cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_COVERAGE=ON -S <path-to-source> -B <path-to-build>
+    cmake --build <path-to-build>
+    ctest --test-dir <path-to-build>/tests --output-on-failure
+    cmake --build <path-to-build> --target coverage
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
