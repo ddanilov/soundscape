@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2024 Denis Danilov
+// SPDX-FileCopyrightText: 2022-2026 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #include "MainWindow.h"
@@ -47,7 +47,7 @@ MainWindow::MainWindow(const bool disable_tray, QWidget* parent) :
   m_box_layout->addWidget(m_menu_info, 0, Qt::AlignCenter);
 
 #if defined(Q_OS_MACOS)
-  auto* menu_bar = new QMenuBar(nullptr);
+  auto* menu_bar = menuBar();
   auto* about_menu = menu_bar->addMenu(tr("About"));
   auto* about_action = about_menu->addAction(tr("About"));
   connect(about_action, &QAction::triggered, this, &MainWindow::showAbout);
@@ -92,8 +92,7 @@ void MainWindow::addTrackItemsToMenu(QMenu* menu) const
   auto* load_track_list = menu->addAction(tr("Load track list"));
   connect(load_track_list, &QAction::triggered, this, &MainWindow::loadTrackList);
 
-  auto* example_menu = new QMenu(tr("Examples"));
-  menu->addMenu(example_menu);
+  auto* example_menu = menu->addMenu(tr("Examples"));
 
   auto* example_rain = example_menu->addAction(tr("Rain and Thunder"));
   connect(example_rain, &QAction::triggered, this, &MainWindow::loadExampleRain);
